@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   def as_json(*args)
     so_far = super(*args)
-    if errors
+    unless errors.empty?
       so_far[:errors] = errors
     end
     so_far

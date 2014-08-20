@@ -13,15 +13,46 @@ var BaseView = Backbone.View.extend({
     var compiled = _.template(template.html())
     this.$el.html(compiled(this.params()))
     this.postRender()
+    console.log("rendered " + this.templateName, this.el)
   },
-  params: function(){}
+  params: function(){},
+  postRender: function(){},
+})
+
+
+var FormView = BaseView.extend({
+  callback: function(){},
+  events: {
+    "submit": function(){
+      var self=this
+      var vals = {}
+      $("input").each(function(i, el){
+        var $e = $(el)
+        vals[$e.attr("name")] = $e.val()
+      })
+      $.ajax($("form").attr("action"), {
+        type: $("form").attr("method"),
+        data: vals,
+        success: function(data){
+          if (data.errors){
+            _.each(data.errors, function(value, key){
+              var div = this.$("[name="+key+"]").parent().find(".error")
+              div.text(value)
+            })
+          }
+          self.callback(data)
+        },
+        dataType: "json"
+      })
+      return false
+    }
+  }
 })
 
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
     "click .login": function(){
-      console.log("hi", this.$(".user-box"))
       new LoginView({el: this.$(".user-box")}).render()
     }
   },
@@ -34,41 +65,29 @@ var HomePage = BaseView.extend({
   }
 })
 
-var UserBoxView = BaseView.extend({
+var UserBoxView = FormView.extend({
   templateName: "user-box",
   params: function(){
     return {user: current_user.email}
   },
-})
-
-
-var FormView = BaseView.extend({
-  events: {
-    "submit": function(){
-      console.log("ping")
-      var self=this
-      var vals = {}
-      $("input").each(function(i, el){
-        var $e = $(el)
-        vals[$e.attr("name")] = $e.val()
-      })
-      console.log(vals)
-      $.post($("form").attr("action"), vals, function(user){
-        if (user.errors){
-          _.each(user.errors, function(value, key){
-            var div = this.$("[name="+key+"]").parent().find(".error")
-            div.text(value)
-          })
-        }
-      }, "json")
-      return false
-
+  callback: function(data){
+    if (data.status == "ok"){
+      current_user = null
+      router.home()
     }
   }
 })
 
+
 var LoginView = FormView.extend({
-  templateName: "login"
+  templateName: "login" ,
+  callback: function(user){
+    if (!user.errors){
+      current_user = user
+      router.home()
+    }
+  }
+
 })
 
 var SignUpView = FormView.extend({
@@ -76,19 +95,18 @@ var SignUpView = FormView.extend({
 })
 
 var MainRouter = Backbone.Router.extend({
-
   routes: {
     "":                 "home",
   },
 
   home: function() {
+    console.log("routing home")
     var el = $("#main")[0]
     new HomePage({el: el}).render()
   }
-
 })
 
-new MainRouter()
+var router = new MainRouter()
 $(function(){
-console.log(Backbone.history.start({pushState: true}))
+Backbone.history.start({pushState: true})
 })

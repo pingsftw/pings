@@ -8,4 +8,8 @@ class SessionsController < ApplicationController
       render json: {errors: {email: "sorry", password: "no good"}}
     end
   end
+  def destroy
+    sign_out
+    render json: {status: "ok"}
+  end
 end
