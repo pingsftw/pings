@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-  <script> var current_user = <%= current_user ? current_user : "null"%> </script>
+  <script> var current_user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
 </head>
 <body>
 
@@ -26,18 +26,56 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="home-template">
   This is the home page
-  <div class="user_box"></div>
+  <div class="user-box"></div>
 </script>
 
 <script type="text/template" id="sign-up-template">
   <h2>Sign up now!</h2>
-  <label>Email</label>
-  <input name=email>
-  <br/>
-  <label>password</label>
-  <input name=password>
-  <br/>
-  <a class="subtle">I already have an account!</a>
+  <form name="sign_up" action="/users.json">
+    <div class="form-group">
+    <label>Email</label>
+    <input name=email>
+    <div class="error">
+  </div>
+    <div class="form-group">
+    <label>password</label>
+    <input name=password>
+    <div class="error">
+  </div>
+    <div class="form-group">
+    <button type=submit>Join!</button>
+  </div>
+  </form>
+  <a class="subtle login">I already have an account!</a>
+</script>
+
+<script type="text/template" id="login-template">
+  <h2>Log in now!</h2>
+  <form name="sign_up" action="/sessions.json">
+    <div class="form-group">
+    <label>Email</label>
+    <input name=email>
+    <div class="error">
+  </div>
+    <div class="form-group">
+    <label>password</label>
+    <input name=password>
+    <div class="error">
+  </div>
+    <div class="form-group">
+    <button type=submit>Log in!</button>
+  </div>
+  </form>
+</script>
+
+<script type="text/template" id="user-box-template">
+  <h2>Hello you!</h2>
+  You are logged in as <%%=user%>
+  <form name="log_out" action="/sessions.json", method="delete">
+    <div class="form-group">
+    <button type=submit>Log out!</button>
+  </div>
+  </form>
 </script>
 
 </html>
