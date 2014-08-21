@@ -10,6 +10,6 @@ class SessionsController < ApplicationController
   end
   def destroy
     sign_out
-    render json: {status: "ok"}
+    render json: {:csrfToken => form_authenticity_token}
   end
 end

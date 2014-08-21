@@ -40,6 +40,9 @@ var FormView = BaseView.extend({
               div.text(value)
             })
           }
+          if (data.csrfToken) {
+            $('meta[name="csrf-token"]').attr('content', data.csrfToken);
+          }
           self.callback(data)
         },
         dataType: "json"
@@ -71,10 +74,8 @@ var UserBoxView = FormView.extend({
     return {user: current_user.email}
   },
   callback: function(data){
-    if (data.status == "ok"){
-      current_user = null
-      router.home()
-    }
+    current_user = null
+    router.home()
   }
 })
 
@@ -91,7 +92,14 @@ var LoginView = FormView.extend({
 })
 
 var SignUpView = FormView.extend({
-  templateName: "sign-up"
+  templateName: "sign-up" ,
+  callback: function(user){
+    if (!user.errors){
+      current_user = user
+      router.home()
+    }
+  }
+
 })
 
 var MainRouter = Backbone.Router.extend({

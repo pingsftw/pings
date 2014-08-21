@@ -21,3 +21,4 @@ gem 'spring',        group: :development
 
 gem "rspec-rails"
 gem "devise"
+gem "httparty"
