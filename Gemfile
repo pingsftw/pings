@@ -22,3 +22,6 @@ gem 'spring',        group: :development
 gem "rspec-rails"
 gem "devise"
 gem "httparty"
+
+gem 'rails_12factor', group: :production
+ruby '2.0.0'
