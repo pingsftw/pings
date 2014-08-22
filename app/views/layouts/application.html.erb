@@ -70,8 +70,26 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="user-box-template">
   <h2>Hello you!</h2>
-  You are logged in as <%%=user%>
-  <form name="log_out" action="/sessions.json", method="DELETE">
+  <div class="email">You are logged in as <%%=user%></div>
+  <div class="reminder">
+  We haven't received your first payment, please send BTC to the address
+  in the email.
+</div>
+
+  <div class="resend-button"></div>
+  <div class="logout-button"></div>
+</script>
+
+<script type="text/template" id="resend-button-template">
+  <form name="resend" action="/users/resend.json" method="POST">
+    <div class="form-group">
+    <button type=submit>Resend!</button>
+  </div>
+  </form>
+</script>
+
+<script type="text/template" id="logout-button-template">
+  <form name="log_out" action="/sessions.json" method="DELETE">
     <div class="form-group">
     <button type=submit>Log out!</button>
   </div>

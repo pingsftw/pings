@@ -68,17 +68,31 @@ var HomePage = BaseView.extend({
   }
 })
 
-var UserBoxView = FormView.extend({
+var UserBoxView = BaseView.extend({
   templateName: "user-box",
   params: function(){
     return {user: current_user.email}
   },
+  postRender: function(){
+    new LogoutButtonView({el: this.$(".logout-button")}).render()
+    new ResendButtonView({el: this.$(".resend-button")}).render()
+  }
+})
+
+var ResendButtonView = FormView.extend({
+  templateName: "resend-button",
+  callback: function(data){
+    alert("sent it again")
+  }
+})
+
+var LogoutButtonView = FormView.extend({
+  templateName: "logout-button",
   callback: function(data){
     current_user = null
     router.home()
   }
 })
-
 
 var LoginView = FormView.extend({
   templateName: "login" ,
@@ -88,7 +102,6 @@ var LoginView = FormView.extend({
       router.home()
     }
   }
-
 })
 
 var SignUpView = FormView.extend({
