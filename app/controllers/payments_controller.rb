@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   def index #Tell Blockchain about it
-    user = User.where(funding_address: params[:address], funding_secret: params[:secret]).first
+    user = User.where(funding_address: params[:input_address], funding_secret: params[:secret]).first
     if user
       payment = Payment.create(
         user_id: user.id,
