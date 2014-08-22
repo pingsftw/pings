@@ -13,6 +13,7 @@ class PaymentsController < ApplicationController
       )
       if payment.persisted?
         render text: "ok"
+        UserMailer.payment_email(user, payment).deliver
         return
       end
     end
