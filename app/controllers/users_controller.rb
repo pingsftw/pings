@@ -26,8 +26,8 @@ class UsersController < ApplicationController
 
   def get_btc_address(secret)
     master_address = "1JWvk53aChV2vF72U1LEuybFXvP1cHBumw"
-    callback_url = "https://webs-tokens.herokuapp.com/payments"
-    url = "https://blockchain.info/api/receive?method=create&address=#{master_address}&callback=#{callback_url}&secret=#{secret}"
+    callback_url = "https://webs-tokens.herokuapp.com/payments?secret=#{secret}"
+    url = "https://blockchain.info/api/receive?method=create&address=#{master_address}&callback=#{callback_url}"
     r = HTTParty.get url
     JSON.parse(r.body)["input_address"]
   end
