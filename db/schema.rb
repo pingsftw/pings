@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140821203634) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "funding_address"
+    t.string   "funding_secret"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
