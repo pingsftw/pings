@@ -19,7 +19,11 @@ ActiveRecord::Schema.define(version: 20140821203634) do
   create_table "payments", force: true do |t|
     t.string   "address"
     t.integer  "user_id"
-    t.decimal  "quantity"
+    t.integer  "value"
+    t.string   "destination_address"
+    t.string   "input_address"
+    t.string   "input_transaction_hash"
+    t.string   "transaction_hash"
     t.datetime "created_at"
   end
 

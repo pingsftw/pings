@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index'
+  resource :payments, :only => [:create]
   scope :format => true, :constraints => { :format => 'json' } do
     resources :users
     resource :sessions
