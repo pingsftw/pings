@@ -12,7 +12,7 @@ class PaymentsController < ApplicationController
         transaction_hash: params[:transaction_hash],
       )
       if payment.persisted?
-        render text: "ok"
+        render text: "*ok*"
         UserMailer.payment_email(user, payment).deliver
         return
       end
