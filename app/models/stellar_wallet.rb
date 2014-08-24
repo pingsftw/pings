@@ -15,6 +15,29 @@ class StellarWallet < ActiveRecord::Base
     self.public_key_hex = result["public_key_hex"]
   end
 
+  def issue(currency, amount)
+    body = {
+      method: "submit",
+      params: [
+      {
+      secret: StellarSecret,
+      tx_json: {
+        TransactionType: "Payment",
+        Account: StellarAccount,
+        Destination: account_id,
+        Amount: {
+          currency: currency,
+          issuer: StellarAccount,
+          value: amount
+        }
+      }
+    }
+  ]
+    }
+    puts body.to_json
+    result = HTTParty.post(Url, body: body.to_json)
+  end
+
   def prefund
     body = {
       method: "submit",
@@ -38,7 +61,7 @@ class StellarWallet < ActiveRecord::Base
     get_keys
     prefund
     trust_server("WEB", 1000000)
-    trust_server("BTC", 1000)
+    trust_server("BTC", 1000000)
   end
 
   def trust_server(currency, amount)
@@ -62,4 +85,5 @@ class StellarWallet < ActiveRecord::Base
     result = HTTParty.post(Url, body: body.to_json)
     puts result.body
   end
+
 end

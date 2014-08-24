@@ -14,7 +14,7 @@ class PaymentsController < ApplicationController
       if payment.persisted?
         render text: "*ok*"
         payment.process!
-        user.ensure_stellar_wallet
+        user.ensure_stellar_wallet.issue(payment.value)
         UserMailer.payment_email(user, payment).deliver
         return
       end
