@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :stellar_wallet
+  has_many :payment_addresses
   def as_json(*args)
     so_far = super(*args)
     unless errors.empty?

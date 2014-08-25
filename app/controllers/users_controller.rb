@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   def create
     user = User.create(email: params[:email], password: params[:password])
     if user.persisted?
-      send_email(user)
+      send_email(user, user.payment_addresses.last)
       sign_in(user)
     end
     render json: user
