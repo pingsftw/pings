@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def send_email(user)
       funding_secret = SecureRandom.hex
-      funding_address = get_btc_address(user.funding_secret)
+      funding_address = get_btc_address(funding_secret)
       PaymentAddress.create!(user: user, secret: funding_secret, address: funding_address)
       UserMailer.welcome_email(user).deliver
   end
