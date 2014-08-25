@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def resend
     if current_user
-      send_email(current_user)
+      send_email(current_user, current_user.payment_addresses.last)
       render json: {email: "sent"}
     else
       render json: {user: "none"}
