@@ -1,9 +1,9 @@
 class PaymentsController < ApplicationController
   def index #Tell Blockchain about it
-    user = User.where(funding_address: params[:input_address], funding_secret: params[:secret]).first
-    if user
+    pa = PaymentAddress.where(address: params[:input_address], secret: params[:secret]).first
+    if pa
       payment = Payment.create(
-        user_id: user.id,
+        payment_address_id: user.id,
         address: params[:address],
         value: params[:value],
         destination_address: params[:destination_address],
@@ -14,8 +14,8 @@ class PaymentsController < ApplicationController
       if payment.persisted?
         render text: "*ok*"
         payment.process!
-        user.ensure_stellar_wallet.issue(payment.value)
-        UserMailer.payment_email(user, payment).deliver
+        pa.user.ensure_stellar_wallet.issue(payment.value)
+        UserMailer.payment_email(pa.user, payment).deliver
         return
       end
     end

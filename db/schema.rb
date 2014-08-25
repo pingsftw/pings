@@ -16,9 +16,15 @@ ActiveRecord::Schema.define(version: 20140822185852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "payment_addresses", force: true do |t|
+    t.integer "user_id"
+    t.string  "secret"
+    t.string  "address"
+  end
+
   create_table "payments", force: true do |t|
+    t.integer  "payment_address_id"
     t.string   "address"
-    t.integer  "user_id"
     t.integer  "value"
     t.string   "destination_address"
     t.string   "input_address"
@@ -51,8 +57,6 @@ ActiveRecord::Schema.define(version: 20140822185852) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "funding_address"
-    t.string   "funding_secret"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

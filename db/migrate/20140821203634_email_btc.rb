@@ -1,10 +1,13 @@
 class EmailBtc < ActiveRecord::Migration
   def change
-    add_column :users, :funding_address, :string
-    add_column :users, :funding_secret, :string
-    create_table :payments do |t|
-      t.string :address
+    create_table :payment_addresses do |t|
       t.integer :user_id
+      t.string :secret
+      t.string :address
+    end
+    create_table :payments do |t|
+      t.integer :payment_address_id
+      t.string :address
       t.integer :value
       t.string :destination_address
       t.string :input_address
