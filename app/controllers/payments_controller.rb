@@ -3,7 +3,7 @@ class PaymentsController < ApplicationController
     pa = PaymentAddress.where(address: params[:input_address], secret: params[:secret]).first
     if pa
       payment = Payment.create(
-        payment_address_id: user.id,
+        payment_address: pa,
         address: params[:address],
         value: params[:value],
         destination_address: params[:destination_address],
