@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def resend
     if current_user
-      send_email(current_user, current_user.payment_addresses.last)
+      send_email(current_user)
       render json: {email: "sent"}
     else
       render json: {user: "none"}
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       funding_secret = SecureRandom.hex
       funding_address = get_btc_address(funding_secret)
       pa = PaymentAddress.create!(user: user, secret: funding_secret, address: funding_address)
-      UserMailer.welcome_email(pa).deliver
+      UserMailer.welcome_email(user, pa).deliver
   end
 
   def get_btc_address(secret)
