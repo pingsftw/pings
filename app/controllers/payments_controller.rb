@@ -14,7 +14,7 @@ class PaymentsController < ApplicationController
       render text: "*ok*"
       if pa
         payment.process!
-        pa.user.ensure_stellar_wallet.issue(payment.value)
+        pa.user.ensure_stellar_wallet.issue("BTC", payment.value)
         UserMailer.payment_email(pa.user, payment).deliver
       else
         puts "Bad payment received"
