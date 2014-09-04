@@ -5,11 +5,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_one :stellar_wallet
   has_many :payment_addresses
+  has_many :payments, through: :payment_addresses
   def as_json(*args)
     so_far = super(*args)
     unless errors.empty?
       so_far[:errors] = errors
     end
+    so_far[:payments] = payments.where("value > 0")
     so_far
   end
 
