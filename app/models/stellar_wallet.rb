@@ -30,6 +30,45 @@ class StellarWallet < ActiveRecord::Base
     lines.detect {|l| l["currency"] == "WEB"}["balance"].to_i
   end
 
+  def offers
+    body = {
+      method: "account_offers",
+      params: [
+        {
+          account: account_id
+        }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    result.parsed_response["result"]["offers"]
+  end
+
+  def offer(opts)
+    body = {
+  method: "submit",
+  params: [
+    {
+      secret: master_seed,
+      tx_json: {
+        TransactionType: "OfferCreate",
+        Account: account_id,
+        TakerGets: {
+          currency: opts[:give][:currency],
+          value: opts[:give][:qty],
+          issuer: StellarAccount
+        },
+        TakerPays: {
+          currency: opts[:receive][:currency],
+          value: opts[:receive][:qty],
+          issuer: StellarAccount
+        }
+      }
+    }
+  ]
+}
+    result = HTTParty.post(Url, body: body.to_json)
+  end
+
   def issue(currency, amount)
     body = {
       method: "submit",
