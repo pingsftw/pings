@@ -16,6 +16,20 @@ class StellarWallet < ActiveRecord::Base
     self.public_key_hex = result["public_key_hex"]
   end
 
+  def balance(currency)
+    body = {
+      method: "account_lines",
+      params: [
+      {
+        account: account_id
+      }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    lines = result.parsed_response["result"]["lines"]
+    lines.detect {|l| l["currency"] == "WEB"}["balance"].to_i
+  end
+
   def issue(currency, amount)
     body = {
       method: "submit",
