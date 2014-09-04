@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822185852) do
+ActiveRecord::Schema.define(version: 20140825052457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 20140822185852) do
     t.datetime "created_at"
   end
 
+  create_table "projects", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "stellar_wallets", force: true do |t|
     t.integer "user_id"
     t.string  "account_id"
@@ -40,6 +46,7 @@ ActiveRecord::Schema.define(version: 20140822185852) do
     t.string  "master_seed_hex"
     t.string  "public_key"
     t.string  "public_key_hex"
+    t.integer "project_id"
   end
 
   add_index "stellar_wallets", ["user_id"], name: "index_stellar_wallets_on_user_id", unique: true, using: :btree

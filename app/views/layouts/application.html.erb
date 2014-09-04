@@ -71,6 +71,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 <script type="text/template" id="user-box-template">
   <h2>Hello you!</h2>
   <div class="email">You are logged in as <%%=user%></div>
+  <div class="projects"></div>
   <div class="reminder">
   We haven't received your first payment, please send BTC to the address
   in the email.
@@ -78,6 +79,15 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
   <div class="resend-button"></div>
   <div class="logout-button"></div>
+</script>
+
+<script type="text/template" id="project-item-template">
+  <%%=name%>
+</script>
+
+<script type="text/template" id="project-list-template">
+  <h2>Projects</h2>
+  <ul class="project-list"></ul>
 </script>
 
 <script type="text/template" id="resend-button-template">

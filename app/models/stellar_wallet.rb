@@ -4,6 +4,7 @@ class StellarWallet < ActiveRecord::Base
   StellarAccount = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
   before_save :setup
   belongs_to :user
+  belongs_to :project
 
 
   def get_keys
@@ -61,7 +62,7 @@ class StellarWallet < ActiveRecord::Base
     get_keys
     prefund
     trust_server("WEB", 1000000)
-    trust_server("BTC", 1000000)
+    trust_server("BTC", 100_000_000) #1 BTC
   end
 
   def trust_server(currency, amount)

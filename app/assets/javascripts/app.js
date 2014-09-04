@@ -13,9 +13,14 @@ var BaseView = Backbone.View.extend({
     var compiled = _.template(template.html())
     this.$el.html(compiled(this.params()))
     this.postRender()
-    console.log("rendered " + this.templateName, this.el)
+    console.log("rendered " + this.templateName, this.el, this.params())
+    return this
   },
-  params: function(){},
+  params: function(){
+    if (this.model) {
+      return this.model.toJSON()
+    }
+  },
   postRender: function(){},
 })
 
@@ -65,6 +70,33 @@ var HomePage = BaseView.extend({
   postRender: function(){
     var innerTemplate = current_user ? UserBoxView : SignUpView
     new innerTemplate({el: this.$(".user-box")}).render()
+    new ProjectListView({el: this.$(".projects")}).render()
+  }
+})
+
+var ProjectList = Backbone.Collection.extend({
+  url: "/projects.json"
+})
+
+var ProjectItemView = BaseView.extend({
+  templateName: "project-item",
+  tagName: "li"
+})
+
+var ProjectListView = BaseView.extend({
+  templateName: "project-list",
+  initialize: function(){
+    var self=this
+    this.collection = new ProjectList()
+    this.collection.bind("reset", function(){self.populate()})
+    this.collection.fetch({reset: true})
+  },
+  populate: function(){
+    this.collection.each(function(project){
+      var item = new ProjectItemView({model: project}).render()
+      this.$(".project-list").append(item.el)
+      console.log(project, item)
+    })
   }
 })
 

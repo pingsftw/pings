@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :payments, :only => [:index]
   scope :format => true, :constraints => { :format => 'json' } do
+    resources :projects
     resources :users do
       collection do
         post :resend
