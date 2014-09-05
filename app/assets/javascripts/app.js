@@ -95,7 +95,25 @@ var ProjectListView = BaseView.extend({
     this.collection.each(function(project){
       var item = new ProjectItemView({model: project}).render()
       this.$(".project-list").append(item.el)
-      console.log(project, item)
+    })
+  }
+})
+
+var PaymentItemView = BaseView.extend({
+  templateName: "payment-item"
+})
+
+var PaymentListView = BaseView.extend({
+  templateName: "payments",
+  initialize: function(){
+    this.collection = new Backbone.Collection(current_user.payments)
+  },
+  postRender: function(){
+    this.collection.each(function(payment){
+      console.log(payment)
+      this.$(".payment-list").append(
+        new PaymentItemView({model: payment}).render().el
+      )
     })
   }
 })
@@ -108,6 +126,7 @@ var UserBoxView = BaseView.extend({
   postRender: function(){
     new LogoutButtonView({el: this.$(".logout-button")}).render()
     new ResendButtonView({el: this.$(".resend-button")}).render()
+    new PaymentListView({el: this.$(".payments")}).render()
   }
 })
 

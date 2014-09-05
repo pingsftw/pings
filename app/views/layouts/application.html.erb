@@ -72,13 +72,28 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <h2>Hello you!</h2>
   <div class="email">You are logged in as <%%=user%></div>
   <div class="projects"></div>
-  <div class="reminder">
-  We haven't received your first payment, please send BTC to the address
-  in the email.
-</div>
+  <%% if (current_user.payments.length) { %>
+    <div class="payments"></div>
+  <%% } else { %>
+    <div class="reminder">
+    We haven't received your first payment, please send BTC to the address
+    in the email.
+    </div>
+    <div class="resend-button"></div>
+  <%% } %>
+  <ul>
 
-  <div class="resend-button"></div>
   <div class="logout-button"></div>
+</script>
+
+<script type="text/template" id="payments-template">
+  <h2>Your Payments</h2>
+  <ul class="payment-list"></ul>
+</script>
+
+<script type="text/template" id="payment-item-template">
+  <div class="time"><%%=created_at%></div>
+  <div class="value"><%%=value / 100000000%> BTC</div>
 </script>
 
 <script type="text/template" id="project-item-template">
