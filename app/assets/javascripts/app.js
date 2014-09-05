@@ -181,4 +181,5 @@ var MainRouter = Backbone.Router.extend({
 var router = new MainRouter()
 $(function(){
 Backbone.history.start({pushState: true})
+$("time").timeago()
 })

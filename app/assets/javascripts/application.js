@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require timeago
 //= require underscore
 //= require backbone
 //= require bootstrap.min

@@ -92,8 +92,10 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="payment-item-template">
-  <div class="time"><%%=created_at%></div>
-  <div class="value"><%%=value / 100000000%> BTC</div>
+  <time title=<%%=created_at%>><%%=created_at%></time>
+  <div class="value"><%%=value / 10000000 %> BTC</div>
+  <div class="from"><%%=input_address %></div>
+  <div class="hash"><%%=input_transaction_hash %></div>
 </script>
 
 <script type="text/template" id="project-item-template">
