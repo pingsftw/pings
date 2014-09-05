@@ -27,7 +27,7 @@ class StellarWallet < ActiveRecord::Base
     }
     result = HTTParty.post(Url, body: body.to_json)
     lines = result.parsed_response["result"]["lines"]
-    lines.detect {|l| l["currency"] == "WEB"}["balance"].to_i
+    lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
   def offers
