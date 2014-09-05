@@ -102,7 +102,7 @@ class StellarWallet < ActiveRecord::Base
         TransactionType: "Payment",
         Account: StellarAccount,
         Destination: account_id,
-        Amount: 100_000_000
+        Amount: 50_000
       }
     }
   ]
