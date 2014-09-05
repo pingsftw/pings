@@ -70,9 +70,10 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="user-box-template">
   <h2>Hello you!</h2>
-  <div class="email">You are logged in as <%%=user%></div>
+  <div class="email">You are logged in as <%%=email%></div>
+  <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / 10000000%></div>
   <div class="projects"></div>
-  <%% if (current_user.payments.length) { %>
+  <%% if (payments.length) { %>
     <div class="payments"></div>
   <%% } else { %>
     <div class="reminder">

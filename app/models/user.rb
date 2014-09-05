@@ -12,11 +12,20 @@ class User < ActiveRecord::Base
       so_far[:errors] = errors
     end
     so_far[:payments] = payments.where("value > 0")
+    so_far[:balances] = balances
     so_far
   end
 
   def ensure_stellar_wallet
     return stellar_wallet if stellar_wallet
     StellarWallet.create(user: self)
+  end
+
+  def balances
+    ensure_stellar_wallet
+    {
+      webs: stellar_wallet.balance("WEB"),
+      btc: stellar_wallet.balance("BTC")
+    }
   end
 end

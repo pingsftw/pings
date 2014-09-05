@@ -121,7 +121,7 @@ var PaymentListView = BaseView.extend({
 var UserBoxView = BaseView.extend({
   templateName: "user-box",
   params: function(){
-    return {user: current_user.email}
+    return current_user
   },
   postRender: function(){
     new LogoutButtonView({el: this.$(".logout-button")}).render()
