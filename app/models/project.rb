@@ -18,7 +18,7 @@ class Project < ActiveRecord::Base
   def sell(price, qty)
     stellar_wallet.offer(
       give: {currency: "WEB", qty: qty},
-      receive: {currency: "BTC", qty: (price * qty * 100_000_000).to_i}
+      receive: {currency: "BTC", qty: (price * qty * 10_000_000).to_i}
     )
   end
 
