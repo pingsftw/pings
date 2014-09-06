@@ -124,7 +124,6 @@ var UserBoxView = BaseView.extend({
     return current_user
   },
   postRender: function(){
-    new LogoutButtonView({el: this.$(".logout-button")}).render()
     new ResendButtonView({el: this.$(".resend-button")}).render()
     new PaymentListView({el: this.$(".payments")}).render()
   }
@@ -178,8 +177,19 @@ var MainRouter = Backbone.Router.extend({
   }
 })
 
+var HeaderView = BaseView.extend({
+  templateName: "header",
+  tagName: "header",
+  postRender: function(){
+    new LogoutButtonView({el: this.$(".logout-button")}).render()
+  }
+})
+
 var router = new MainRouter()
 $(function(){
+$("body").prepend(
+  new HeaderView({model: new Backbone.Model(current_user)}).render().el
+)
 Backbone.history.start({pushState: true})
 $("time").timeago()
 })
