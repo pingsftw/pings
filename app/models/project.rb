@@ -2,6 +2,10 @@ class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
 
+  def self.by_wallet(account_id)
+    StellarWallet.find_by_account_id(account_id).try(:project)
+  end
+
   def ensure_stellar_wallet
     return stellar_wallet if stellar_wallet
     StellarWallet.create(project: self)
