@@ -25,24 +25,20 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="projects">Projects</div>
   <div class="history">History</div>
   <div class="user">
-    <%% if (email) { %>
+    <%% if (typeof(email) != "undefined") { %>
         <%%=email%>
         <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / Satoshis%></div>
         <div class="stellar"><%%=stellar_id%></div>
         <div class="logout-button">Log out</div>
-    <%% } else { %>
-        NO ONE
     <%%} %>
-
-
   </div>
 </script>
 
 <script type="text/template" id="projects-template">
 </script>
 
-
 <script type="text/template" id="home-template">
+  <div class="user-box"></div>
   <div class="book"></div>
 </script>
 
@@ -104,6 +100,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     <div class="form-group">
     <button type=submit>Log in!</button>
   </div>
+  <a class="subtle signup" style="display: none;">Hmm, I guess I'll sign up after all</a>
   </form>
 </script>
 

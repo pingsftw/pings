@@ -32,16 +32,18 @@ var BaseView = Backbone.View.extend({
 
 var FormView = BaseView.extend({
   callback: function(){},
+  error: function(){},
   events: {
     "submit": function(){
+      console.log("sumbit", this)
       var self=this
       var vals = {}
-      $("input").each(function(i, el){
+      this.$("input").each(function(i, el){
         var $e = $(el)
         vals[$e.attr("name")] = $e.val()
       })
-      $.ajax($("form").attr("action"), {
-        type: $("form").attr("method"),
+      $.ajax(self.$("form").attr("action"), {
+        type: self.$("form").attr("method"),
         data: vals,
         success: function(data){
           if (data.errors){
@@ -49,6 +51,9 @@ var FormView = BaseView.extend({
               var div = this.$("[name="+key+"]").parent().find(".error")
               div.text(value)
             })
+            self.$("[type=submit]").removeAttr("disabled")
+
+            self.error()
           }
           if (data.csrfToken) {
             $('meta[name="csrf-token"]').attr('content', data.csrfToken);
@@ -57,6 +62,7 @@ var FormView = BaseView.extend({
         },
         dataType: "json"
       })
+      this.$("[type=submit]").attr("disabled", true)
       return false
     }
   }

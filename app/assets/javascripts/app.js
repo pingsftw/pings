@@ -24,16 +24,24 @@ var HomePage = BaseView.extend({
   templateName: "home",
   events: {
     "click .login": function(){
-      new LoginView({el: this.$(".user-box")}).render()
+      var el = new LoginView().render().el
+      $(".user-box").empty().append(el)
+    },
+    "click .signup": function(){
+      var el = new SignUpView().render().el
+      $(".user-box").empty().append(el)
     }
   },
   params: function(){
     return {user: current_user}
   },
   postRender: function(){
-    if (!current_user) this.$el.append(new SignUpView().render().el)
-    var book = new Book()
-    new BookView({el: this.$(".book"), collection: book}).render()
+    if (!current_user) {
+      new SignUpView({el: this.$(".user-box")}).render()
+    } else {
+      var book = new Book()
+      new BookView({el: this.$(".book"), collection: book}).render()
+    }
   }
 })
 
@@ -122,6 +130,10 @@ var LoginView = FormView.extend({
       current_user = user
       router.home()
     }
+  },
+  error: function(){
+
+    this.$(".signup").show()
   }
 })
 
