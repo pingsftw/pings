@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140825052457) do
+ActiveRecord::Schema.define(version: 20140908202356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20140825052457) do
     t.string   "input_transaction_hash"
     t.string   "transaction_hash"
     t.datetime "created_at"
+    t.string   "issue_hash"
+    t.string   "bid_hash"
   end
 
   create_table "projects", force: true do |t|

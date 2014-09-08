@@ -1,7 +1,15 @@
 class Payment < ActiveRecord::Base
   belongs_to :payment_address
+  def user
+    payment_address.user
+  end
   def process!
-    payment_address.user.ensure_stellar_wallet
+    user.ensure_stellar_wallet
+    res = user.stellar_wallet.issue("BTC", value)
+    self.issue_hash = res["result"]["tx_json"]["hash"]
+    res =  user.bid
+    self.bid_hash = res["result"]["tx_json"]["hash"]
+    save!
   end
   def as_json *args
     h = super *args

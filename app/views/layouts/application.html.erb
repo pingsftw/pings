@@ -6,6 +6,7 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <script> var current_user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
+  <script>window.Satoshis = 10000000</script>
 </head>
 <body>
 
@@ -26,7 +27,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="user">
     <%% if (email) { %>
         <%%=email%>
-        <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / 10000000%></div>
+        <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / Satoshis%></div>
         <div class="stellar"><%%=stellar_id%></div>
         <div class="logout-button">Log out</div>
     <%% } else { %>
@@ -44,11 +45,19 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="book-template">
   <h2>Available WEBs</h2>
-  <ul class="book-items"></ul>
+  <ul class="book-items">
+    <li>
+      <div class='btc'>  BTC available </div>
+      <div class='price'> Price </div>
+      <div class='qty'>   Webs </div>
+      <div class='project'>Project</div>
+    </li>
+  </ul>
 </script>
 
 <script type="text/template" id="book-item-template">
-  <div class='price'>  <%%= price %></div>
+  <div class='btc'>  <%%= pay / Satoshis %></div>
+  <div class='price'>  <%%= price / Satoshis%></div>
   <div class='qty'>    <%%= web %></div>
   <div class='project'><%%= project ? project.name : "Unknown" %></div>
 </script>
@@ -114,7 +123,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="payment-item-template">
   <time title=<%%=created_at%>><%%=created_at%></time>
-  <div class="value"><%%=value / 10000000 %> BTC</div>
+  <div class="value"><%%=value / Satoshis %> BTC</div>
   <div class="from"><%%=input_address %></div>
   <div class="hash"><%%=input_transaction_hash %></div>
 </script>

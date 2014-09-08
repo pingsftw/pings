@@ -1,3 +1,4 @@
+
 var BaseView = Backbone.View.extend({
   render: function(){
     if (!this.templateName) {

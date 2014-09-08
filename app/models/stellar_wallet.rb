@@ -124,7 +124,7 @@ class StellarWallet < ActiveRecord::Base
     }
   ]
 }
-    result = HTTParty.post(Url, body: body.to_json)
+    result = HTTParty.post(Url, body: body.to_json).parsed_response
   end
 
   def issue(currency, amount)
@@ -146,8 +146,7 @@ class StellarWallet < ActiveRecord::Base
     }
   ]
     }
-    puts body.to_json
-    result = HTTParty.post(Url, body: body.to_json)
+    result = HTTParty.post(Url, body: body.to_json).parsed_response
   end
 
   def prefund
