@@ -48,7 +48,9 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="book-item-template">
-  <%%= price %>
+  <div class='price'>  <%%= price %></div>
+  <div class='qty'>    <%%= web %></div>
+  <div class='project'><%%= project ? project.name : "Unknown" %></div>
 </script>
 
 <script type="text/template" id="sign-up-template">

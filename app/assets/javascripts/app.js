@@ -58,7 +58,8 @@ var FormView = BaseView.extend({
 })
 
 var BookItemView = BaseView.extend({
-  templateName: "book-item"
+  templateName: "book-item",
+  tagName: "li"
 })
 
 var Books = Backbone.Collection.extend({
