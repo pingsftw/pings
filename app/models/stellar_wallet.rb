@@ -74,7 +74,7 @@ class StellarWallet < ActiveRecord::Base
     result.parsed_response["result"]["offers"]
   end
 
-  def book(currency)
+  def self.book(currency)
     body = {
       method: "book_offers",
       params: [

@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
     so_far[:balances] = balances
     so_far[:stellar_id] = stellar_wallet.account_id
     so_far[:transactions] = transactions
-    so_far[:book] = book
     so_far
   end
 
@@ -35,10 +34,6 @@ class User < ActiveRecord::Base
   def transactions
     txs = stellar_wallet.buy_webs_transactions
     txs.each{|tx| tx[:project] = Project.by_wallet(tx[:account_id])}
-  end
-
-  def book
-    stellar_wallet.book("BTC").map{|h| h[:project] = Project.by_wallet(h[:account]); h}
   end
 
   def bid

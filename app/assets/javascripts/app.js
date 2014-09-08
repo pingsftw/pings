@@ -57,6 +57,30 @@ var FormView = BaseView.extend({
   }
 })
 
+var BookItemView = BaseView.extend({
+  templateName: "book-item"
+})
+
+var Books = Backbone.Collection.extend({
+  url: "/book.json"
+})
+
+var BookView = BaseView.extend({
+  templateName: "book",
+  initialize: function(){
+    var self = this
+    this.collection = new Books()
+    this.collection.bind("reset", function(){self.populate()})
+    this.collection.fetch({reset: true})
+  },
+  populate: function(){
+    this.collection.each(function(dataItem){
+      var item = new BookItemView({model: dataItem}).render()
+      this.$(".book-items").append(item.el)
+    })
+  }
+})
+
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
@@ -71,6 +95,7 @@ var HomePage = BaseView.extend({
     var innerTemplate = current_user ? UserBoxView : SignUpView
     new innerTemplate({el: this.$(".user-box")}).render()
     new ProjectListView({el: this.$(".projects")}).render()
+    new BookView({el: this.$(".book")}).render()
   }
 })
 
