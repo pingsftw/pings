@@ -27,6 +27,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     <%% if (email) { %>
         <%%=email%>
         <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / 10000000%></div>
+        <div class="stellar"><%%=stellar_id%></div>
         <div class="logout-button">Log out</div>
     <%% } else { %>
         NO ONE

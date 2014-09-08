@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
     end
     so_far[:payments] = payments.where("value > 0")
     so_far[:balances] = balances
+    so_far[:stellar_id] = stellar_wallet.account_id
+    so_far[:transactions] = transactions
     so_far
   end
 
@@ -27,6 +29,11 @@ class User < ActiveRecord::Base
       webs: stellar_wallet.balance("WEB"),
       btc: stellar_wallet.balance("BTC")
     }
+  end
+
+  def transactions
+    txs = stellar_wallet.buy_webs_transactions
+    txs.each{|tx| tx[:project] = StellarWallet.find_by_account_id(tx[:account_id]).project}
   end
 
   def bid

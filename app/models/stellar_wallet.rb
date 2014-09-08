@@ -30,6 +30,37 @@ class StellarWallet < ActiveRecord::Base
     lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
+  def transactions
+    body = {
+      method: "account_tx",
+      params: [
+      {
+        account: account_id
+      }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    transactions = result.parsed_response["result"]["transactions"]
+  end
+  def buy_webs_transactions
+    creates = transactions.select{|t| t["tx"]["TransactionType"] == "OfferCreate"}
+    affecteds = creates.map{|t| t["meta"]["AffectedNodes"]}
+    mod_or_delete = affecteds.map{|t| t.map{|n| n["DeletedNode"] || n["ModifiedNode"]}.compact}
+    offers = mod_or_delete.map{|t| t.select{|n| n["LedgerEntryType"] == "Offer"}}.flatten
+    previous = offers.select{|t| t["PreviousFields"] && t["PreviousFields"]["TakerGets"]["currency"] == "WEB"}
+    puts previous
+    events = previous.map{|t| {
+      payment_qty: t["PreviousFields"]["TakerPays"]["value"].to_i - t["FinalFields"]["TakerPays"]["value"].to_i,
+      payment_currency: t["PreviousFields"]["TakerPays"]["currency"],
+      webs_qty: t["PreviousFields"]["TakerGets"]["value"].to_i - t["FinalFields"]["TakerGets"]["value"].to_i,
+      account_id: t["FinalFields"]["Account"]
+    }}
+  end
+
+  def webs_node?(node)
+    node["ModifiedNode"] && node["ModifiedNode"]["FinalFields"]["Balance"].is_a?(Hash) && node["ModifiedNode"]["FinalFields"]["Balance"]["currency"] == "WEB"
+  end
+
   def offers
     body = {
       method: "account_offers",
@@ -41,6 +72,33 @@ class StellarWallet < ActiveRecord::Base
     }
     result = HTTParty.post(Url, body: body.to_json)
     result.parsed_response["result"]["offers"]
+  end
+
+  def book(currency)
+    body = {
+      method: "book_offers",
+      params: [
+        {
+          taker_pays: {
+            currency: currency,
+            issuer: StellarAccount
+
+          },
+          taker_gets: {
+            issuer: StellarAccount,
+            currency: "WEB"
+          }
+        }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    parsed = result.parsed_response["result"]["offers"]
+    cleaned = parsed.map{|n| {
+      account: n["Account"],
+      web: n["TakerGets"]["value"],
+      pay: n["TakerPays"]["value"],
+      price: n["TakerPays"]["value"].to_i.to_f / n["TakerGets"]["value"].to_i
+    }}
   end
 
   def offer(opts)
