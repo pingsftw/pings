@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
     so_far[:payments] = payments.where("value > 0")
     so_far[:balances] = balances
     so_far[:stellar_id] = stellar_wallet.account_id
-    so_far[:transactions] = transactions
     so_far
   end
 

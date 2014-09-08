@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :payments, :only => [:index]
   scope :format => true, :constraints => { :format => 'json' } do
     resources :projects
+    resources :transactions, only: [:index]
     resource :book, only: [:show]
     resources :users do
       collection do

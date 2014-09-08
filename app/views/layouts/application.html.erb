@@ -39,8 +39,11 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="home-template">
-  <div class="user-box"></div>
+  <div class="projects"></div>
   <div class="book"></div>
+</script>
+
+<script type="text/template" id="history-template">
 </script>
 
 <script type="text/template" id="book-template">
@@ -101,10 +104,20 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   </form>
 </script>
 
-<script type="text/template" id="user-box-template">
-  <div class="projects"></div>
-  <%% if (payments.length) { %>
-    <div class="payments"></div>
+<script type="text/template" id="transaction-item-template">
+  Bought <%%= webs_qty %> WEBs for <%%= payment_qty / Satoshis %> <%%= payment_currency %> from
+  <%%= project ? project.name : "Unknown source" %>
+</script>
+
+<script type="text/template" id="transactions-template">
+  <h2>Your Purchases</h2>
+  <ul></ul>
+</script>
+
+<script type="text/template" id="payments-template">
+  <%% if (models.length) { %>
+    <h2>Your Payments</h2>
+    <ul class="payment-list"></ul>
   <%% } else { %>
     <div class="reminder">
     We haven't received your first payment, please send BTC to the address
@@ -112,14 +125,9 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     </div>
     <div class="resend-button"></div>
   <%% } %>
-  <ul>
 
 </script>
 
-<script type="text/template" id="payments-template">
-  <h2>Your Payments</h2>
-  <ul class="payment-list"></ul>
-</script>
 
 <script type="text/template" id="payment-item-template">
   <time title=<%%=created_at%>><%%=created_at%></time>

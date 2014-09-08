@@ -16,5 +16,6 @@
 //= require underscore
 //= require backbone
 //= require bootstrap.min
+//= require base
 //= require app
 //= require_tree .
