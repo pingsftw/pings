@@ -12,6 +12,13 @@ var BookView = ListView.extend({
   itemName: "Book"
 })
 
+var ProjectsPage = BaseView.extend({
+  templateName: "projects",
+  postRender: function(){
+    var projects = new ProjectList()
+    this.$el.append(new ProjectListView({collection: projects}).render().el)
+  }
+})
 
 var HomePage = BaseView.extend({
   templateName: "home",
@@ -25,8 +32,6 @@ var HomePage = BaseView.extend({
   },
   postRender: function(){
     if (!current_user) this.$el.append(new SignUpView().render().el)
-    var projects = new ProjectList
-    new ProjectListView({el: this.$(".projects"), collection: projects}).render()
     var book = new Book()
     new BookView({el: this.$(".book"), collection: book}).render()
   }
@@ -134,17 +139,23 @@ var SignUpView = FormView.extend({
 var MainRouter = Backbone.Router.extend({
   routes: {
     "":                 "home",
-    "history":          "history"
+    "home":             "home",
+    "history":          "history",
+    "projects":         "projects",
+
   },
 
   home: function() {
-    console.log("routing home")
     var el = $("#main")[0]
     new HomePage({el: el}).render()
   },
   history: function(){
     var el = $("#main")[0]
     new HistoryPage({el: el}).render()
+  },
+  projects: function(){
+    var el = $("#main")[0]
+    new ProjectsPage({el: el}).render()
   }
 })
 
@@ -156,7 +167,8 @@ var HeaderView = BaseView.extend({
   },
   events: {
     "click .history": function(){router.navigate("history", {trigger: true})},
-    "click .logo": function(){router.navigate("", {trigger: true})}
+    "click .projects": function(){router.navigate("projects", {trigger: true})},
+    "click .home": function(){router.navigate("home", {trigger: true})}
   }
 })
 

@@ -12,6 +12,7 @@ var BaseView = Backbone.View.extend({
     }
     var compiled = _.template(template.html())
     this.$el.html(compiled(this.params()))
+    this.extendedRender()
     this.postRender()
     console.log("rendered " + this.templateName, this.el, this.params())
     return this
@@ -24,6 +25,7 @@ var BaseView = Backbone.View.extend({
       return this.collection
     }
   },
+  extendedRender: function(){},
   postRender: function(){},
 })
 
@@ -60,6 +62,13 @@ var FormView = BaseView.extend({
   }
 })
 
+var LoadingView = Backbone.View.extend({
+  render: function(){
+    this.$el.html("LOADINGGG!!")
+    return this
+  }
+})
+
 var ListView = BaseView.extend({
   initialize: function(){
     var self = this
@@ -73,7 +82,13 @@ var ListView = BaseView.extend({
       var item = new view({model: dataItem}).render()
         self.$("ul").append(item.el)
     })
+    this.loading.remove()
+  },
+  extendedRender: function(){
+    this.loading = new LoadingView().render()
+    this.$el.append(this.loading.el)
   }
 })
+
 
 
