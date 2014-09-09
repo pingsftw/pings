@@ -39,6 +39,7 @@ var HomePage = BaseView.extend({
     if (!current_user) {
       new SignUpView({el: this.$(".user-box")}).render()
     } else {
+      new BuyView({el: this.$(".user-box")}).render()
       var book = new Book()
       new BookView({el: this.$(".book"), collection: book}).render()
     }
@@ -98,20 +99,17 @@ var PaymentListView = BaseView.extend({
   }
 })
 
-var UserBoxView = BaseView.extend({
-  templateName: "user-box",
-  params: function(){
-    return current_user
-  },
+var BuyView = BaseView.extend({
+  templateName: "buy",
   postRender: function(){
-    new ResendButtonView({el: this.$(".resend-button")}).render()
+    this.$el.append(new ResendButtonView().render().el)
   }
 })
 
 var ResendButtonView = FormView.extend({
   templateName: "resend-button",
   callback: function(data){
-    alert("sent it again")
+    alert("We send you another address")
   }
 })
 
