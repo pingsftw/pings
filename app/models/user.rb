@@ -14,7 +14,13 @@ class User < ActiveRecord::Base
     so_far[:payments] = payments.where("value > 0")
     so_far[:balances] = balances
     so_far[:stellar_id] = stellar_wallet.account_id
+    so_far[:supporting] = stellar_wallet.supporting
+
     so_far
+  end
+
+  def support(addr)
+    stellar_wallet.set_inflation(addr)
   end
 
   def ensure_stellar_wallet

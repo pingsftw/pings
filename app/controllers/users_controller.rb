@@ -17,6 +17,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def support
+    num = params[:project].to_i
+    if current_user
+      if num == 0
+        current_user.support(StellarWallet::StellarAccount)
+      else
+        current_user.support(Project.find(num).stellar_wallet.account_id)
+      end
+      render json: {status: "ok"}
+    else
+      render json: {user: "none"}
+    end
+  end
+
   def send_email(user)
       funding_secret = SecureRandom.hex
       funding_address = get_btc_address(funding_secret)

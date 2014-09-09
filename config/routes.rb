@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resource :book, only: [:show]
     resources :users do
       collection do
+        put :support
         post :resend
       end
     end

@@ -44,6 +44,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="home-template">
   <div class="user-box"></div>
+  <div class="support"></div>
   <div class="book"></div>
 </script>
 
@@ -152,6 +153,21 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 <script type="text/template" id="project-list-template">
   <h2>Projects</h2>
   <ul class="project-list"></ul>
+</script>
+
+<script type="text/template" id="support-template">
+  <h2>Support time!</h2>
+  <p>Your webs are currently supporting <%%= supporting %> during the next distribution cycle</p>
+
+  <p>You can change who you are supporting if you want to!</p>
+  <div class="change-support"></div>
+</script>
+
+<script type="text/template" id="change-support-template">
+  <form name="change-support" action="/users/support.json" method="PUT">
+    <select name="project">
+    </select>
+  <button type=submit>Change</button>
 </script>
 
 <script type="text/template" id="resend-button-template">

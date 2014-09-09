@@ -20,6 +20,31 @@ var ProjectsPage = BaseView.extend({
   }
 })
 
+var ChangeSupportView = FormView.extend({
+  templateName: "change-support",
+  initialize: function(){
+    var self = this
+    this.projects = new ProjectList()
+    this.projects.bind("reset", function(){self.populate()})
+    this.projects.fetch({reset: true})
+  },
+  populate: function(){
+    var select = this.$("select")
+    select.append($("<option>", {value: 0}).text("WEBs project"))
+    this.projects.each(function(project){
+      var option = $("<option>", {value: project.id}).text(project.get("name"))
+      select.append(option)
+    })
+  }
+})
+
+var SupportView = BaseView.extend({
+  templateName: "support",
+  postRender: function(){
+    new ChangeSupportView({el: this.$(".change-support")}).render()
+  }
+})
+
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
@@ -32,9 +57,6 @@ var HomePage = BaseView.extend({
       $(".user-box").empty().append(el)
     }
   },
-  params: function(){
-    return {user: current_user}
-  },
   postRender: function(){
     if (!current_user) {
       new SignUpView({el: this.$(".user-box")}).render()
@@ -42,6 +64,7 @@ var HomePage = BaseView.extend({
       new BuyView({el: this.$(".user-box")}).render()
       var book = new Book()
       new BookView({el: this.$(".book"), collection: book}).render()
+      new SupportView({el: this.$(".support"), model: current_user}).render()
     }
   }
 })
@@ -184,8 +207,9 @@ var HeaderView = BaseView.extend({
 
 var router = new MainRouter()
 $(function(){
+current_user = new Backbone.Model(current_user)
 $("body").prepend(
-  new HeaderView({model: new Backbone.Model(current_user)}).render().el
+  new HeaderView({model: current_user}).render().el
 )
 Backbone.history.start({pushState: true})
 $("time").timeago()

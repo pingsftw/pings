@@ -30,6 +30,14 @@ class StellarWallet < ActiveRecord::Base
     lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
+  def supporting
+    dest = info["InflationDest"]
+    return "WEBs Team" if dest == StellarAccount
+    project = Project.try(:by_wallet, dest)
+    return project.name if project
+    return "unknown"
+  end
+
   def transactions
     body = {
       method: "account_tx",
@@ -182,6 +190,19 @@ class StellarWallet < ActiveRecord::Base
     else
       set_inflation account_id
     end
+  end
+
+  def info
+    body = {
+      method: "account_info",
+      params: [
+        {
+          account: account_id
+        }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    result.parsed_response["result"]["account_data"]
   end
 
   def set_inflation(addr)
