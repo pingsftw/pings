@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
     so_far
   end
 
-  def support(addr)
-    stellar_wallet.set_inflation(addr)
+  def support(project)
+    stellar_wallet.set_inflation(project.stellar_wallet.account_id)
   end
 
   def ensure_stellar_wallet

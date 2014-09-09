@@ -30,6 +30,20 @@ class StellarWallet < ActiveRecord::Base
     lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
+  def self.mainline
+    body = {
+      method: "account_lines",
+      params: [
+        {
+          account: StellarAccount
+        }
+      ]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    lines = result.parsed_response["result"]["lines"]
+    lines.select{|l| l["currency"] == "WEB" && l["balance"].to_i < 0 }
+  end
+
   def supporting
     dest = info["InflationDest"]
     return "WEBs Team" if dest == StellarAccount
@@ -111,27 +125,27 @@ class StellarWallet < ActiveRecord::Base
 
   def offer(opts)
     body = {
-  method: "submit",
-  params: [
-    {
-      secret: master_seed,
-      tx_json: {
-        TransactionType: "OfferCreate",
-        Account: account_id,
-        TakerGets: {
-          currency: opts[:give][:currency],
-          value: opts[:give][:qty],
-          issuer: StellarAccount
-        },
-        TakerPays: {
-          currency: opts[:receive][:currency],
-          value: opts[:receive][:qty],
-          issuer: StellarAccount
+      method: "submit",
+      params: [
+        {
+          secret: master_seed,
+          tx_json: {
+            TransactionType: "OfferCreate",
+            Account: account_id,
+            TakerGets: {
+              currency: opts[:give][:currency],
+              value: opts[:give][:qty],
+              issuer: StellarAccount
+            },
+            TakerPays: {
+              currency: opts[:receive][:currency],
+              value: opts[:receive][:qty],
+              issuer: StellarAccount
+            }
+          }
         }
-      }
+      ]
     }
-  ]
-}
     result = HTTParty.post(Url, body: body.to_json).parsed_response
   end
 
@@ -193,6 +207,27 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def info
+    StellarWallet.info(account_id)
+  end
+
+  def self.inflation_accounts
+    accounts = mainline
+    accounts.each{|a| a["InflationDest"] = info(a["account"])["InflationDest"]}
+    accounts
+  end
+
+  def self.inflation
+    results = {}
+    inflation_accounts.each do |a|
+      if a["InflationDest"]
+        results[a["InflationDest"]] ||= 0
+        results[a["InflationDest"]] -= a["balance"].to_i
+      end
+    end
+    results
+  end
+
+  def self.info(account_id)
     body = {
       method: "account_info",
       params: [

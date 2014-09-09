@@ -18,13 +18,8 @@ class UsersController < ApplicationController
   end
 
   def support
-    num = params[:project].to_i
     if current_user
-      if num == 0
-        current_user.support(StellarWallet::StellarAccount)
-      else
-        current_user.support(Project.find(num).stellar_wallet.account_id)
-      end
+      current_user.support Project.find(params[:project_id])
       render json: {status: "ok"}
     else
       render json: {user: "none"}
