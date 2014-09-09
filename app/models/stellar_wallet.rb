@@ -172,7 +172,33 @@ class StellarWallet < ActiveRecord::Base
     get_keys
     prefund
     trust_server("WEB", 1000000)
+    set_inflation
     trust_server("BTC", 100_000_000) #1 BTC
+  end
+
+  def init_inflation
+    if user_id
+      set_inflation StellarAccount
+    else
+      set_inflation account_id
+    end
+  end
+
+  def set_inflation(addr)
+    body = {
+      method: "submit",
+      params: [{
+        secret: master_seed,
+        tx_json: {
+          TransactionType: "AccountSet",
+          Account: account_id,
+          InflationDest: addr
+        }
+      }]
+    }
+    result = HTTParty.post(Url, body: body.to_json)
+    result.parsed_response
+
   end
 
   def trust_server(currency, amount)
@@ -192,7 +218,6 @@ class StellarWallet < ActiveRecord::Base
         }
       }]
     }
-    puts body.to_json
     result = HTTParty.post(Url, body: body.to_json)
     puts result.body
   end
