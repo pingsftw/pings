@@ -7,7 +7,7 @@ var Book = Backbone.Collection.extend({
   url: "/book.json"
 })
 
-var BookView = ListView.extend({
+var BookPage = ListView.extend({
   templateName: "book",
   itemName: "Book"
 })
@@ -24,7 +24,6 @@ var ChangeSupportView = FormView.extend({
   templateName: "change-support",
   postRender: function(){
     var select = this.$("select")
-    select.append($("<option>", {value: 0}).text("WEBs project"))
     this.collection.each(function(project){
       var option = $("<option>", {value: project.id}).text(project.get("name"))
       select.append(option)
@@ -70,7 +69,7 @@ var HomePage = BaseView.extend({
       book.bind("reset", function(){
         new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
       })
-      new BookView({el: this.$(".book"), collection: book}).render()
+      book.fetch({reset: true})
       new SupportView({el: this.$(".support"), model: current_user}).render()
     }
   }
@@ -182,9 +181,14 @@ var MainRouter = Backbone.Router.extend({
     "home":             "home",
     "history":          "history",
     "projects":         "projects",
+    "book":         "book",
 
   },
 
+  book: function() {
+    var el = $("#main")[0]
+    new BookPage({el: el, collection: new Book()}).render()
+  },
   home: function() {
     var el = $("#main")[0]
     new HomePage({el: el}).render()
@@ -207,6 +211,7 @@ var HeaderView = BaseView.extend({
   },
   events: {
     "click .history": function(){router.navigate("history", {trigger: true})},
+    "click .book": function(){router.navigate("book", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
     "click .home": function(){router.navigate("home", {trigger: true})}
   }
