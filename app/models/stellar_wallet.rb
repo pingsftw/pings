@@ -150,6 +150,10 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def issue(currency, amount)
+    StellarWallet.issue(currency, amount, account_id)
+  end
+
+  def self.issue(currency, amount, account_id)
     body = {
       method: "submit",
       params: [
@@ -216,7 +220,7 @@ class StellarWallet < ActiveRecord::Base
     accounts
   end
 
-  def self.inflation
+  def self.inflation_target
     results = {}
     inflation_accounts.each do |a|
       if a["InflationDest"]
@@ -225,6 +229,20 @@ class StellarWallet < ActiveRecord::Base
       end
     end
     results
+  end
+
+  def self.to_inflate
+    h = inflation_target
+    h.each do |k,v|
+      h[k] = v/5
+    end
+    h
+  end
+
+  def self.inflate!
+    to_inflate.each do |k,v|
+      issue("WEB", v, k)
+    end
   end
 
   def self.info(account_id)
