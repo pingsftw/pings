@@ -146,6 +146,9 @@ class StellarWallet < ActiveRecord::Base
         }
       ]
     }
+    if opts[:sellMode]
+      body[:params][0][:tx_json][:Flags] = 0x00080000
+    end
     result = HTTParty.post(Url, body: body.to_json).parsed_response
   end
 

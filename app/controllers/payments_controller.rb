@@ -14,7 +14,6 @@ class PaymentsController < ApplicationController
       render text: "*ok*"
       if pa
         payment.process!
-        UserMailer.payment_email(pa.user, payment).deliver
       else
         puts "Bad payment received"
       end

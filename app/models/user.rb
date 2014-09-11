@@ -49,7 +49,8 @@ class User < ActiveRecord::Base
     min_web = satoshis / max_satoshis_per_web
     stellar_wallet.offer(
       give: {currency: "BTC", qty: satoshis},
-      receive: {currency: "WEB", qty: min_web}
+      receive: {currency: "WEB", qty: 1},
+      sellMode: true
     )
   end
 end

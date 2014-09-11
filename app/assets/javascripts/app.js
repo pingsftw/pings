@@ -92,7 +92,7 @@ TransactionItemView = BaseView.extend({
 var HistoryPage = BaseView.extend({
   templateName: "history",
   postRender: function(){
-    this.$el.append(new PaymentListView({collection: new Backbone.Collection(current_user.payments)}).render().el)
+    this.$el.append(new PaymentListView({collection: new Backbone.Collection(current_user.get("payments"))}).render().el)
     var transactions = new Transactions()
     this.$el.append(new TransactionListView({collection: transactions}).render().el)
   }
