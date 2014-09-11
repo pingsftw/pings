@@ -22,16 +22,10 @@ var ProjectsPage = BaseView.extend({
 
 var ChangeSupportView = FormView.extend({
   templateName: "change-support",
-  initialize: function(){
-    var self = this
-    this.projects = new ProjectList()
-    this.projects.bind("reset", function(){self.populate()})
-    this.projects.fetch({reset: true})
-  },
-  populate: function(){
+  postRender: function(){
     var select = this.$("select")
     select.append($("<option>", {value: 0}).text("WEBs project"))
-    this.projects.each(function(project){
+    this.collection.each(function(project){
       var option = $("<option>", {value: project.id}).text(project.get("name"))
       select.append(option)
     })
@@ -41,8 +35,17 @@ var ChangeSupportView = FormView.extend({
 var SupportView = BaseView.extend({
   templateName: "support",
   postRender: function(){
-    new ChangeSupportView({el: this.$(".change-support")}).render()
+    var self = this
+    var projects = new ProjectList()
+    var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
+    projects.bind("reset", function(){ changeView.render() })
+    projects.fetch({reset: true})
   }
+})
+
+var MiniBookView = BaseView.extend({
+  templateName: "mini-book",
+  initialize: function(){console.log(this.model, this.params())}
 })
 
 var HomePage = BaseView.extend({
@@ -58,11 +61,15 @@ var HomePage = BaseView.extend({
     }
   },
   postRender: function(){
+    var self = this
     if (!current_user) {
       new SignUpView({el: this.$(".user-box")}).render()
     } else {
       new BuyView({el: this.$(".user-box")}).render()
       var book = new Book()
+      book.bind("reset", function(){
+        new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
+      })
       new BookView({el: this.$(".book"), collection: book}).render()
       new SupportView({el: this.$(".support"), model: current_user}).render()
     }

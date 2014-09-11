@@ -28,7 +28,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     <%% if (typeof(email) != "undefined") { %>
         <%%=email%>
         <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / Satoshis%></div>
-        <div class="stellar"><%%=stellar_id%></div>
+        <div class="stellar"><%% stellar_id %></div>
         <div class="logout-button">Log out</div>
     <%%} %>
   </div>
@@ -44,11 +44,17 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="home-template">
   <div class="user-box"></div>
+  <div class="mini-book">Loading pricing infos</div>
   <div class="support"></div>
   <div class="book"></div>
 </script>
 
 <script type="text/template" id="history-template">
+</script>
+
+<script type="text/template" id="mini-book-template">
+  <p>The best price for WEBs right now is <%%= web / (pay / Satoshis) %> per Bitcoin.</p>
+  <p>Up to <%%= pay / Satoshis %> BTC worth are available at that price.</p>
 </script>
 
 <script type="text/template" id="book-template">
@@ -160,7 +166,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <p>Your webs are currently supporting <%%= supporting %> during the next distribution cycle</p>
 
   <p>You can change who you are supporting if you want to!</p>
-  <div class="change-support"></div>
+  <div class="change-support">Loading Support Datas</div>
 </script>
 
 <script type="text/template" id="change-support-template">
