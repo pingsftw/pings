@@ -25,14 +25,13 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="projects">Projects</div>
   <div class="book">Book</div>
   <div class="history">History</div>
-  <div class="user">
-    <%% if (typeof(email) != "undefined") { %>
-        <%%=email%>
-        <div class="balances">Webs: <%%= balances.webs %>, BTC: <%%= balances.btc / Satoshis%></div>
-        <div class="stellar"><%% stellar_id %></div>
-        <div class="logout-button">Log out</div>
-    <%%} %>
-  </div>
+  <%% if (typeof(email) != "undefined") { %>
+    <div class="user">
+      <p>email = <span class="data"><%%=email%></span></p>
+      <p>WEBs total = <span class="data"><%%= balances.webs %></span></p>
+    </div>
+    <div class="logout-button"><span>Log out</span></div>
+  <%%} %>
 </script>
 
 <script type="text/template" id="projects-template">
@@ -54,8 +53,8 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <p>The best price for WEBs right now is <%%= web / (pay / Satoshis) %> per Bitcoin.</p>
-  <p>Up to <%%= pay / Satoshis %> BTC worth are available at that price.</p>
+  <p>The best price for WEBs right now is <span class="data"><%%= web / (pay / Satoshis) %></span> per Bitcoin.</p>
+  <p>Up to <span class="data"><%%= pay / Satoshis %></span> BTC worth are available at that price.</p>
 </script>
 
 <script type="text/template" id="book-template">

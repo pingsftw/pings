@@ -1,6 +1,56 @@
-header div {
-  display: inline-block;
-  width: 150px;
+$main-color: #070;
+$highlight-color: #0A0;
+
+body {
+  background: black;
+  color: $main-color;
+  font-family: monospace;
+}
+
+span.data{
+  color: $highlight-color;
+}
+
+button {
+  background-color: black;
+  height: 20px;
+  vertical-align: bottom;
+  border: none;
+  &:before {
+    content: ">";
+  }
+  &:hover:before {
+    content: "#";
+  }
+}
+
+h2:before {
+  content: "\2192";
+}
+
+header {
+  div {
+    text-align: center;
+    display: inline-block;
+    width: 80px;
+    &.user, &.logout-button {
+      width: 250px;
+      text-align: left;
+    }
+  }
+  p {
+    margin: 0;
+  }
+  .form-group {
+    margin: 0;
+    width: 100%;
+    span {
+      margin-bottom: 5px
+    }
+    button {
+      text-align: left;
+    }
+  }
 }
 
 li div {
