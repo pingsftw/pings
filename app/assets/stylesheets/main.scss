@@ -5,14 +5,25 @@ body {
   background: black;
   color: $main-color;
   font-family: monospace;
+  margin-left: 20px;
+}
+
+footer {
+  margin-top: 50px;
+  margin-botton: 5px;
+  color: #040;
 }
 
 span.data{
   color: $highlight-color;
 }
 
+span.action{
+  color: #069;
+}
+
 span.grumpy {
-  color: #401010;
+  color: #602020;
 }
 
 button, select, select:active {
@@ -40,6 +51,9 @@ h2:before {
   content: "\2192";
 }
 
+h3:before {
+  content: "\2192\2192";
+}
 header {
   div {
     text-align: center;
