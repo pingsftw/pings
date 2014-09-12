@@ -2,6 +2,7 @@ class StellarWallet < ActiveRecord::Base
   Url = 'https://test.stellar.org:9002'
   StellarSecret = "sfvmSPdfVM6FFhSjSxvKVcg6vR95FAWBuczLoecNVH7xVJhBF8f"
   StellarAccount = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
+  WEBS_PROJECT_ACCOUNT_ID = "gG7WkiVMubimEfL2q4VhPmcniLxDCqQqTK"
   before_save :setup
   belongs_to :user
   belongs_to :project
@@ -201,7 +202,8 @@ class StellarWallet < ActiveRecord::Base
     get_keys
     prefund
     trust_server("WEB", 1000000)
-    set_inflation
+    inf_target = project_id ? account_id : WEBS_PROJECT_ACCOUNT_ID
+    set_inflation inf_target
     trust_server("BTC", 100_000_000) #1 BTC
   end
 

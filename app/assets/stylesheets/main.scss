@@ -11,15 +11,23 @@ span.data{
   color: $highlight-color;
 }
 
-button {
+button, select, select:active {
   background-color: black;
   height: 20px;
   vertical-align: bottom;
   border: none;
+}
+button {
   &:before {
     content: ">";
   }
+  &:after {
+    content: "<";
+  }
   &:hover:before {
+    content: "#";
+  }
+  &:hover:after {
     content: "#";
   }
 }
