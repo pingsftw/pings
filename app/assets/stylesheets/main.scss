@@ -1,5 +1,6 @@
 $main-color: #070;
 $highlight-color: #0A0;
+$action-color: #069;
 
 body {
   background: black;
@@ -19,7 +20,7 @@ span.data{
 }
 
 span.action{
-  color: #069;
+  color: $action-color;
 }
 
 span.grumpy {
@@ -32,6 +33,7 @@ button, select, select:active {
   vertical-align: bottom;
   border: none;
 }
+
 button {
   &:before {
     content: ">";

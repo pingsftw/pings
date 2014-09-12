@@ -70,7 +70,9 @@ var HomePage = BaseView.extend({
         new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
       })
       book.fetch({reset: true})
-      new SupportView({el: this.$(".support"), model: current_user}).render()
+      if (current_user.get("balances").webs) {
+        new SupportView({el: this.$(".support"), model: current_user}).render()
+      }
     }
   }
 })
