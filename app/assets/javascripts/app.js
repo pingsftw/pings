@@ -130,10 +130,51 @@ var PaymentListView = BaseView.extend({
   }
 })
 
+var StripeView = BaseView.extend({
+  templateName: "stripe",
+  events: {
+    "input .card_num": "luhn",
+    "input .card_cvc": "cvc",
+    "input .card_exp": "exp"
+  },
+  cvc: function(){
+    var e = this.$('.card_cvc')
+    var l = this.$('.cvc')
+    if (Stripe.card.validateCVC(e.val())) {
+      l.hide()
+    } else {
+      l.show()
+    }
+  },
+  luhn: function(){
+    var e = this.$('.card_num')
+    var l = this.$('.luhn')
+    if (Stripe.card.validateCardNumber(e.val())) {
+      l.hide()
+    } else {
+      l.show()
+    }
+  },
+  exp: function(){
+    var l = this.$('.exp')
+    if (Stripe.card.validateExpiry(this.$(".month").val(), this.$(".year").val())) {
+      l.hide()
+    } else {
+      l.show()
+    }
+  }
+})
+
 var BuyView = BaseView.extend({
   templateName: "buy",
+  events: {
+    "click button.stripe": "stripe"
+  },
   postRender: function(){
-    this.$el.append(new ResendButtonView().render().el)
+    new ResendButtonView({el: this.$(".resend")}).render()
+  },
+  stripe: function(){
+    new StripeView({el: this.$('.stripe')}).render()
   }
 })
 

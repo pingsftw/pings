@@ -27,8 +27,8 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="history">History</div>
   <%% if (typeof(email) != "undefined") { %>
     <div class="user">
-      <p>email = <span class="data"><%%=email%></span></p>
-      <p>WEBs total = <span class="data"><%%= balances.webs %></span></p>
+      <p><label>email</label><span class="data"><%%=email%></span></p>
+      <p><label>WEBs total</label><span class="data"><%%= balances.webs %></span></p>
     </div>
     <div class="logout-button"><span>Log out</span></div>
   <%%} %>
@@ -37,9 +37,19 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 <script type="text/template" id="projects-template">
 </script>
 
+<script type="text/template" id="stripe-template">
+  <div class="input"><label>card number</label><input class="card_num"/><span class="grumpy luhn">Luhn check failure</span></div>
+  <div class="input"><label>card cvc</label><input class="card_cvc"/><span class="grumpy cvc">three numbers, pls</span></div>
+  <div class="input"><label>card expiration month</label><input class="card_exp month"/><span class="grumpy exp">in, like, the future</span></div>
+  <div class="input"><label>card expiration year</label><input class="card_exp year"/><span class="grumpy exp">four numbers, pls</span></div>
+  <button class="submit-card">Pay with this card</button>
+</script>
+
 <script type="text/template" id="buy-template">
   <h2>Buying WEBs</h2>
   <p><span class="action">Send BTC</span> to the address in your welcome email</p>
+  <div class="resend"></div>
+  <div class="stripe"><p>Or</p><button class="stripe">Use a credit card</button></div>
 </script>
 
 <script type="text/template" id="home-template">
@@ -53,7 +63,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <p>current WEBs price = <span class="data"><%%= web / (pay / Satoshis) %> WEBs per Bitcoin.</span></p>
+  <p><label>current WEBs price</label><span class="data"><%%= web / (pay / Satoshis) %> WEBs per Bitcoin.</span></p>
   <p>Up to <span class="data"><%%= pay / Satoshis %> BTC</span> worth are available at that price.</p>
 </script>
 
