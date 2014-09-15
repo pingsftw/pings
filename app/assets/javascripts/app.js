@@ -135,7 +135,8 @@ var StripeView = BaseView.extend({
   events: {
     "input .card_num": "luhn",
     "input .card_cvc": "cvc",
-    "input .card_exp": "exp"
+    "input .card_exp": "exp",
+    "click button": "submit"
   },
   cvc: function(){
     var e = this.$('.card_cvc')
@@ -162,6 +163,14 @@ var StripeView = BaseView.extend({
     } else {
       l.show()
     }
+  },
+  submit: function(){
+    Stripe.card.createToken({
+      number: $('.card_num').val(),
+      cvc: $('.card_cvc').val(),
+      exp_month: $('.month').val(),
+      exp_year: $('.year').val()
+    }, function(){console.log(arguments)});
   }
 })
 
@@ -263,6 +272,8 @@ var HeaderView = BaseView.extend({
 var router = new MainRouter()
 $(function(){
 current_user = new Backbone.Model(current_user)
+Stripe.setPublishableKey('YOUR_PUBLISHABLE_KEY');
+
 $("body").prepend(
   new HeaderView({model: current_user}).render().el
 )
