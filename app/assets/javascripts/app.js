@@ -138,6 +138,9 @@ var StripeView = BaseView.extend({
     "input .card_exp": "exp",
     "click button": "submit"
   },
+  postRender: function(){
+    this.$(".card_num").focus()
+  },
   cvc: function(){
     var e = this.$('.card_cvc')
     var l = this.$('.cvc')
