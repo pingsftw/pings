@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-  <script> var current_user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
+  <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script>window.Satoshis = 10000000</script>
 </head>
 <body>
@@ -53,11 +53,22 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="home-template">
+  <div class="welcome" style="display:none">
+    <h1>Welcome to WEBs!</h1>
+    <p class="blahblah">
+      WEBs are tokens of commitment to an open internet.
+      They are awarded as a thank-you to people donating to causes that support the open intenet
+      and they are issued to causes based on the votes of the existing holders.
+      
+    </p>
+  </div>
   <div class="user-box"></div>
-  <h3>Pricing</h3>
-  <div class="mini-book"><span class="grumpy">Loading pricing infos</span></div>
-  <div class="support"><span class="grumpy">Loading your support info</span></div>
-  <div class="book"></div>
+  <div class='pricing' style="display:none">
+    <h3>Pricing</h3>
+    <div class="mini-book"><span class="grumpy">Loading pricing infos</span></div>
+    <div class="support"><span class="grumpy">Loading your support info</span></div>
+    <div class="book"></div>
+  </div>
 </script>
 
 <script type="text/template" id="history-template">

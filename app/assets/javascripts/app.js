@@ -61,9 +61,11 @@ var HomePage = BaseView.extend({
   },
   postRender: function(){
     var self = this
-    if (!current_user) {
+    if (!user) {
       new SignUpView({el: this.$(".user-box")}).render()
+      this.$(".welcome").show()
     } else {
+      this.$('.pricing').show()
       new BuyView({el: this.$(".user-box")}).render()
       var book = new Book()
       book.bind("reset", function(){
@@ -274,12 +276,15 @@ var HeaderView = BaseView.extend({
 
 var router = new MainRouter()
 $(function(){
-current_user = new Backbone.Model(current_user)
+current_user = new Backbone.Model(user)
 Stripe.setPublishableKey('YOUR_PUBLISHABLE_KEY');
 
-$("body").prepend(
-  new HeaderView({model: current_user}).render().el
-)
+if (user) {
+  $("body").prepend(
+    new HeaderView({model: current_user}).render().el
+  )
+}
+
 Backbone.history.start({pushState: true})
 $("time").timeago()
 })
