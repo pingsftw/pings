@@ -57,6 +57,10 @@ var HomePage = BaseView.extend({
     "click .signup": function(){
       var el = new SignUpView().render().el
       $(".user-box").empty().append(el)
+    },
+    "click .causes": function(){
+      var projects = new ProjectList()
+      new ProjectListView({collection: projects, el: this.$('.projects')}).render()
     }
   },
   postRender: function(){
