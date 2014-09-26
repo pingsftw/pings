@@ -19,8 +19,9 @@ class UsersController < ApplicationController
 
   def support
     if current_user
-      current_user.support Project.find(params[:project_id])
-      render json: {status: "ok"}
+      p = Project.find(params[:project_id])
+      current_user.support p
+      render json: {project: p}
     else
       render json: {user: "none"}
     end

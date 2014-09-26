@@ -28,11 +28,20 @@ var ChangeSupportView = FormView.extend({
       var option = $("<option>", {value: project.id}).text(project.get("name"))
       select.append(option)
     })
+  },
+  callback: function(data){
+    current_user.set("supporting", data.project.name)
   }
 })
 
 var SupportView = BaseView.extend({
   templateName: "support",
+  initialize: function(){
+    var self=this
+    this.model.bind("change", function(){
+      self.$('.data').text(self.model.get("supporting"))
+    })
+  },
   postRender: function(){
     var self = this
     var projects = new ProjectList()

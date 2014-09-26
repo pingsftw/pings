@@ -47,7 +47,6 @@ class StellarWallet < ActiveRecord::Base
 
   def supporting
     dest = info["InflationDest"]
-    return "WEBs Team" if dest == StellarAccount
     project = Project.try(:by_wallet, dest)
     return project.name if project
     return "unknown"
