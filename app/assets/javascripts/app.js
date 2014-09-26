@@ -249,7 +249,7 @@ var SignUpView = FormView.extend({
   templateName: "sign-up" ,
   callback: function(user){
     if (!user.errors){
-      current_user = user
+      current_user = new Backbone.Model(user)
       setHeader()
       router.home()
     }
