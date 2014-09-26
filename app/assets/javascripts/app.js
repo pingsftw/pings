@@ -74,7 +74,7 @@ var HomePage = BaseView.extend({
   },
   postRender: function(){
     var self = this
-    if (!user) {
+    if (!current_user.get("id")) {
       new SignUpView({el: this.$(".user-box")}).render()
       this.$(".welcome").show()
     } else {
@@ -224,8 +224,9 @@ var ResendButtonView = FormView.extend({
 var LogoutButtonView = FormView.extend({
   templateName: "logout-button",
   callback: function(data){
-    current_user = null
-    router.home()
+    current_user = new Backbone.Model(null)
+    setHeader()
+    router.home({trigger: true})
   }
 })
 
@@ -233,8 +234,9 @@ var LoginView = FormView.extend({
   templateName: "login" ,
   callback: function(user){
     if (!user.errors){
-      current_user = user
-      router.home()
+      current_user = new Backbone.Model(user)
+      setHeader()
+      router.home({trigger: true})
     }
   },
   error: function(){
@@ -248,6 +250,7 @@ var SignUpView = FormView.extend({
   callback: function(user){
     if (!user.errors){
       current_user = user
+      setHeader()
       router.home()
     }
   }
@@ -296,16 +299,19 @@ var HeaderView = BaseView.extend({
   }
 })
 
+function setHeader(){
+  if (current_user.get("id")) {
+    new HeaderView({model: current_user, el: $("header")}).render()
+  } else {
+    $('header').empty()
+  }
+}
+
 var router = new MainRouter()
 $(function(){
 current_user = new Backbone.Model(user)
 Stripe.setPublishableKey('pk_test_aXfBatOAJ9MiaJuDRGNkCnmn');
-
-if (user) {
-  $("body").prepend(
-    new HeaderView({model: current_user}).render().el
-  )
-}
+setHeader()
 
 Backbone.history.start({pushState: true})
 $("time").timeago()
