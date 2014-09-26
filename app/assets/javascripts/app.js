@@ -174,12 +174,21 @@ var StripeView = BaseView.extend({
     }
   },
   submit: function(){
+    var self=this
+    this.$('button').attr("disabled", true)
     Stripe.card.createToken({
       number: $('.card_num').val(),
       cvc: $('.card_cvc').val(),
       exp_month: $('.month').val(),
       exp_year: $('.year').val()
-    }, function(){console.log(arguments)});
+    }, function(code, obj){
+      if (code == 200) {
+        alert("yay")
+      } else {
+        self.$('.stripe-error').text(obj.error.message)
+        this.$('button').removeAttr("disabled")
+      }
+    });
   }
 })
 
@@ -281,7 +290,7 @@ var HeaderView = BaseView.extend({
 var router = new MainRouter()
 $(function(){
 current_user = new Backbone.Model(user)
-Stripe.setPublishableKey('YOUR_PUBLISHABLE_KEY');
+Stripe.setPublishableKey('pk_test_aXfBatOAJ9MiaJuDRGNkCnmn');
 
 if (user) {
   $("body").prepend(
