@@ -61,19 +61,18 @@ button {
 }
 h2 {
   margin-left: -30px;
-  &:before {
-    content: "\2192";
-  }
   font-size: $font-size;
   font-weight: bold;
+  text-transform: uppercase;
 }
 h3 {
   margin-left: -30px;
-  &:before {
-    content: "\2192\2192";
-  }
+  // &:before {
+    // content: "\2192\2192";
+  // }
   font-size: $font-size;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 header {
