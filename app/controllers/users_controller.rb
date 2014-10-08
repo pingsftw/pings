@@ -8,6 +8,10 @@ class UsersController < ApplicationController
     render json: user
   end
 
+  def show
+    render json: User.by_wallet(params[:id]).for_public
+  end
+
   def resend
     if current_user
       send_email(current_user)

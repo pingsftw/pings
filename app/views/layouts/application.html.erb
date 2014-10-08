@@ -27,7 +27,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="history"><a>History</a></div>
   <%% if (typeof(email) != "undefined") { %>
     <div class="user">
-      <p><label>email</label><span class="data"><%%=email%></span></p>
+      <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
       <p><label>WEBs total</label><span class="data"><%%= balances.webs %></span></p>
     </div>
     <div class="logout-button"><span>Log out</span></div>
@@ -118,6 +118,17 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   </div>
   </form>
   <a class="subtle login">I already have an account!</a>
+</script>
+
+<script type="text/template" id="profile-template">
+  <h2>PROFILE</h2>
+  <%% if (typeof(webs) !== "undefined" ) { %>
+      <p><label>Total webs</label><span class="data"><%%=webs%></span></p>
+      <p><label>Currently Supporting</label><span class="data"><%%=supporting%></span></p>
+  <%% } else {%>
+    LOADING
+  <%% } %>
+
 </script>
 
 <script type="text/template" id="login-template">

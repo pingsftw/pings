@@ -20,6 +20,23 @@ var ProjectsPage = BaseView.extend({
   }
 })
 
+var User = Backbone.Model.extend({
+  url: function(){
+    return "/users/" + this.get("stellar_id") + ".json"
+  }
+})
+
+var ProfilePage = BaseView.extend({
+  templateName: "profile",
+  initialize: function(){
+    var self=this
+    this.model.bind("change", function(){console.log("boom"); self.render()})
+    this.model.fetch()
+  },
+  postRender: function(){
+  }
+})
+
 var ChangeSupportView = FormView.extend({
   templateName: "change-support",
   postRender: function(){
@@ -263,7 +280,8 @@ var MainRouter = Backbone.Router.extend({
     "home":             "home",
     "history":          "history",
     "projects":         "projects",
-    "book":         "book",
+    "book":             "book",
+    "users/:stellar_id":          "profile",
 
   },
 
@@ -282,7 +300,12 @@ var MainRouter = Backbone.Router.extend({
   projects: function(){
     var el = $("#main")[0]
     new ProjectsPage({el: el}).render()
+  },
+  profile: function(stellar_id){
+    var el = $("#main")[0]
+    new ProfilePage({el: el, model: new User({stellar_id: stellar_id})}).render()
   }
+
 })
 
 var HeaderView = BaseView.extend({
@@ -295,7 +318,12 @@ var HeaderView = BaseView.extend({
     "click .history": function(){router.navigate("history", {trigger: true})},
     "click .book": function(){router.navigate("book", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
-    "click .home": function(){router.navigate("home", {trigger: true})}
+    "click .home": function(){router.navigate("home", {trigger: true})},
+    "click .user": function(event){
+      var pathname = event.currentTarget.pathname
+      router.navigate(pathname, {trigger: true})
+      return false
+    }
   }
 })
 

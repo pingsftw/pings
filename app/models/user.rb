@@ -6,6 +6,19 @@ class User < ActiveRecord::Base
   has_one :stellar_wallet
   has_many :payment_addresses
   has_many :payments, through: :payment_addresses
+
+  def self.by_wallet(account_id)
+    StellarWallet.find_by_account_id(account_id).user
+  end
+
+  def for_public
+    {
+      stellar_id: stellar_wallet.id,
+      supporting: stellar_wallet.supporting,
+      webs: balances[:webs]
+    }
+  end
+
   def as_json(*args)
     so_far = super(*args)
     unless errors.empty?
