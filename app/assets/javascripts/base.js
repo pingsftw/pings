@@ -19,6 +19,9 @@ var BaseView = Backbone.View.extend({
   },
   params: function(){
     if (this.model) {
+      if (!this.model.toJSON) {
+        return this.model
+      }
       return this.model.toJSON()
     }
     if (this.collection) {

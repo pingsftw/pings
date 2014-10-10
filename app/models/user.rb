@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
     so_far[:balances] = balances
     so_far[:stellar_id] = stellar_wallet.account_id
     so_far[:supporting] = stellar_wallet.supporting
+    so_far[:card] = cards.last
 
     so_far
   end

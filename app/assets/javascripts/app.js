@@ -95,19 +95,19 @@ var HomePage = BaseView.extend({
   },
   postRender: function(){
     var self = this
-    if (!current_user.get("id")) {
+    if (!this.model.get("id")) {
       new SignUpView({el: this.$(".user-box")}).render()
       this.$(".welcome").show()
     } else {
       this.$('.pricing').show()
-      new BuyView({el: this.$(".user-box")}).render()
+      new BuyView({el: this.$(".user-box"), model: this.model.get("card")}).render()
       var book = new Book()
       book.bind("reset", function(){
         new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
       })
       book.fetch({reset: true})
-      if (current_user.get("balances").webs) {
-        new SupportView({el: this.$(".support"), model: current_user}).render()
+      if (this.model.get("balances").webs) {
+        new SupportView({el: this.$(".support"), model: self.model}).render()
       }
     }
   }
@@ -227,10 +227,14 @@ var StripeView = BaseView.extend({
 var BuyView = BaseView.extend({
   templateName: "buy",
   events: {
-    "click button.stripe": "stripe"
+    "click button.stripe": "proceed"
   },
-  stripe: function(){
-    new StripeView({el: this.$('.stripe')}).render()
+  proceed: function(){
+    if (this.model.id) {
+      router.navigate("charge", {trigger: true})
+    } else {
+      new StripeView({el: this.$('.stripe')}).render()
+    }
   }
 })
 
@@ -288,7 +292,7 @@ var MainRouter = Backbone.Router.extend({
   },
   home: function() {
     var el = $("#main")[0]
-    new HomePage({el: el}).render()
+    new HomePage({el: el, model: current_user}).render()
   },
   history: function(){
     var el = $("#main")[0]
