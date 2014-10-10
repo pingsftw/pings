@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :projects
     resources :transactions, only: [:index]
     resource :book, only: [:show]
+    resources :cards, only: [:create]
     resources :users do
       collection do
         put :support

@@ -12,6 +12,10 @@ var BookPage = ListView.extend({
   itemName: "Book"
 })
 
+var ChargePage = BaseView.extend({
+  templateName: "charge"
+})
+
 var ProjectsPage = BaseView.extend({
   templateName: "projects",
   postRender: function(){
@@ -209,7 +213,9 @@ var StripeView = BaseView.extend({
       exp_year: $('.year').val()
     }, function(code, obj){
       if (code == 200) {
-        alert("yay")
+        $.post("/cards.json", {token: obj.id}, function(){
+          router.navigate("charge", {trigger: true})
+        })
       } else {
         self.$('.stripe-error').text(obj.error.message)
         this.$('button').removeAttr("disabled")
@@ -272,6 +278,7 @@ var MainRouter = Backbone.Router.extend({
     "projects":         "projects",
     "book":             "book",
     "users/:stellar_id":          "profile",
+    "charge":          "charge",
 
   },
 
@@ -294,6 +301,10 @@ var MainRouter = Backbone.Router.extend({
   profile: function(stellar_id){
     var el = $("#main")[0]
     new ProfilePage({el: el, model: new User({stellar_id: stellar_id})}).render()
+  },
+  charge: function(){
+    var el = $("#main")[0]
+    new ChargePage({el: el, model: current_user}).render()
   }
 
 })

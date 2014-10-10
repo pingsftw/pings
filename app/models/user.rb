@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_one :stellar_wallet
   has_many :payment_addresses
+  has_many :cards
   has_many :payments, through: :payment_addresses
 
   def self.by_wallet(account_id)
