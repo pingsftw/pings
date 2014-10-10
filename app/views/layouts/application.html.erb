@@ -48,9 +48,8 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="buy-template">
   <h2>Buying WEBs</h2>
-  <p><span class="action">Send BTC</span> to the address in your welcome email</p>
-  <div class="resend"></div>
-  <div class="stripe"><p>Or</p><button class="stripe">Use a credit card</button></div>
+  <div class="stripe"><button class="stripe">Use a credit card</button></div>
+  <button class="btc">Show BTC payment address</button>
 </script>
 
 <script type="text/template" id="home-template">
@@ -167,10 +166,8 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     <ul class="payment-list"></ul>
   <%% } else { %>
     <div class="reminder">
-    We haven't received your first payment, please send BTC to the address
-    in the email.
+    We haven't received your first payment.
     </div>
-    <div class="resend-button"></div>
   <%% } %>
 
 </script>
@@ -210,14 +207,6 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
     <select name="project_id">
     </select>
   <button type=submit>Change</button>
-</script>
-
-<script type="text/template" id="resend-button-template">
-  <form name="resend" action="/users/resend.json" method="POST">
-    <div class="form-group">
-    <button type=submit>Send a new address</button>
-  </div>
-  </form>
 </script>
 
 <script type="text/template" id="logout-button-template">

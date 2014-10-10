@@ -223,18 +223,8 @@ var BuyView = BaseView.extend({
   events: {
     "click button.stripe": "stripe"
   },
-  postRender: function(){
-    new ResendButtonView({el: this.$(".resend")}).render()
-  },
   stripe: function(){
     new StripeView({el: this.$('.stripe')}).render()
-  }
-})
-
-var ResendButtonView = FormView.extend({
-  templateName: "resend-button",
-  callback: function(data){
-    alert("We send you another address")
   }
 })
 

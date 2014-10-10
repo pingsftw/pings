@@ -12,15 +12,6 @@ class UsersController < ApplicationController
     render json: User.by_wallet(params[:id]).for_public
   end
 
-  def resend
-    if current_user
-      send_email(current_user)
-      render json: {email: "sent"}
-    else
-      render json: {user: "none"}
-    end
-  end
-
   def support
     if current_user
       p = Project.find(params[:project_id])
