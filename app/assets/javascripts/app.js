@@ -12,6 +12,10 @@ var BookPage = ListView.extend({
   itemName: "Book"
 })
 
+var FAQPage = BaseView.extend({
+  templateName: "faq"
+})
+
 var ChargePage = BaseView.extend({
   templateName: "charge"
 })
@@ -283,6 +287,7 @@ var MainRouter = Backbone.Router.extend({
     "book":             "book",
     "users/:stellar_id":          "profile",
     "charge":          "charge",
+    "faq":          "faq",
 
   },
 
@@ -306,6 +311,10 @@ var MainRouter = Backbone.Router.extend({
     var el = $("#main")[0]
     new ProfilePage({el: el, model: new User({stellar_id: stellar_id})}).render()
   },
+  faq: function(){
+    var el = $("#main")[0]
+    new FAQPage({el: el}).render()
+  },
   charge: function(){
     var el = $("#main")[0]
     new ChargePage({el: el, model: current_user}).render()
@@ -324,6 +333,7 @@ var HeaderView = BaseView.extend({
     "click .book": function(){router.navigate("book", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
     "click .home": function(){router.navigate("home", {trigger: true})},
+    "click .faq": function(){router.navigate("faq", {trigger: true})},
     "click .user": function(event){
       var pathname = event.currentTarget.pathname
       router.navigate(pathname, {trigger: true})
