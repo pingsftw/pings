@@ -49,6 +49,10 @@ Webs are a token of support for the open internet.
 
 <script type="text/template" id="charge-template">
   <h2>Charge</h2>
+  <form name="charge" action="/cards/charge.json" method="POST">
+    <label>US Dollars</label><input name=quantity>
+    <button class="submit">Donate!</button>
+  </form>
 </script>
 
 <script type="text/template" id="faq-template">

@@ -4,4 +4,9 @@ class CardsController < ApplicationController
     current_user.cards << card
     render json: card
   end
+
+  def charge
+    card = current_user.cards.last
+    quantity = params[:quantity]
+  end
 end

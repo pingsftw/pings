@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     resources :projects
     resources :transactions, only: [:index]
     resource :book, only: [:show]
-    resources :cards, only: [:create]
+    resources :cards, only: [:create] do
+      collection do
+        post :charge
+      end
+    end
     resources :users do
       collection do
         put :support
