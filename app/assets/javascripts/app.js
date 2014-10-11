@@ -16,7 +16,7 @@ var FAQPage = BaseView.extend({
   templateName: "faq"
 })
 
-var ChargePage = BaseView.extend({
+var ChargePage = FormView.extend({
   templateName: "charge"
 })
 
@@ -234,7 +234,7 @@ var BuyView = BaseView.extend({
     "click button.stripe": "proceed"
   },
   proceed: function(){
-    if (this.model.id) {
+    if (this.model) {
       router.navigate("charge", {trigger: true})
     } else {
       new StripeView({el: this.$('.stripe')}).render()
@@ -353,7 +353,7 @@ function setHeader(){
 var router = new MainRouter()
 $(function(){
 current_user = new Backbone.Model(user)
-Stripe.setPublishableKey('pk_test_aXfBatOAJ9MiaJuDRGNkCnmn');
+Stripe.setPublishableKey('pk_test_k1B3ERuI0ElXdq1U6KjgNBUh');
 setHeader()
 
 Backbone.history.start({pushState: true})
