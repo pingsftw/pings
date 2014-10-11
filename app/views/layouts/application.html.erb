@@ -15,7 +15,7 @@
 </div>
 
 <footer>
-Webs are a tradeable token of support for the open internet. We stamp them fresh, give them to the openest causes, and help you buy them
+Webs are a token of support for the open internet.
 </footer>
 
 </body>
@@ -29,7 +29,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <%% if (typeof(email) != "undefined") { %>
     <div class="user">
       <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
-      <p><label>WEBs total</label><span class="data"><%%= balances.webs %></span></p>
+      <p><label>Webs total</label><span class="data"><%%= balances.webs %></span></p>
     </div>
     <div class="logout-button"><span>Log out</span></div>
   <%%} %>
@@ -52,13 +52,16 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 </script>
 
 <script type="text/template" id="faq-template">
-  <h3>What are WEBs?</h3>
-  <p>WEBs are tokens of commitment to the open internet
+  <h3>What are Webs?</h3>
+  <p>Webs are tokens of commitment to the open internet. They are a social currency for the community of people that want to keep the internet awesome.</p>
   <h3>How do I get them?</h3>
-  <p>WEBs are currently provided as a thank-you to donations to open internet organizations</p>
-  <h3>What can I use them for</h3>
-  <p>WEBs are for showing off how internet you are.
-  They have no cash value and currently cannot be redeemed for anything.<p>
+  <p>You receive Webs by making donations to open internet organizations and projects, such as Fight For the Future, Freedom of the Press Foundation, and more to come. You will soon be able to get them by contributing on our site.</p>
+  <h3>What can I do with Webs?</h3>
+  <p>You can send them to friends or organizations, you can vote for what projects will receive new webs, and soon you'll be able to redeem them for open internet swag.
+  They have no cash value.</p>
+  <h3>How does voting work?</h3>
+  <p>When you receive Webs, you pick an open internet project or organization to vote for. Every time we create new Webs, these votes decide which groups or projects receive them. Voting is proportional to the number of Webs you hold.</p>
+  
 </script>
 
 
@@ -72,8 +75,8 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
   <div class="welcome" style="display:none">
     <h1>Welcome to WEBs!</h1>
     <p class="blahblah">
-      WEBs represent commitment to an open internet.
-      They are awarded to people donating to causes that support the open intenet.
+      Webs are a token of commitment to an open internet.
+      People receive them by donating to projects and groups supporting an open web.
       Sign up and donate to get some!
       <a class="action causes">What causes, you ask?</a>
     </p>
@@ -211,7 +214,7 @@ Webs are a tradeable token of support for the open internet. We stamp them fresh
 
 <script type="text/template" id="support-template">
   <h2>Supporting Projecs</h2>
-  <p>Your WEBs are supporting <span class="data"><%%= supporting %></span></p>
+  <p>Your Webs are supporting <span class="data"><%%= supporting %></span></p>
 
   <h3>Changing Support</h3>
   <p>You can <span class="action">change who you are supporting</span> in the next vote</p>
