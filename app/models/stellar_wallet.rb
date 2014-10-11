@@ -28,6 +28,7 @@ class StellarWallet < ActiveRecord::Base
     }
     result = HTTParty.post(Url, body: body.to_json)
     lines = result.parsed_response["result"]["lines"]
+    puts lines
     lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
@@ -204,6 +205,7 @@ class StellarWallet < ActiveRecord::Base
     inf_target = project_id ? account_id : WEBS_PROJECT_ACCOUNT_ID
     set_inflation inf_target
     trust_server("BTC", 100_000_000) #1 BTC
+    trust_server("USD", 100_000) #$1,000
   end
 
   def init_inflation

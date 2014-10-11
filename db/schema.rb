@@ -19,8 +19,24 @@ ActiveRecord::Schema.define(version: 20141010184010) do
   create_table "cards", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "token"
+    t.string   "card_uid"
     t.integer  "user_id"
+    t.string   "brand"
+    t.string   "last4"
+  end
+
+  create_table "charges", force: true do |t|
+    t.string   "card_uid"
+    t.integer  "card_id"
+    t.integer  "amount"
+    t.string   "customer"
+    t.string   "charge_uid"
+    t.string   "balance_transaction"
+    t.boolean  "paid"
+    t.string   "issue_hash"
+    t.string   "bid_hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "payment_addresses", force: true do |t|

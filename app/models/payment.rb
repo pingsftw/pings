@@ -7,7 +7,7 @@ class Payment < ActiveRecord::Base
     user.ensure_stellar_wallet
     res = user.stellar_wallet.issue("BTC", value)
     self.issue_hash = res["result"]["tx_json"]["hash"]
-    res =  user.bid
+    res =  user.bid(:btc)
     self.bid_hash = res["result"]["tx_json"]["hash"]
     save!
     email

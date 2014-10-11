@@ -47,7 +47,8 @@ class User < ActiveRecord::Base
     ensure_stellar_wallet
     {
       webs: stellar_wallet.balance("WEB"),
-      btc: stellar_wallet.balance("BTC")
+      btc: stellar_wallet.balance("BTC"),
+      usd: stellar_wallet.balance("USD")
     }
   end
 
@@ -56,14 +57,9 @@ class User < ActiveRecord::Base
     txs.each{|tx| tx[:project] = Project.by_wallet(tx[:account_id])}
   end
 
-  def bid
-    satoshis = balances[:btc]
-    satoshis_per_btc = 10_000_000
-    min_web_per_btc = 100
-    max_satoshis_per_web = satoshis_per_btc / min_web_per_btc
-    min_web = satoshis / max_satoshis_per_web
+  def bid(currency)
     stellar_wallet.offer(
-      give: {currency: "BTC", qty: satoshis},
+      give: {currency: "BTC", qty: balances[currency]},
       receive: {currency: "WEB", qty: 1},
       sellMode: true
     )

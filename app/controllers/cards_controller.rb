@@ -6,7 +6,11 @@ class CardsController < ApplicationController
       :card => params[:token],
       :description => "payinguser@example.com"
     )
-    card = Card.create(token: customer.id)
+    card = Card.create(
+      card_uid: customer.id,
+      brand: customer.cards.first.brand,
+      last4: customer.cards.first.last4
+    )
     current_user.cards << card
     render json: card
   end
@@ -14,10 +18,21 @@ class CardsController < ApplicationController
   def charge
     card = current_user.cards.last
     quantity = params[:quantity]
-    Stripe::Charge.create(
+    charge = Stripe::Charge.create(
       :amount   => (quantity.to_f * 100).to_i, # $15.00 this time
       :currency => "usd",
-      :customer => card.token
+      :customer => card.card_uid
     )
+    payment = Charge.create(
+      card_uid: charge.card.id,
+      card_id: card.id,
+      amount: charge.amount,
+      customer: charge.customer,
+      charge_uid: charge.id,
+      balance_transaction: charge.balance_transaction,
+      paid: charge.paid
+    )
+    payment.process!
+    render json: charge
   end
 end
