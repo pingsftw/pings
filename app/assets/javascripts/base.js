@@ -27,6 +27,9 @@ var BaseView = Backbone.View.extend({
     if (this.collection) {
       return this.collection
     }
+    if (this.attributes) {
+      return this.attributes
+    }
   },
   extendedRender: function(){},
   postRender: function(){},

@@ -14,14 +14,15 @@ var BooksPage = BaseView.extend({
     btcBook.currency = "BTC"
     var usdBook = new Book()
     usdBook.currency = "USD"
-    new BookView({el: this.$(".btc-book"), collection: btcBook}).render()
+    new BookView({el: this.$(".btc-book"), collection: btcBook, attributes: {currency: "BTC"}}).render()
+    new BookView({el: this.$(".usd-book"), collection: usdBook, attributes: {currency: "USD"}}).render()
     btcBook.fetch()
   }
 })
 
 var BookView = ListView.extend({
   templateName: "book",
-  itemName: "Book"
+  itemName: "Book",
 })
 
 var FAQPage = BaseView.extend({
