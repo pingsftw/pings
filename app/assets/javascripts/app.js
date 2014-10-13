@@ -4,10 +4,22 @@ var BookItemView = BaseView.extend({
 })
 
 var Book = Backbone.Collection.extend({
-  url: "/book.json"
+  url: function() {return "/book.json?currency=" + this.currency}
 })
 
-var BookPage = ListView.extend({
+var BooksPage = BaseView.extend({
+  templateName: "books",
+  postRender: function(){
+    var btcBook = new Book()
+    btcBook.currency = "BTC"
+    var usdBook = new Book()
+    usdBook.currency = "USD"
+    new BookView({el: this.$(".btc-book"), collection: btcBook}).render()
+    btcBook.fetch()
+  }
+})
+
+var BookView = ListView.extend({
   templateName: "book",
   itemName: "Book"
 })
@@ -293,7 +305,7 @@ var MainRouter = Backbone.Router.extend({
 
   book: function() {
     var el = $("#main")[0]
-    new BookPage({el: el, collection: new Book()}).render()
+    new BooksPage({el: el}).render()
   },
   home: function() {
     var el = $("#main")[0]

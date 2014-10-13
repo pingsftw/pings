@@ -38,14 +38,14 @@ class StellarWallet < ActiveRecord::Base
     self.public_key_hex = result["public_key_hex"]
   end
 
-  def balance(currency)
-    lines = StellarWallet.request("account_lines", {account: account_id})["lines"]
-    lines.detect {|l| l["currency"] == currency}["balance"].to_i
-  end
-
   def self.mainline
     lines = StellarWallet.request("account_lines", {account: StellarAccount})["lines"]
     lines.select{|l| l["currency"] == "WEB" && l["balance"].to_i < 0 }
+  end
+
+  def balance(currency)
+    lines = StellarWallet.request("account_lines", {account: account_id})["lines"]
+    lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
   def transactions
@@ -68,7 +68,7 @@ class StellarWallet < ActiveRecord::Base
             currency: "WEB"
           }
         }
-    offers = StellarWallet.request("book_offers", params)["offers"]
+    offers = request("book_offers", params)["offers"]
     cleaned = offers.map{|n| {
       account: n["Account"],
       web: n["TakerGets"]["value"],
@@ -79,21 +79,21 @@ class StellarWallet < ActiveRecord::Base
 
 
   def offer(opts)
-      params = {
-          tx_json: {
-            TransactionType: "OfferCreate",
-            TakerGets: {
-              currency: opts[:give][:currency],
-              value: opts[:give][:qty],
-              issuer: StellarAccount
-            },
-            TakerPays: {
-              currency: opts[:receive][:currency],
-              value: opts[:receive][:qty],
-              issuer: StellarAccount
-            }
-          }
+    params = {
+      tx_json: {
+        TransactionType: "OfferCreate",
+        TakerGets: {
+          currency: opts[:give][:currency],
+          value: opts[:give][:qty],
+          issuer: StellarAccount
+        },
+        TakerPays: {
+          currency: opts[:receive][:currency],
+          value: opts[:receive][:qty],
+          issuer: StellarAccount
         }
+      }
+    }
     if opts[:sellMode]
       params[:tx_json][:Flags] = 0x00080000
     end
