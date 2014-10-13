@@ -7,9 +7,30 @@ class StellarWallet < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
+  def self.request(method, params)
+    body = {
+      method: method
+    }
+    if params
+      body[:params] = [params]
+    end
+    HTTParty.post(Url, body: body.to_json).parsed_response["result"]
+  end
+
+  def submit(params)
+    params[:secret] = master_seed
+    params[:tx_json][:Account] = account_id
+    StellarWallet.request("submit", params)
+  end
+
+  def self.submit(params)
+    params[:secret] = StellarSecret
+    params[:tx_json][:Account] = StellarAccount
+    request("submit", params)
+  end
 
   def get_keys
-    result = HTTParty.post(Url, body: '{"method": "create_keys"}')["result"]
+    result = StellarWallet.request("create_keys")
     self.account_id = result["account_id"]
     self.master_seed = result["master_seed"]
     self.master_seed_hex = result["master_seed_hex"]
@@ -18,90 +39,25 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def balance(currency)
-    body = {
-      method: "account_lines",
-      params: [
-      {
-        account: account_id
-      }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    lines = result.parsed_response["result"]["lines"]
-    puts lines
+    lines = StellarWallet.request("account_lines", {account: account_id})["lines"]
     lines.detect {|l| l["currency"] == currency}["balance"].to_i
   end
 
   def self.mainline
-    body = {
-      method: "account_lines",
-      params: [
-        {
-          account: StellarAccount
-        }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    lines = result.parsed_response["result"]["lines"]
+    lines = StellarWallet.request("account_lines", {account: StellarAccount})["lines"]
     lines.select{|l| l["currency"] == "WEB" && l["balance"].to_i < 0 }
   end
 
-  def supporting
-    dest = info["InflationDest"]
-    project = Project.try(:by_wallet, dest)
-    return project.name if project
-    return "unknown"
-  end
-
   def transactions
-    body = {
-      method: "account_tx",
-      params: [
-      {
-        account: account_id
-      }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    transactions = result.parsed_response["result"]["transactions"]
-  end
-  def buy_webs_transactions
-    creates = transactions.select{|t| t["tx"]["TransactionType"] == "OfferCreate"}
-    affecteds = creates.map{|t| t["meta"]["AffectedNodes"]}
-    mod_or_delete = affecteds.map{|t| t.map{|n| n["DeletedNode"] || n["ModifiedNode"]}.compact}
-    offers = mod_or_delete.map{|t| t.select{|n| n["LedgerEntryType"] == "Offer"}}.flatten
-    previous = offers.select{|t| t["PreviousFields"] && t["PreviousFields"]["TakerGets"]["currency"] == "WEB"}
-    puts previous
-    events = previous.map{|t| {
-      payment_qty: t["PreviousFields"]["TakerPays"]["value"].to_i - t["FinalFields"]["TakerPays"]["value"].to_i,
-      payment_currency: t["PreviousFields"]["TakerPays"]["currency"],
-      webs_qty: t["PreviousFields"]["TakerGets"]["value"].to_i - t["FinalFields"]["TakerGets"]["value"].to_i,
-      account_id: t["FinalFields"]["Account"]
-    }}
-  end
-
-  def webs_node?(node)
-    node["ModifiedNode"] && node["ModifiedNode"]["FinalFields"]["Balance"].is_a?(Hash) && node["ModifiedNode"]["FinalFields"]["Balance"]["currency"] == "WEB"
+    StellarWallet.request("account_tx", {account: account_id})["transactions"]
   end
 
   def offers
-    body = {
-      method: "account_offers",
-      params: [
-        {
-          account: account_id
-        }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    result.parsed_response["result"]["offers"]
+    StellarWallet.request("account_offers", {account: account_id})["offers"]
   end
 
   def self.book(currency)
-    body = {
-      method: "book_offers",
-      params: [
-        {
+    params = {
           taker_pays: {
             currency: currency,
             issuer: StellarAccount
@@ -112,11 +68,8 @@ class StellarWallet < ActiveRecord::Base
             currency: "WEB"
           }
         }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    parsed = result.parsed_response["result"]["offers"]
-    cleaned = parsed.map{|n| {
+    offers = StellarWallet.request("book_offers", params)["offers"]
+    cleaned = offers.map{|n| {
       account: n["Account"],
       web: n["TakerGets"]["value"],
       pay: n["TakerPays"]["value"],
@@ -124,15 +77,11 @@ class StellarWallet < ActiveRecord::Base
     }}
   end
 
+
   def offer(opts)
-    body = {
-      method: "submit",
-      params: [
-        {
-          secret: master_seed,
+      params = {
           tx_json: {
             TransactionType: "OfferCreate",
-            Account: account_id,
             TakerGets: {
               currency: opts[:give][:currency],
               value: opts[:give][:qty],
@@ -145,12 +94,10 @@ class StellarWallet < ActiveRecord::Base
             }
           }
         }
-      ]
-    }
     if opts[:sellMode]
-      body[:params][0][:tx_json][:Flags] = 0x00080000
+      params[:tx_json][:Flags] = 0x00080000
     end
-    result = HTTParty.post(Url, body: body.to_json).parsed_response
+    submit(params)
   end
 
   def issue(currency, amount)
@@ -158,14 +105,9 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def self.issue(currency, amount, account_id)
-    body = {
-      method: "submit",
-      params: [
-      {
-      secret: StellarSecret,
+    params = {
       tx_json: {
         TransactionType: "Payment",
-        Account: StellarAccount,
         Destination: account_id,
         Amount: {
           currency: currency,
@@ -174,28 +116,18 @@ class StellarWallet < ActiveRecord::Base
         }
       }
     }
-  ]
-    }
-    result = HTTParty.post(Url, body: body.to_json).parsed_response
+    self.submit(params)
   end
 
   def prefund
-    body = {
-      method: "submit",
-      params: [
-      {
-      secret: StellarSecret,
+    params = {
       tx_json: {
         TransactionType: "Payment",
-        Account: StellarAccount,
         Destination: account_id,
         Amount: 20_000_000
       }
     }
-  ]
-    }
-    puts body.to_json
-    result = HTTParty.post(Url, body: body.to_json)
+    self.submit(params)
   end
 
   def setup
@@ -252,54 +184,56 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def self.info(account_id)
-    body = {
-      method: "account_info",
-      params: [
-        {
-          account: account_id
-        }
-      ]
-    }
-    result = HTTParty.post(Url, body: body.to_json)
-    result.parsed_response["result"]["account_data"]
+    request("account_info", {account: account_id})
   end
 
   def set_inflation(addr)
-    body = {
-      method: "submit",
-      params: [{
-        secret: master_seed,
-        tx_json: {
-          TransactionType: "AccountSet",
-          Account: account_id,
-          InflationDest: addr
-        }
-      }]
+    params = {
+      tx_json: {
+        TransactionType: "AccountSet",
+        InflationDest: addr
+      }
     }
-    result = HTTParty.post(Url, body: body.to_json)
-    result.parsed_response
-
+    submit(params)
   end
 
   def trust_server(currency, amount)
-    address = StellarAccount
-    body = {
-      method: "submit",
-      params: [{
-        secret: master_seed,
-        tx_json: {
-          TransactionType: "TrustSet",
-          Account: account_id,
-          LimitAmount: {
-            currency: currency,
-            issuer: address,
-            value: amount
-          }
+    params = {
+      tx_json: {
+        TransactionType: "TrustSet",
+        LimitAmount: {
+          currency: currency,
+          issuer: StellarAccount,
+          value: amount
         }
-      }]
+      }
     }
-    result = HTTParty.post(Url, body: body.to_json)
-    puts result.body
+    submit(params)
   end
 
+  def supporting
+    dest = info["InflationDest"]
+    project = Project.try(:by_wallet, dest)
+    return project.name if project
+    return "unknown"
+  end
+
+  def buy_webs_transactions
+    creates = transactions.select{|t| t["tx"]["TransactionType"] == "OfferCreate"}
+    affecteds = creates.map{|t| t["meta"]["AffectedNodes"]}
+    mod_or_delete = affecteds.map{|t| t.map{|n| n["DeletedNode"] || n["ModifiedNode"]}.compact}
+    offers = mod_or_delete.map{|t| t.select{|n| n["LedgerEntryType"] == "Offer"}}.flatten
+    previous = offers.select{|t| t["PreviousFields"] && t["PreviousFields"]["TakerGets"]["currency"] == "WEB"}
+    puts previous
+    events = previous.map{|t| {
+      payment_qty: t["PreviousFields"]["TakerPays"]["value"].to_i - t["FinalFields"]["TakerPays"]["value"].to_i,
+      payment_currency: t["PreviousFields"]["TakerPays"]["currency"],
+      webs_qty: t["PreviousFields"]["TakerGets"]["value"].to_i - t["FinalFields"]["TakerGets"]["value"].to_i,
+      account_id: t["FinalFields"]["Account"]
+    }}
+  end
+
+  def webs_node?(node)
+    node["ModifiedNode"] && node["ModifiedNode"]["FinalFields"]["Balance"].is_a?(Hash) && node["ModifiedNode"]["FinalFields"]["Balance"]["currency"] == "WEB"
+  end
 end
