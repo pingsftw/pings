@@ -60,7 +60,15 @@ var ProfilePage = BaseView.extend({
 })
 
 var EmailSendView = FormView.extend({
-  templateName: "email-send"
+  templateName: "email-send",
+  callback: function(gift){
+    if (gift.receiver_id) {
+      console.log("was a receiver")
+    } else {
+      console.log("hi")
+      this.$(".message").text("Set aside " + gift.value + " Webs for " + gift.receiver_email)
+    }
+  }
 })
 
 var ChangeSupportView = FormView.extend({

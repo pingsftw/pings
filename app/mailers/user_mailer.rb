@@ -15,4 +15,10 @@ class UserMailer < ActionMailer::Base
     @value = payment.value / 100.0
     mail(to: user.email, subject: 'Dollars are the best')
   end
+
+  def gift_invitation_email(gift)
+    @value = gift.value
+    @sender = gift.giver.email
+    mail(to: gift.receiver_email, subject: "You've got Webs!")
+  end
 end
