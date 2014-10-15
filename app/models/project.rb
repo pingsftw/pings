@@ -1,10 +1,17 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
+  attr_accessor :webs_balance
 
   def self.by_wallet(account_id)
     StellarWallet.find_by_account_id(account_id).try(:project)
   end
+
+  def self.with_webs_balances
+    all.each{|p| p.webs_balance = p.balance("WEB")}
+  end
+
+  
 
   def ensure_stellar_wallet
     return stellar_wallet if stellar_wallet
@@ -44,7 +51,6 @@ class Project < ActiveRecord::Base
 
   def as_json(*args)
     h = super(*args)
-    h[:webs] = balance("WEB")
     h[:offers] = offers
     h[:best_offer] = best_offer
     h

@@ -8,6 +8,11 @@ class User < ActiveRecord::Base
   has_many :cards
   has_many :payments, through: :payment_addresses
 
+  def give(receiver_email, value)
+    gift = Gift.create(giver: self, receiver_email: receiver_email, value: value)
+    gift.process
+  end
+
   def self.by_wallet(account_id)
     StellarWallet.find_by_account_id(account_id).user
   end

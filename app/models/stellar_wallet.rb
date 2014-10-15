@@ -119,6 +119,21 @@ class StellarWallet < ActiveRecord::Base
     self.submit(params)
   end
 
+  def pay(address, value)
+    params = {
+    tx_json: {
+        TransactionType: "Payment",
+        Destination: address,
+        Amount: {
+          currency: "WEB",
+          issuer: StellarAccount,
+          value: value
+        }
+      }
+    }
+    submit(params)
+  end
+
   def prefund
     params = {
       tx_json: {

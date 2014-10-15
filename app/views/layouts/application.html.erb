@@ -154,7 +154,28 @@ Webs are a token of support for the open internet.
   <%% } else {%>
     LOADING
   <%% } %>
+  <div class="email-send"></div>
+</script>
 
+<script type="text/template" id="email-send-template">
+  <form action="/gifts.json" method="POST">
+    <div class="form-group">
+      <label>Email</label>
+      <input name=email>
+      <div class="error">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label>
+      <input name=value>
+      <div class="error">
+      </div>
+    </div>
+    <div class="form-group">
+      <button type=submit>Give Webs</button>
+    </div>
+  </div>
+  </form>
 </script>
 
 <script type="text/template" id="login-template">

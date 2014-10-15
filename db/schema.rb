@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141010184010) do
+ActiveRecord::Schema.define(version: 20141015051245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20141010184010) do
     t.boolean  "paid"
     t.string   "issue_hash"
     t.string   "bid_hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "gifts", force: true do |t|
+    t.integer  "giver_id"
+    t.integer  "receiver_id"
+    t.string   "transaction_hash"
+    t.string   "receiver_email"
+    t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

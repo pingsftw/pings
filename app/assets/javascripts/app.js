@@ -55,7 +55,12 @@ var ProfilePage = BaseView.extend({
     this.model.fetch()
   },
   postRender: function(){
+    new EmailSendView({el: this.$(".email-send")}).render()
   }
+})
+
+var EmailSendView = FormView.extend({
+  templateName: "email-send"
 })
 
 var ChangeSupportView = FormView.extend({
