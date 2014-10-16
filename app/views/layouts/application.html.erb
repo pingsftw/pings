@@ -27,10 +27,12 @@ Webs are a token of support for the open internet.
   <div class="history"><a>History</a></div>
   <div class="faq"><a>FAQ</a></div>
   <%% if (typeof(email) != "undefined") { %>
-    <div class="user">
-      <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
-      <p><label>Webs total</label><span class="data"><%%= balances.webs %></span></p>
-    </div>
+    <%% if (typeof(stellar_id) != "undefined") { %>
+      <div class="user">
+        <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
+        <p><label>Webs total</label><span class="data"><%%= balances.webs %></span></p>
+      </div>
+    <%%} %>
     <div class="logout-button"><span>Log out</span></div>
   <%%} %>
 </script>
