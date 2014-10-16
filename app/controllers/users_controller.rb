@@ -1,11 +1,7 @@
 class UsersController < ApplicationController
   def create
     user = User.create(email: params[:email], password: params[:password])
-    if user.persisted?
-      send_email(user)
-      sign_in(user)
-    end
-    render json: user
+    render json: {errors: user.errors}
   end
 
   def show
@@ -22,7 +18,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def send_email(user)
+  def send_btc_email(user)
       funding_secret = SecureRandom.hex
       funding_address = get_btc_address(funding_secret)
       pa = PaymentAddress.create!(user: user, secret: funding_secret, address: funding_address)

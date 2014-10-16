@@ -59,13 +59,16 @@ var ProfilePage = BaseView.extend({
   }
 })
 
+var ConfirmView = BaseView.extend({
+  templateName: "confirm"
+})
+
 var EmailSendView = FormView.extend({
   templateName: "email-send",
   callback: function(gift){
     if (gift.receiver_id) {
       console.log("was a receiver")
     } else {
-      console.log("hi")
       this.$(".message").text("Set aside " + gift.value + " Webs for " + gift.receiver_email)
     }
   }
@@ -295,10 +298,9 @@ var LoginView = FormView.extend({
 var SignUpView = FormView.extend({
   templateName: "sign-up" ,
   callback: function(user){
-    if (!user.errors){
-      current_user = new Backbone.Model(user)
-      setHeader()
-      router.home()
+    if (_(user.errors).isEmpty()){
+      var message = new ConfirmView().render()
+      $("#main").empty().append(message.el)
     }
   }
 

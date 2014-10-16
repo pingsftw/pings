@@ -52,6 +52,7 @@ var FormView = BaseView.extend({
         var $e = $(el)
         vals[$e.attr("name")] = $e.val()
       })
+      this.$(".error").empty()
       $.ajax(self.$("form").attr("action"), {
         type: self.$("form").attr("method"),
         data: vals,
@@ -69,6 +70,11 @@ var FormView = BaseView.extend({
             $('meta[name="csrf-token"]').attr('content', data.csrfToken);
           }
           self.callback(data)
+        },
+        error: function(e){
+          self.$("[type=submit]").removeAttr("disabled")
+          console.log(e)
+          self.$(".error").text(e)
         },
         dataType: "json"
       })
