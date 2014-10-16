@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
     resource :sessions
   end
+  devise_for :users, :controllers => { :confirmations => "confirmations" }
   get "*path", to: 'home#index'
-  devise_for :users
 
 end
