@@ -7,6 +7,8 @@ class StellarWallet < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
+  class StellarBoom < StandardError; end;
+
   def setup
     get_keys
     prefund
@@ -28,7 +30,17 @@ class StellarWallet < ActiveRecord::Base
     if params
       body[:params] = [params]
     end
-    HTTParty.post(Url, body: body.to_json).parsed_response["result"]
+    res = HTTParty.post(Url, body: body.to_json).parsed_response["result"]
+    if res["engine_result"] != "tesSUCCESS" && res["status"] != "success"
+      puts "*******************"
+      puts res
+      throw StellarBoom.new(res)
+    end
+    res
+  end
+
+  def request(method, params = {})
+    StellarWallet.request(method, params.merge({account: account_id}))
   end
 
   def submit(params)
@@ -153,7 +165,7 @@ class StellarWallet < ActiveRecord::Base
       tx_json: {
         TransactionType: "Payment",
         Destination: account_id,
-        Amount: 20_000_000
+        Amount: 40_000_000
       }
     }
     StellarWallet.submit(params)

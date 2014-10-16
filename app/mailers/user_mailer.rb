@@ -12,7 +12,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def usd_email(user, payment)
-    @value = payment.value / 100.0
+    @amount = payment.amount / 100.0
     mail(to: user.email, subject: 'Dollars are the best')
   end
 

@@ -7,9 +7,9 @@ class Charge < ActiveRecord::Base
     user.ensure_stellar_wallet
     res = user.stellar_wallet.issue("USD", amount)
     puts res
-    self.issue_hash = res["result"]["tx_json"]["hash"]
+    self.issue_hash = res["tx_json"]["hash"]
     res =  user.bid(:usd)
-    self.bid_hash = res["result"]["tx_json"]["hash"]
+    self.bid_hash = res["tx_json"]["hash"]
     save!
     email
   end
