@@ -7,7 +7,21 @@ class StellarWallet < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  def self.request(method, params)
+  def setup
+    get_keys
+    prefund
+    set_lines
+  end
+
+  def set_lines
+    trust_server("WEB", 1000000)
+    inf_target = project_id ? account_id : WEBS_PROJECT_ACCOUNT_ID
+    set_inflation inf_target
+    trust_server("BTC", 100_000_000) #1 BTC
+    trust_server("USD", 100_000) #$1,000
+  end
+
+  def self.request(method, params = nil)
     body = {
       method: method
     }
@@ -142,18 +156,9 @@ class StellarWallet < ActiveRecord::Base
         Amount: 20_000_000
       }
     }
-    self.submit(params)
+    StellarWallet.submit(params)
   end
 
-  def setup
-    get_keys
-    prefund
-    trust_server("WEB", 1000000)
-    inf_target = project_id ? account_id : WEBS_PROJECT_ACCOUNT_ID
-    set_inflation inf_target
-    trust_server("BTC", 100_000_000) #1 BTC
-    trust_server("USD", 100_000) #$1,000
-  end
 
   def init_inflation
     if user_id

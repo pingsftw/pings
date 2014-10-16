@@ -6,6 +6,7 @@ class Charge < ActiveRecord::Base
   def process!
     user.ensure_stellar_wallet
     res = user.stellar_wallet.issue("USD", amount)
+    puts res
     self.issue_hash = res["result"]["tx_json"]["hash"]
     res =  user.bid(:usd)
     self.bid_hash = res["result"]["tx_json"]["hash"]

@@ -5,4 +5,4 @@ class BooksController < ApplicationController
     with_projects = book.map{|h| h[:project] = Project.by_wallet(h[:account]); h}
     render json: with_projects
   end
-endBTo
+end

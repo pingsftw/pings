@@ -139,7 +139,7 @@ var HomePage = BaseView.extend({
         new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
       })
       book.fetch({reset: true})
-      if (this.model.get("balances").webs) {
+      if (this.model.get("balances") && this.model.get("balances").webs) {
         new SupportView({el: this.$(".support"), model: self.model}).render()
       }
     }
