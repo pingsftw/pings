@@ -4,6 +4,17 @@ class Project < ActiveRecord::Base
   attr_accessor :webs_balance
   has_many :acceptances
 
+  def self.fill_level(currency, step_size)
+    projects = Project.where(autobid: true)
+    nxt = PriceLevel.nxt(currency)
+    remaining = nxt[:remaining]
+    while remaining >= projects.size
+      qty = remaining > step_size * projects.size ? step_size : remaining / projects.size
+      projects.each{|p| p.make_offer(currency, qty); remaining -= qty}
+    end
+    projects.first.make_offer(currency, remaining)
+  end
+
   def accept(currency, limit)
     acceptance = acceptances.find_by(currency: currency) || Acceptance.new(project: self, currency: currency)
     acceptance.limit = limit
@@ -31,11 +42,23 @@ class Project < ActiveRecord::Base
     stellar_wallet.balance(currency)
   end
 
-  def sell(price, qty)
+  def make_offer(currency, qty)
+    nxt = PriceLevel.nxt(currency)
+    return unless nxt
+    if nxt[:remaining] > qty
+      sell currency, nxt[:price], qty
+    else
+      sell currency, nxt[:price], nxt[:remaining]
+      make_offer(currency, qty - nxt[:remaining])
+    end
+  end
+
+  def sell(currency, price, qty)
     stellar_wallet.offer(
       give: {currency: "WEB", qty: qty},
-      receive: {currency: "BTC", qty: (price * qty * 10_000_000).to_i}
+      receive: {currency: currency, qty: price * qty}
     )
+    PriceLevel.register_offer(currency, price, qty)
   end
 
   def offers

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017171422) do
+ActiveRecord::Schema.define(version: 20141017184056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,10 +74,19 @@ ActiveRecord::Schema.define(version: 20141017171422) do
     t.string   "bid_hash"
   end
 
+  create_table "price_levels", force: true do |t|
+    t.string  "currency"
+    t.integer "price"
+    t.integer "target"
+    t.integer "filled",   default: 0
+    t.boolean "complete", default: false
+  end
+
   create_table "projects", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "autobid",    default: true
   end
 
   create_table "stellar_wallets", force: true do |t|
