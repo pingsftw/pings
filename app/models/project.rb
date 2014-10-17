@@ -2,6 +2,13 @@ class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
   attr_accessor :webs_balance
+  has_many :acceptances
+
+  def accept(currency, limit)
+    acceptance = acceptances.find_by(currency: currency) || Acceptance.new(project: self, currency: currency)
+    acceptance.limit = limit
+    acceptance.save!
+  end
 
   def self.by_wallet(account_id)
     StellarWallet.find_by_account_id(account_id).try(:project)
@@ -10,8 +17,6 @@ class Project < ActiveRecord::Base
   def self.with_webs_balances
     all.each{|p| p.webs_balance = p.balance("WEB")}
   end
-
-  
 
   def ensure_stellar_wallet
     return stellar_wallet if stellar_wallet
