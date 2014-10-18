@@ -1,11 +1,19 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
-  attr_accessor :webs_balance
+  attr_accessor :webs_balance, :currency_balance
   has_many :acceptances
 
+  def self.bidders(currency)
+    projects = Project.where(autobid: true).includes(:acceptances)
+    projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
+    projects.each{|p| p.webs_balance = p.balance("WEB")}
+    projects.each{|p| p.currency_balance = p.balance(currency)}
+    projects
+  end
+
   def self.fill_level(currency, step_size)
-    projects = Project.where(autobid: true)
+    projects = bidders
     nxt = PriceLevel.nxt(currency)
     remaining = nxt[:remaining]
     while remaining >= projects.size
@@ -71,6 +79,10 @@ class Project < ActiveRecord::Base
         price: btc.to_f / 100_000_000/ webs
       }
     end
+  end
+
+  def webs_on_offer
+    offers.map{|o| o[:webs]}.sum
   end
 
   def best_offer

@@ -76,8 +76,13 @@ class StellarWallet < ActiveRecord::Base
     StellarWallet.request("account_tx", {account: account_id})["transactions"]
   end
 
-  def offers
-    StellarWallet.request("account_offers", {account: account_id})["offers"]
+  def offers(currency)
+    res = StellarWallet.request("account_offers", {account: account_id})["offers"]
+    res.select{|o| o["taker_pays"]["currency"] == currency}
+  end
+
+  def on_offer(currency)
+    offers(currency).map{|o| o["taker_gets"]["value"].to_i}.sum
   end
 
   def self.book(currency)
