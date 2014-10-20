@@ -9,6 +9,14 @@ class Project < ActiveRecord::Base
     PriceLevel.update_all filled: 0, complete: false
   end
 
+  def self.fill_all(currency, step_size = 10000)
+    while pl = PriceLevel.nxt(currency) do
+      projects = bidders(currency)
+      break if projects.empty?
+      fill_level(currency, step_size, projects)
+    end
+  end
+
   def self.bidders(currency)
     projects = Project.where(autobid: true).includes(:acceptances)
     projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
@@ -18,8 +26,8 @@ class Project < ActiveRecord::Base
     projects.select{|p| p.unoffered_webs > 0}
   end
 
-  def self.fill_level(currency, step_size)
-    projects = bidders(currency)
+  def self.fill_level(currency, step_size, projects)
+    projects ||= bidders(currency)
     return if projects.empty?
     nxt = PriceLevel.nxt(currency)
     remaining = nxt[:remaining]
