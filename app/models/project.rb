@@ -26,13 +26,12 @@ class Project < ActiveRecord::Base
     projects.select{|p| p.unoffered_webs > 0}
   end
 
-  def self.fill_level(currency, step_size, projects)
+  def self.fill_level(currency, step_size, projects = nil)
     projects ||= bidders(currency)
     return if projects.empty?
     nxt = PriceLevel.nxt(currency)
     remaining = nxt[:remaining]
     while remaining > 0
-      puts remaining
       max_qty = remaining > step_size * projects.size ? step_size : remaining / projects.size
       max_qty = 1 if max_qty == 0
       done = true
@@ -84,7 +83,7 @@ class Project < ActiveRecord::Base
   def make_offer(currency, qty)
     nxt = PriceLevel.nxt(currency)
     return unless nxt
-    if nxt[:remaining] > qty
+    if nxt[:remaining] >= qty
       sell currency, nxt[:price], qty
     else
       sell currency, nxt[:price], nxt[:remaining]
@@ -93,10 +92,12 @@ class Project < ActiveRecord::Base
   end
 
   def sell(currency, price, qty)
-    stellar_wallet.offer(
+    puts "SELLL*************************"
+    puts stellar_wallet.offer(
       give: {currency: "WEB", qty: qty},
       receive: {currency: currency, qty: price * qty}
     )
+    puts "*************************"
     PriceLevel.register_offer(currency, price, qty)
   end
 

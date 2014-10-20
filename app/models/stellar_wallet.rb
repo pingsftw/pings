@@ -31,7 +31,7 @@ class StellarWallet < ActiveRecord::Base
       body[:params] = [params]
     end
     res = HTTParty.post(Url, body: body.to_json).parsed_response["result"]
-    if res["engine_result"] != "tesSUCCESS" && res["status"] != "success"
+    if res["engine_result"] && res["engine_result"] != "tesSUCCESS"
       throw StellarBoom.new(res)
     end
     res
