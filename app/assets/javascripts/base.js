@@ -1,7 +1,7 @@
 var BaseView = Backbone.View.extend({
   render: function(){
     if (!this.templateName) {
-      console.log("This view needs a templateName")
+      console.error("This view needs a templateName")
       console.trace()
       return
     }
@@ -11,7 +11,13 @@ var BaseView = Backbone.View.extend({
       return
     }
     var compiled = _.template(template.html())
-    this.$el.html(compiled(this.params()))
+    try {
+      this.$el.html(compiled(this.params()))
+    } catch(err) {
+      console.error("Error rendering template " + this.templateName)
+      console.log("Passed attrs: ", this.params())
+      console.log(err)
+    }
     this.extendedRender()
     this.postRender()
     console.log("rendered " + this.templateName, this.el, this.params())
@@ -100,9 +106,12 @@ var ListView = BaseView.extend({
   populate: function(){
     var self = this
     var view = eval(this.itemName + "ItemView")
+    var table = this.$("table").length
+    var tagName = table ? "tr" : "li"
+    var target = table ? this.$("table") : this.$("ul")
     this.collection.each(function(dataItem){
-      var item = new view({model: dataItem}).render()
-        self.$("ul").append(item.el)
+      var item = new view({model: dataItem, tagName: tagName}).render()
+        target.append(item.el)
     })
     this.loading.remove()
   },

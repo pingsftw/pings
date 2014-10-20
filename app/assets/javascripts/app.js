@@ -1,6 +1,5 @@
 var BookItemView = BaseView.extend({
   templateName: "book-item",
-  tagName: "li"
 })
 
 var Book = Backbone.Collection.extend({
@@ -157,7 +156,6 @@ TransactionListView = ListView.extend({
 
 TransactionItemView = BaseView.extend({
   templateName: "transaction-item",
-  tagName: "li"
 })
 
 var HistoryPage = BaseView.extend({
@@ -175,7 +173,6 @@ var ProjectList = Backbone.Collection.extend({
 
 var ProjectItemView = BaseView.extend({
   templateName: "project-item",
-  tagName: "li"
 })
 
 var ProjectListView = ListView.extend({

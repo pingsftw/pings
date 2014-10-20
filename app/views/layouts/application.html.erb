@@ -235,16 +235,21 @@ Webs are a token of support for the open internet.
 </script>
 
 <script type="text/template" id="project-item-template">
-  <div class="name"><%%=name%></div>
-  <div class="webs"><%%=webs%> webs</div>
+  <td class="name"><%%=name%></td>
+  <td class="webs"><%%=webs_balance%></td>
   <%% if (best_offer) %>
-    <div class="price"><%%=best_offer.price%> best price (BTC/WEB)</div>
+    <td class="price"><%%=best_offer.price%></td>
   <%% ; %>
 </script>
 
 <script type="text/template" id="project-list-template">
   <h2>Projects</h2>
-  <ul class="project-list"></ul>
+  <table>
+    <thead>
+      <td>Name</td><td>Webs Balance</td><td>Best Price (BTC/WEB)</td>
+    </thead>
+    <tbody class="project-list"></tbody>
+  </table>
 </script>
 
 <script type="text/template" id="support-template">

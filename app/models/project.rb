@@ -94,6 +94,7 @@ class Project < ActiveRecord::Base
 
   def as_json(*args)
     h = super(*args)
+    h[:webs_balance] = webs_balance
     h[:offers] = offers("BTC")
     h[:best_offer] = best_offer("BTC")
     h
