@@ -4,6 +4,11 @@ class Project < ActiveRecord::Base
   attr_accessor :webs_balance, :unoffered_webs
   has_many :acceptances
 
+  def self.reset_btc
+    all.each {|p| p.cancel_all("BTC")}
+    PriceLevel.update_all filled: 0, complete: false
+  end
+
   def self.bidders(currency)
     projects = Project.where(autobid: true).includes(:acceptances)
     projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
@@ -14,19 +19,25 @@ class Project < ActiveRecord::Base
   end
 
   def self.fill_level(currency, step_size)
-    projects = bidders
+    projects = bidders(currency)
+    return if projects.empty?
     nxt = PriceLevel.nxt(currency)
     remaining = nxt[:remaining]
-    while remaining >= projects.size
+    while remaining > 0
+      puts remaining
       max_qty = remaining > step_size * projects.size ? step_size : remaining / projects.size
+      max_qty = 1 if max_qty == 0
+      done = true
       projects.each do |p|
-        qty = max(p.unoffered_webs, max_qty)
+        qty = [p.unoffered_webs, max_qty].min
+        next if (qty == 0 || remaining == 0)
+        done = false
         p.make_offer(currency, qty)
         remaining -= qty
         p.unoffered_webs -= qty
       end
+      break if done
     end
-    projects.first.make_offer(currency, remaining)
   end
 
   def cancel_all(currency)
