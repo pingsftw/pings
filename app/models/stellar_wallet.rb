@@ -69,7 +69,9 @@ class StellarWallet < ActiveRecord::Base
 
   def balance(currency)
     lines = StellarWallet.request("account_lines", {account: account_id})["lines"]
-    lines.detect {|l| l["currency"] == currency}["balance"].to_i
+    webs = lines.detect {|l| l["currency"] == currency}
+    return 0 unless webs
+    webs["balance"].to_i
   end
 
   def transactions
