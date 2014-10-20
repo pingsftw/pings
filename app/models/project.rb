@@ -1,16 +1,14 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
-  attr_accessor :webs_balance, :currency_balance, :on_offer
+  attr_accessor :webs_balance, :unoffered_webs
   has_many :acceptances
 
   def self.bidders(currency)
     projects = Project.where(autobid: true).includes(:acceptances)
     projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
     projects.each do |p|
-      p.webs_balance = p.balance("WEB")
-      p.currency_balance = p.balance(currency)
-      p.on_offer = p.on_offer(currency)
+      p.unoffered_webs = p.balance("WEB") - p.webs_on_offer(currency)
     end
     projects
   end
@@ -84,8 +82,8 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def webs_on_offer
-    offers.map{|o| o[:webs]}.sum
+  def webs_on_offer(currency)
+    offers(currency).map{|o| o[:webs]}.sum
   end
 
   def best_offer(currency)
