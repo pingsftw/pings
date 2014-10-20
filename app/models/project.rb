@@ -18,10 +18,21 @@ class Project < ActiveRecord::Base
     nxt = PriceLevel.nxt(currency)
     remaining = nxt[:remaining]
     while remaining >= projects.size
-      qty = remaining > step_size * projects.size ? step_size : remaining / projects.size
-      projects.each{|p| p.make_offer(currency, qty); remaining -= qty}
+      max_qty = remaining > step_size * projects.size ? step_size : remaining / projects.size
+      projects.each do |p|
+        qty = max(p.unoffered_webs, max_qty)
+        p.make_offer(currency, qty)
+        remaining -= qty
+        p.unoffered_webs -= qty
+      end
     end
     projects.first.make_offer(currency, remaining)
+  end
+
+  def cancel_all(currency)
+    stellar_wallet.offers(currency).each do |offer|
+      stellar_wallet.cancel_offer(offer)
+    end
   end
 
   def accept(currency, limit)

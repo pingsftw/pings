@@ -76,6 +76,16 @@ class StellarWallet < ActiveRecord::Base
     StellarWallet.request("account_tx", {account: account_id})["transactions"]
   end
 
+  def cancel_offer(offer)
+    params = {
+      tx_json: {
+        TransactionType: "OfferCancel",
+        OfferSequence: offer["seq"]
+      }
+    }
+    submit(params)
+  end
+
   def offers(currency)
     res = StellarWallet.request("account_offers", {account: account_id})["offers"]
     res.select{|o| o["taker_pays"]["currency"] == currency}
