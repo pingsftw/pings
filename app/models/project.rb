@@ -1,14 +1,17 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
-  attr_accessor :webs_balance, :currency_balance
+  attr_accessor :webs_balance, :currency_balance, :on_offer
   has_many :acceptances
 
   def self.bidders(currency)
     projects = Project.where(autobid: true).includes(:acceptances)
     projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
-    projects.each{|p| p.webs_balance = p.balance("WEB")}
-    projects.each{|p| p.currency_balance = p.balance(currency)}
+    projects.each do |p|
+      p.webs_balance = p.balance("WEB")
+      p.currency_balance = p.balance(currency)
+      p.on_offer = p.on_offer(currency)
+    end
     projects
   end
 
@@ -69,14 +72,14 @@ class Project < ActiveRecord::Base
     PriceLevel.register_offer(currency, price, qty)
   end
 
-  def offers
-    @offers ||= stellar_wallet.offers.map do |o|
+  def offers(currency)
+    stellar_wallet.offers(currency).map do |o|
       webs = o["taker_gets"]["value"].to_i
-      btc = o["taker_pays"]["value"].to_i
+      currency = o["taker_pays"]["value"].to_i
       {
         webs: webs,
-        btc: btc,
-        price: btc.to_f / 100_000_000/ webs
+        currency: currency,
+        price: currency.to_f / webs
       }
     end
   end
@@ -85,14 +88,14 @@ class Project < ActiveRecord::Base
     offers.map{|o| o[:webs]}.sum
   end
 
-  def best_offer
-    offers.sort_by{|o| o[:price]}.first
+  def best_offer(currency)
+    offers(currency).sort_by{|o| o[:price]}.first
   end
 
   def as_json(*args)
     h = super(*args)
-    h[:offers] = offers
-    h[:best_offer] = best_offer
+    h[:offers] = offers("BTC")
+    h[:best_offer] = best_offer("BTC")
     h
   end
 end
