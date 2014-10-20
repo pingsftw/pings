@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
     projects.each do |p|
       p.unoffered_webs = p.balance("WEB") - p.webs_on_offer(currency)
     end
-    projects
+    projects.select{|p| p.unoffered_webs > 0}
   end
 
   def self.fill_level(currency, step_size)
