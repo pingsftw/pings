@@ -1,7 +1,8 @@
 <!DOCTYPE html>
+<% tokenName = "Webs" %>
 <html>
 <head>
-  <title>Webs</title>
+  <title><%=tokenName%></title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
@@ -15,13 +16,13 @@
 </div>
 
 <footer>
-Webs are a token of support for the open internet.
+<%=tokenName%> are a token of support for the open internet.
 </footer>
 
 </body>
 
 <script type="text/template" id="header-template">
-<div class="home"><a>Webs</a></div>
+<div class="home"><a><%=tokenName%></a></div>
   <div class="projects"><a>Projects</a></div>
   <div class="book"><a>Book</a></div>
   <div class="history"><a>History</a></div>
@@ -30,7 +31,7 @@ Webs are a token of support for the open internet.
     <%% if (typeof(stellar_id) != "undefined") { %>
       <div class="user">
         <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
-        <p><label>Webs total</label><span class="data"><%%= balances.webs %></span></p>
+        <p><label><%=tokenName%> total</label><span class="data"><%%= balances.webs %></span></p>
       </div>
     <%%} %>
     <div class="logout-button"><span>Log out</span></div>
@@ -58,15 +59,15 @@ Webs are a token of support for the open internet.
 </script>
 
 <script type="text/template" id="faq-template">
-  <h3>What are Webs?</h3>
-  <p>Webs are tokens of commitment to the open internet. They are a social currency for the community of people that want to keep the internet awesome.</p>
+  <h3>What are <%=tokenName%>?</h3>
+  <p><%=tokenName%> are tokens of commitment to the open internet. They are a social currency for the community of people that want to keep the internet awesome.</p>
   <h3>How do I get them?</h3>
-  <p>You receive Webs by making donations to open internet organizations and projects, such as Fight For the Future, Freedom of the Press Foundation, and more to come. You will soon be able to get them by contributing on our site.</p>
-  <h3>What can I do with Webs?</h3>
-  <p>You can send them to friends or organizations, you can vote for what projects will receive new webs, and soon you'll be able to redeem them for open internet swag.
+  <p>You receive <%=tokenName%> by making donations to open internet organizations and projects, such as Fight For the Future, Freedom of the Press Foundation, and more to come. You will soon be able to get them by contributing on our site.</p>
+  <h3>What can I do with <%=tokenName%>?</h3>
+  <p>You can send them to friends or organizations, you can vote for what projects will receive new <%= tokenName %>, and soon you'll be able to redeem them for open internet swag.
   They have no cash value.</p>
   <h3>How does voting work?</h3>
-  <p>When you receive Webs, you pick an open internet project or organization to vote for. Every time we create new Webs, these votes decide which groups or projects receive them. Voting is proportional to the number of Webs you hold.</p>
+  <p>When you receive <%=tokenName%>, you pick an open internet project or organization to vote for. Every time we create new <%=tokenName%>, these votes decide which groups or projects receive them. Voting is proportional to the number of <%=tokenName%> you hold.</p>
 
 </script>
 
@@ -79,9 +80,9 @@ Webs are a token of support for the open internet.
 
 <script type="text/template" id="home-template">
   <div class="welcome" style="display:none">
-    <h1>Join the Webs community!</h1>
+    <h1>Join the <%=tokenName%> community!</h1>
     <p class="blahblah">
-      Webs are a token of commitment to an open internet.
+      <%=tokenName%> are a token of commitment to an open internet.
       People receive them by donating to projects and groups supporting an open web.
       Sign up and donate to get some!
       <a class="action causes">What causes, you ask?</a>
@@ -101,11 +102,11 @@ Webs are a token of support for the open internet.
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <p><label>current Webs reward rate</label><span class="data"><%%= web / (pay / Satoshis) %> Webs per Bitcoin.</span></p>
+  <p><label>current <%=tokenName%> reward rate</label><span class="data"><%%= web / (pay / Satoshis) %> <%=tokenName%> per Bitcoin.</span></p>
 </script>
 
 <script type="text/template" id="books-template">
-  <h2>Available Webs</h2>
+  <h2>Available <%=tokenName%></h2>
   <div class="btc-book"></div>
   <div class="usd-book"></div>
 </script>
@@ -114,7 +115,7 @@ Webs are a token of support for the open internet.
     <li>
     <div class='btc'>  <%%=currency%> available </div>
       <div class='price'> Price </div>
-      <div class='qty'>   Webs </div>
+      <div class='qty'>   <%=tokenName%> </div>
       <div class='project'>Project</div>
     </li>
   </ul>
@@ -150,7 +151,7 @@ Webs are a token of support for the open internet.
 <script type="text/template" id="profile-template">
   <h2>PROFILE</h2>
   <%% if (typeof(webs) !== "undefined" ) { %>
-      <p><label>Total webs</label><span class="data"><%%=webs%></span></p>
+      <p><label>Total <%= tokenName %></label><span class="data"><%%=webs%></span></p>
       <p><label>Currently Supporting</label><span class="data"><%%=supporting%></span></p>
   <%% } else {%>
     LOADING
@@ -163,7 +164,7 @@ Webs are a token of support for the open internet.
 </script>
 
 <script type="text/template" id="email-send-template">
-  <h3>Give Webs</h3>
+  <h3>Give <%=tokenName%></h3>
   <form action="/gifts.json" method="POST">
     <div class="form-group">
       <label>Email</label>
@@ -177,7 +178,7 @@ Webs are a token of support for the open internet.
       <div class="error"> </div>
     </div>
     <div class="form-group">
-      <button type=submit>Give Webs</button>
+      <button type=submit>Give <%=tokenName%></button>
     </div>
   </div>
   </form>
@@ -205,7 +206,7 @@ Webs are a token of support for the open internet.
 </script>
 
 <script type="text/template" id="transaction-item-template">
-  Bought <%%= webs_qty %> Webs for <%%= payment_qty / Satoshis %> <%%= payment_currency %> from
+  Bought <%%= webs_qty %> <%=tokenName%> for <%%= payment_qty / Satoshis %> <%%= payment_currency %> from
   <%%= project ? project.name : "Unknown source" %>
 </script>
 
@@ -246,7 +247,7 @@ Webs are a token of support for the open internet.
   <h2>Projects</h2>
   <table>
     <thead>
-      <td>Name</td><td>Webs Balance</td><td>Best Price (BTC/WEB)</td>
+      <td>Name</td><td><%=tokenName%> Balance</td><td>Best Price (BTC/WEB)</td>
     </thead>
     <tbody class="project-list"></tbody>
   </table>
@@ -254,7 +255,7 @@ Webs are a token of support for the open internet.
 
 <script type="text/template" id="support-template">
   <h2>Supporting Projecs</h2>
-  <p>Your Webs are supporting <span class="data"><%%= supporting %></span></p>
+  <p>Your <%=tokenName%> are supporting <span class="data"><%%= supporting %></span></p>
 
   <h3>Changing Support</h3>
   <p>You can <span class="action">change who you are supporting</span> in the next vote</p>
