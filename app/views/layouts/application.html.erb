@@ -92,7 +92,8 @@
   <div class="user-box"></div>
   <div class='pricing' style="display:none">
     <h3>Reward Levels</h3>
-    <div class="mini-book"><span class="grumpy">Loading reward info</span></div>
+    <div class="mini-book-btc"><span class="grumpy">Loading Bitcoin reward info</span></div>
+    <div class="mini-book-usd"><span class="grumpy">Loading US Dollar reward info</span></div>
     <div class="support" style="display:none"><span class="grumpy">Loading your support info</span></div>
     <div class="book"></div>
   </div>
@@ -102,7 +103,7 @@
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <p><label>current <%=tokenName%> reward rate</label><span class="data"><%%= web / (pay / Satoshis) %> <%=tokenName%> per Bitcoin.</span></p>
+  <p><label>current <%%=currency%> reward rate</label><span class="data"><%%= (web / pay) * scalingFactor %> <%=tokenName%> per <%%=currency%>.</span></p>
 </script>
 
 <script type="text/template" id="books-template">

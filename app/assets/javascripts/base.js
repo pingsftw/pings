@@ -11,11 +11,13 @@ var BaseView = Backbone.View.extend({
       return
     }
     var compiled = _.template(template.html())
+    var params
     try {
-      this.$el.html(compiled(this.params()))
+      params = _.extend(this.params(), this.additionalParams())
+      this.$el.html(compiled(params))
     } catch(err) {
       console.error("Error rendering template " + this.templateName)
-      console.log("Passed attrs: ", this.params())
+      console.log("Passed attrs: ", params)
       console.log(err)
     }
     this.extendedRender()
@@ -39,6 +41,7 @@ var BaseView = Backbone.View.extend({
   },
   extendedRender: function(){},
   postRender: function(){},
+  additionalParams: function(){return {}}
 })
 
 

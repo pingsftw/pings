@@ -3,16 +3,15 @@ var BookItemView = BaseView.extend({
 })
 
 var Book = Backbone.Collection.extend({
-  url: function() {return "/book.json?currency=" + this.currency}
+  url: function() {return "/book.json?currency=" + this.currency},
+  initialize: function(models, options){this.currency = options.currency}
 })
 
 var BooksPage = BaseView.extend({
   templateName: "books",
   postRender: function(){
-    var btcBook = new Book()
-    btcBook.currency = "BTC"
-    var usdBook = new Book()
-    usdBook.currency = "USD"
+    var btcBook = new Book([], {currency: "BTC"})
+    var usdBook = new Book([], {currency: "USD"})
     new BookView({el: this.$(".btc-book"), collection: btcBook, attributes: {currency: "BTC"}}).render()
     new BookView({el: this.$(".usd-book"), collection: usdBook, attributes: {currency: "USD"}}).render()
     btcBook.fetch()
@@ -106,7 +105,15 @@ var SupportView = BaseView.extend({
 
 var MiniBookView = BaseView.extend({
   templateName: "mini-book",
-  initialize: function(){console.log(this.model, this.params())}
+  additionalParams: function(){
+    return {
+      currency: this.attributes.currency,
+      scalingFactor: {
+        USD: 100,
+        BTC: Satoshis
+      }[this.attributes.currency]
+    }
+  }
 })
 
 var HomePage = BaseView.extend({
@@ -133,11 +140,24 @@ var HomePage = BaseView.extend({
     } else {
       this.$('.pricing').show()
       new BuyView({el: this.$(".user-box"), model: this.model.get("card")}).render()
-      var book = new Book()
-      book.bind("reset", function(){
-        new MiniBookView({el: self.$(".mini-book"), model: book.first()}).render()
+      var btcBook = new Book([], {currency: "BTC"})
+      btcBook.bind("reset", function(){
+        new MiniBookView({
+          el: self.$(".mini-book-btc"),
+          model: btcBook.first(),
+          attributes: {currency: "BTC"}
+        }).render()
       })
-      book.fetch({reset: true})
+      btcBook.fetch({reset: true})
+      var usdBook = new Book([], {currency: "USD"})
+      usdBook.bind("reset", function(){
+        new MiniBookView({
+          el: self.$(".mini-book-usd"),
+          model: usdBook.first(),
+          attributes: {currency: "USD"}
+        }).render()
+      })
+      usdBook.fetch({reset: true})
       if (this.model.get("balances") && this.model.get("balances").webs) {
         new SupportView({el: this.$(".support"), model: self.model}).render()
       }
