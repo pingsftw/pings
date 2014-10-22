@@ -9,6 +9,13 @@ class Project < ActiveRecord::Base
     PriceLevel.update_all filled: 0, complete: false
   end
 
+  def self.for_wallets(account_ids)
+    wallets = StellarWallet.where(account_id: account_ids).includes(:project)
+    h = {}
+    wallets.each {|w| h[w] = w.project}
+    h
+  end
+
   def self.fill_all(currency, step_size = 10000)
     while pl = PriceLevel.nxt(currency) do
       projects = bidders(currency)
