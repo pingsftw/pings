@@ -92,7 +92,8 @@ class Project < ActiveRecord::Base
   end
 
   def sell(currency, price, qty)
-    puts "SELLL*************************"
+    puts "SELL*************************"
+    puts currency, price, qty
     puts stellar_wallet.offer(
       give: {currency: "WEB", qty: qty},
       receive: {currency: currency, qty: price * qty}

@@ -176,14 +176,19 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def prefund
+    StellarWallet.friendbot
     params = {
       tx_json: {
         TransactionType: "Payment",
         Destination: account_id,
-        Amount: 40_000_000
+        Amount: 400_000_000
       }
     }
     StellarWallet.submit(params)
+  end
+
+  def self.friendbot
+    HTTParty.get("https://api-stg.stellar.org/friendbot?addr=gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz")
   end
 
 
