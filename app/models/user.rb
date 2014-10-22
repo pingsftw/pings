@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
 
   def bid(currency)
     stellar_wallet.offer(
-      give: {currency: "BTC", qty: balances[currency]},
+      give: {currency: currency, qty: balances[currency]},
       receive: {currency: "WEB", qty: 1},
       sellMode: true
     )
