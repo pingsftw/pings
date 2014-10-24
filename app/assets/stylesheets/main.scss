@@ -47,9 +47,14 @@ button, select, select:active {
   height: 20px;
   vertical-align: bottom;
   border: none;
+  background-color: #444;
 }
 
 button {
+  &:hover {
+    background-color: #333;
+    font-style: underline;
+  }
   &:before {
     content: ">";
   }
