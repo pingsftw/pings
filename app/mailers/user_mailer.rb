@@ -3,7 +3,8 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user, address)
     @address = address.address
-    mail(to: user.email, subject: 'Now for send us the BTCs')
+    @gifts = user.received_gifts
+    mail(to: user.email, subject: "Welcome to #{TOKEN_NAME}, the Internet Loyalty Community")
   end
 
   def payment_email(user, payment)
@@ -19,7 +20,8 @@ class UserMailer < ActionMailer::Base
   def gift_invitation_email(gift)
     @value = gift.value
     @sender = gift.giver.email
-    mail(to: gift.receiver_email, subject: "You've got {#TOKEN_NAME}!")
+    @receiver = gift.receiver.email
+    mail(to: gift.receiver_email, subject: "@sender has given you some #{TOKEN_NAME} for the internet!")
   end
 
   def gift_email(gift)

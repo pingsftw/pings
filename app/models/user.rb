@@ -7,6 +7,16 @@ class User < ActiveRecord::Base
   has_many :payment_addresses
   has_many :cards
   has_many :payments, through: :payment_addresses
+  has_many :received_gifts, foreign_key: :receiver_id, class_name: "Gift"
+
+  after_create :check_for_gifts
+
+  def check_for_gifts
+    gifts = Gift.where(receiver_email: email)
+    # gifts.update(receiver: self) #This apparently is not a thing
+    ensure_stellar_wallet unless gifts.empty?
+    gifts.each{|g|g.receiver = self; g.deliver; g.save}
+  end
 
   def give(receiver_email, value)
     gift = Gift.create(giver: self, receiver_email: receiver_email, value: value)

@@ -1,13 +1,19 @@
-<h2>Welcome to the WEBs community!</h2>
+<h2>Welcome to the <%=TOKEN_NAME%>s community!</h2>
 <p>
 We are bound together by our commitment to the open internet.
-WEBs are created when donations to open internet causes are
-routed through our network. To donate and get your WEBs, send
+<%=TOKEN_NAME%>s are created when donations to open internet causes are
+routed through our network. To donate and get your <%=TOKEN_NAME%>s, send
 BTC to <%=link_to "your personal purchase address", "btc:#{@address}" %>
 (<%=@address%>)
 </p>
+
+<% if @gifts %>
+  YOU ALREADY HAVE SOME
+  <%= @gifts.to_s %>
+<% end %>
+
 <p>
-We are looking forward to growing an awesome community that can use WEBs to honor
+We are looking forward to growing an awesome community that can use <%=TOKEN_NAME%>s to honor
 each other for their commitment
 <p>
 <p>Elizabeth Stark and Michael Sofaer</p>

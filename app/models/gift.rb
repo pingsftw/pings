@@ -5,11 +5,15 @@ class Gift < ActiveRecord::Base
   def process
     receiver = User.find_by_email(receiver_email)
     if receiver
-      giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
+      deliver
       UserMailer.gift_email(self).deliver
     else
       UserMailer.gift_invitation_email(self).deliver
     end
     self
+  end
+
+  def deliver
+    giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
   end
 end
