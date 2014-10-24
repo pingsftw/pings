@@ -6,6 +6,7 @@ class Gift < ActiveRecord::Base
     receiver = User.find_by_email(receiver_email)
     if receiver
       giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
+      UserMailer.gift_email(self).deliver
     else
       UserMailer.gift_invitation_email(self).deliver
     end

@@ -67,7 +67,7 @@ var EmailSendView = FormView.extend({
     if (gift.receiver_id) {
       console.log("was a receiver")
     } else {
-      this.$(".message").text("Set aside " + gift.value + " Webs for " + gift.receiver_email)
+      this.$(".message").text("Set aside " + gift.value + " " + tokenName + " for " + gift.receiver_email)
     }
   }
 })

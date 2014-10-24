@@ -19,6 +19,12 @@ class UserMailer < ActionMailer::Base
   def gift_invitation_email(gift)
     @value = gift.value
     @sender = gift.giver.email
-    mail(to: gift.receiver_email, subject: "You've got Webs!")
+    mail(to: gift.receiver_email, subject: "You've got {#TOKEN_NAME}!")
+  end
+
+  def gift_email(gift)
+    @value = gift.value
+    @sender = gift.giver.email
+    mail(to: gift.receiver_email, subject: "@sender sent you more #{TOKEN_NAME}!")
   end
 end
