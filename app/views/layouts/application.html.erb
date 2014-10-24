@@ -111,6 +111,9 @@
 </script>
 
 <script type="text/template" id="history-template">
+  <div class="payments"></div>
+  <div class="gifts"></div>
+  <div class="transactions"></div>
 </script>
 
 <script type="text/template" id="mini-book-template">
@@ -227,6 +230,14 @@
   <ul></ul>
 </script>
 
+<script type="text/template" id="gift-item-template">
+  <%%= value %> <%=tokenName%> from <%%= sender_email %> at <%%= created_at %>
+</script>
+
+<script type="text/template" id="gifts-template">
+  <h2>Your Gifts</h2>
+  <ul></ul>
+</script>
 <script type="text/template" id="payments-template">
   <%% if (models.length) { %>
     <h2>Your Payments</h2>

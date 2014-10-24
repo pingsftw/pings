@@ -116,6 +116,9 @@ var ListView = BaseView.extend({
       var item = new view({model: dataItem, tagName: tagName}).render()
         target.append(item.el)
     })
+    if (!this.loading) {
+      console.error("You need to explicitly render " + this.templateName)
+    }
     this.loading.remove()
   },
   extendedRender: function(){

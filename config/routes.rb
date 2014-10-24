@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         post :charge
       end
     end
-    resources :gifts, only: [:create]
+    resources :gifts, only: [:create, :index]
     resources :users do
       collection do
         put :support

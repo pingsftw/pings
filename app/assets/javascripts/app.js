@@ -169,21 +169,43 @@ var Transactions = Backbone.Collection.extend({
   url: "/transactions.json"
 })
 
-TransactionListView = ListView.extend({
+var TransactionListView = ListView.extend({
   templateName: "transactions",
   itemName: "Transaction"
 })
 
-TransactionItemView = BaseView.extend({
+var TransactionItemView = BaseView.extend({
   templateName: "transaction-item",
+})
+
+var Gifts = Backbone.Collection.extend({
+  url: "/gifts.json"
+})
+
+var GiftListView = ListView.extend({
+  templateName: "gifts",
+  itemName: "Gift"
+})
+
+var GiftItemView = BaseView.extend({
+  templateName: "gift-item",
 })
 
 var HistoryPage = BaseView.extend({
   templateName: "history",
   postRender: function(){
-    this.$el.append(new PaymentListView({collection: new Backbone.Collection(current_user.get("payments"))}).render().el)
-    var transactions = new Transactions()
-    this.$el.append(new TransactionListView({collection: transactions}).render().el)
+    new PaymentListView({
+      collection: new Backbone.Collection(current_user.get("payments")),
+      el: this.$(".payments")
+    }).render()
+    new TransactionListView({
+      collection: new Transactions(),
+      el: this.$(".transactions")
+    }).render()
+    new GiftListView({
+      collection: new Gifts(),
+      el: this.$(".gifts")
+    }).render()
   }
 })
 

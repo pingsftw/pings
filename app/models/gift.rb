@@ -16,4 +16,10 @@ class Gift < ActiveRecord::Base
   def deliver
     giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
   end
+
+  def as_json(*args)
+    h = super(*args)
+    h["sender_email"] = giver.email
+    h
+  end
 end
