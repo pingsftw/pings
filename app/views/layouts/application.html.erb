@@ -228,6 +228,7 @@
 <script type="text/template" id="transactions-template">
   <h2>Your Purchases</h2>
   <ul></ul>
+  <div class="empty">Make a donation to reveive <%= tokenName %></div>
 </script>
 
 <script type="text/template" id="gift-item-template">
@@ -237,17 +238,14 @@
 <script type="text/template" id="gifts-template">
   <h2>Your Gifts</h2>
   <ul></ul>
+  <div class="empty">No one has give you <%=tokenName%>. Do something awesome for the Internet!</div>
 </script>
 <script type="text/template" id="payments-template">
-  <%% if (models.length) { %>
-    <h2>Your Payments</h2>
-    <ul class="payment-list"></ul>
-  <%% } else { %>
-    <div class="reminder">
+  <h2>Your Payments</h2>
+  <ul class="payment-list"></ul>
+  <div class="empty">
     We haven't received your any BTC payments from you.
-    </div>
-  <%% } %>
-
+  </div>
 </script>
 
 
