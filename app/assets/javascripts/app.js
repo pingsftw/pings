@@ -28,7 +28,13 @@ var FAQPage = BaseView.extend({
 })
 
 var ChargeMessageView = BaseView.extend({
-  templateName: "charge-message"
+  templateName: "charge-message",
+  postRender: function(){
+    var projects = new ProjectList()
+    var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
+    projects.bind("reset", function(){ changeView.render() })
+    projects.fetch({reset: true})
+  }
 })
 
 var ChargePage = FormView.extend({

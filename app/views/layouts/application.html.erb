@@ -61,6 +61,8 @@
 
 <script type="text/template" id="charge-message-template">
   <p>You have donated <%%=currency%> USD and received <%%=token%> <%=tokenName%>.</p>
+  <p>Now you can vote for projects!</p>
+  <div class="change-support"><span class="grumpy">Loading your ballot</span></div>
 </script>
 
 <script type="text/template" id="faq-template">
@@ -292,7 +294,7 @@
   <form name="change-support" action="/users/support.json" method="PUT">
     <select name="project_id">
     </select>
-    <button type=submit>Change</button>
+    <button type=submit>Choose</button>
 </form>
 </script>
 
