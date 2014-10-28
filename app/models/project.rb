@@ -1,6 +1,5 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
-  before_save :ensure_stellar_wallet
   attr_accessor :unoffered_webs
   has_many :acceptances
 

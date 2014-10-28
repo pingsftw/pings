@@ -175,10 +175,12 @@
 </script>
 
 <script type="text/template" id="project-template">
-  <%% if (typeof(name) !== "undefined") {%>
-    <p><%%=name%></p>
-    <p><%%=logo%></p>
-    <p><%%=slogan%></p>
+  <%% if (typeof(created_at) !== "undefined") {%>
+      <%% console.log(typeof(created_at)) %>
+    <p><a href="<%%=url%>" target="_blank"><%%=name%></a></p>
+    <p><%%=short_description%></p>
+    <p><img src="<%%=logo_url%>" class="project-logo"</img></p>
+    <p><%%=long_description%></p>
   <%% } else { %>
     <div class="project"><h2>Loading project</h2></div>
   <%% } %>
