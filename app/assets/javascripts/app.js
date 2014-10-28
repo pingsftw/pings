@@ -171,7 +171,7 @@ var UsernameDisplayView = BaseView.extend({
 var UsernameCreateView = FormView.extend({
   templateName: "username-create",
   callback: function(user){
-    this.model.trigger("change")
+    this.model.set(user)
   }
 })
 

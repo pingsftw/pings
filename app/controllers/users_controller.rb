@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   def username
     name = params["username"].downcase
     claim = current_user.claim(name)
-    render json: (claim.errors.empty? ? {username: name} : {errors: claim.errors})
+    render json: (claim.errors.empty? ? current_user : {errors: claim.errors})
   end
 
   def support
