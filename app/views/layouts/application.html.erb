@@ -295,18 +295,18 @@
 </script>
 
 <script type="text/template" id="project-item-template">
-  <td class="name"><%%=name%></td>
-  <td class="webs"><%%=webs_balance%></td>
-  <%% if (best_offer) %>
-    <td class="price"><%%=best_offer.price%></td>
-  <%% ; %>
+  <td><%%=name%></td>
+  <td><%%=logo%></td>
+  <td><%%=slogan%></td>
 </script>
 
 <script type="text/template" id="project-list-template">
   <h2>Projects</h2>
   <table>
     <thead>
-      <td>Name</td><td><%=tokenName%> Balance</td><td>Best Price (BTC/WEB)</td>
+      <td class="name">Name</td>
+      <td class="logo">Logo</td>
+      <td class="slogan">Slogan</td>
     </thead>
     <tbody class="project-list"></tbody>
   </table>

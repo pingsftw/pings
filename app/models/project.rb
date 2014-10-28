@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
   before_save :ensure_stellar_wallet
-  attr_accessor :webs_balance, :unoffered_webs
+  attr_accessor :unoffered_webs
   has_many :acceptances
 
   def self.reset_btc
@@ -70,10 +70,6 @@ class Project < ActiveRecord::Base
     StellarWallet.find_by_account_id(account_id).try(:project)
   end
 
-  def self.with_webs_balances
-    all.each{|p| p.webs_balance = p.balance("WEB")}
-  end
-
   def ensure_stellar_wallet
     return stellar_wallet if stellar_wallet
     StellarWallet.create(project: self)
@@ -110,6 +106,8 @@ class Project < ActiveRecord::Base
   end
 
   def offers(currency)
+    @offers ||={}
+    @offers[currency] ||=
     stellar_wallet.offers(currency).map do |o|
       webs = o["taker_gets"]["value"].to_i
       currency = o["taker_pays"]["value"].to_i
@@ -131,9 +129,8 @@ class Project < ActiveRecord::Base
 
   def as_json(*args)
     h = super(*args)
-    h[:webs_balance] = webs_balance
-    h[:offers] = offers("BTC")
-    h[:best_offer] = best_offer("BTC")
+    h[:logo] = "HLELO"
+    h[:slogan] = "We the best"
     h
   end
 end
