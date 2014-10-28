@@ -54,7 +54,7 @@
   <h2>Charge</h2>
   <form name="charge" action="/cards/charge.json" method="POST">
     <label>US Dollars</label><input name=quantity>
-    <button class="submit">Donate!</button>
+    <button type="submit">Donate!</button>
   </form>
   <div class=charge-message></div>
 </script>
@@ -186,7 +186,7 @@
   <form action="/gifts.json" method="POST">
     <input type="hidden" name="stellar_id" value="<%%=stellar_id%>"/>
     <label>How many?</label><input name="value"/>
-    <button class="submit">Give!</button>
+    <button type="submit">Give!</button>
   </form>
 </script>
 
