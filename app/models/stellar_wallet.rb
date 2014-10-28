@@ -327,6 +327,7 @@ class StellarWallet < ActiveRecord::Base
     }}
   end
 
+
   def webs_node?(node)
     node["ModifiedNode"] && node["ModifiedNode"]["FinalFields"]["Balance"].is_a?(Hash) && node["ModifiedNode"]["FinalFields"]["Balance"]["currency"] == "WEB"
   end

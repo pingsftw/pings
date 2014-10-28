@@ -93,6 +93,21 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def donation_summary
+    txs = stellar_wallet.buy_webs_transactions
+    h = {
+      tokens_distributed: 0,
+      usd_received: 0,
+      btc_received: 0
+    }
+    txs.each do |tx|
+      h[:tokens_distributed] += tx[:webs_qty]
+      key = (tx[:payment_currency] == "USD" ? :usd_received : :btc_received)
+      h[key] += tx[:payment_qty]
+    end
+    h
+  end
+
   def sell(currency, price, qty)
     puts "SELL*************************"
     puts currency, price, qty

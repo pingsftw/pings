@@ -171,22 +171,27 @@
   <a class="subtle login">I already have an account!</a>
 </script>
 
+<script type="text/template" id="totals-template">
+  <label><%=tokenName%> given out</label><span class="data"><%%=tokens_distributed%></span>
+  <label>US Dollars received</label><span class="data"><%%=usd_received%></span>
+  <label>Bitcoin received</label><span class="data"><%%=btc_received%></span>
+</script>
+
 <script type="text/template" id="profile-page-template">
   <div class="profile"><h2>Loading profile</h2></div>
 </script>
 
 <script type="text/template" id="project-template">
   <%% if (typeof(created_at) !== "undefined") {%>
-      <%% console.log(typeof(created_at)) %>
     <p><a href="<%%=url%>" target="_blank"><%%=name%></a></p>
     <p><%%=short_description%></p>
+    <div class="totals"><span class="grumpy">Loading project donation totals</span></div>
     <p><img src="<%%=logo_url%>" class="project-logo"</img></p>
     <p><%%=long_description%></p>
   <%% } else { %>
     <div class="project"><h2>Loading project</h2></div>
   <%% } %>
 </script>
-
 
 <script type="text/template" id="profile-template">
   <h2>PROFILE</h2>

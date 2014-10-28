@@ -7,7 +7,7 @@ var BaseView = Backbone.View.extend({
     }
     var template = $("#" + this.templateName + "-template")
     if (!template[0]) {
-      console.log("You're missing the template for "+ this.templateName)
+      console.error("You're missing the template for "+ this.templateName)
       return
     }
     var compiled = _.template(template.html())

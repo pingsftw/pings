@@ -73,13 +73,35 @@ var ProjectsPage = BaseView.extend({
 
 })
 
+var TotalsView = BaseView.extend({
+  templateName: "totals",
+  initialize: function(){
+    console.log("hello", this.model)
+    var self = this
+    this.model.bind("change", function(){
+      self.render()
+    })
+  }
+})
+
+var DonationTotals = Backbone.Model.extend({
+  url: function(){
+    return "/projects/" + this.get("id") + "/totals.json"
+  }
+})
+
 var ProjectPage = BaseView.extend({
   templateName: "project",
   initialize: function(){
     var self = this
     this.model.bind("change", function(model){
       self.render()
+      self.totals.fetch()
     })
+    this.totals = new DonationTotals({id: this.model.get("id")})
+  },
+  postRender: function(){
+    new TotalsView({model: this.totals, el: this.$(".totals")})
   }
 })
 
