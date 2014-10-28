@@ -56,6 +56,11 @@
     <label>US Dollars</label><input name=quantity>
     <button class="submit">Donate!</button>
   </form>
+  <div class=charge-message></div>
+</script>
+
+<script type="text/template" id="charge-message-template">
+  <p>You have donated <%%=currency%> USD and received <%%=token%> <%=tokenName%>.</p>
 </script>
 
 <script type="text/template" id="faq-template">

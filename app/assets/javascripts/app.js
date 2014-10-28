@@ -27,8 +27,15 @@ var FAQPage = BaseView.extend({
   templateName: "faq"
 })
 
+var ChargeMessageView = BaseView.extend({
+  templateName: "charge-message"
+})
+
 var ChargePage = FormView.extend({
-  templateName: "charge"
+  templateName: "charge",
+  callback: function(net){
+    new ChargeMessageView({el: this.$(".charge-message"), model: new Backbone.Model(net)}).render()
+  }
 })
 
 var ProjectsPage = BaseView.extend({

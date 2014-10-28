@@ -33,6 +33,9 @@ class CardsController < ApplicationController
       paid: charge.paid
     )
     payment.process!
-    render json: charge
+    payment.reload
+    puts StellarWallet.affecteds_for_tx(payment.bid_hash)
+    net = StellarWallet.net_from_tx payment.bid_hash
+    render json: net
   end
 end

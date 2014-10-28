@@ -273,11 +273,50 @@ class StellarWallet < ActiveRecord::Base
     return "unknown"
   end
 
-  def buy_webs_transactions
+  def get_affected_nodes
     creates = transactions.select{|t| t["tx"]["TransactionType"] == "OfferCreate"}
-    affecteds = creates.map{|t| t["meta"]["AffectedNodes"]}
+    creates.map{|t| t["meta"]["AffectedNodes"]}
+  end
+
+  def self.offers_from_affecteds(affecteds)
     mod_or_delete = affecteds.map{|t| t.map{|n| n["DeletedNode"] || n["ModifiedNode"]}.compact}
-    offers = mod_or_delete.map{|t| t.select{|n| n["LedgerEntryType"] == "Offer"}}.flatten
+    mod_or_delete.map{|t| t.select{|n| n["LedgerEntryType"] == "Offer"}}.flatten
+  end
+
+  def self.affecteds_for_tx(hash)
+    res = request "tx", transaction: hash
+    return res["meta"]["AffectedNodes"] if res["meta"]
+    #FIXME Polling the internet in process LIKE A NOOB
+    affecteds_for_tx(hash)
+  end
+
+  def self.net_from_tx(hash)
+    nodes = affecteds_for_tx(hash)
+    puts hash, nodes
+    offers = offers_from_affecteds([nodes])
+    nets = offers.map{|o| nets_for_node(o)}
+    result = {
+      token: 0,
+      currency: 0
+    }
+    nets.each do |net|
+      result[:token] += net[:token]
+      result[:currency] += net[:currency]
+    end
+    result
+  end
+
+  def self.nets_for_node(node)
+    {
+      token: node["PreviousFields"]["TakerGets"]["value"].to_i -
+            node["FinalFields"]["TakerGets"]["value"].to_i,
+      currency: node["PreviousFields"]["TakerPays"]["value"].to_i -
+            node["FinalFields"]["TakerPays"]["value"].to_i,
+    }
+  end
+
+  def buy_webs_transactions
+    offers = offers_from_affecteds(get_affected_nodes)
     previous = offers.select{|t| t["PreviousFields"] && t["PreviousFields"]["TakerGets"]["currency"] == "WEB"}
     puts previous
     events = previous.map{|t| {
