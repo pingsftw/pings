@@ -69,6 +69,12 @@ class StellarWallet < ActiveRecord::Base
     lines.select{|l| l["currency"] == "WEB" && l["balance"].to_i < 0 }
   end
 
+  def self.tokens_outstanding
+    balance = 0
+    mainline.each{|a| balance -= a["balance"].to_i}
+    balance
+  end
+
   def balance(currency)
     lines = StellarWallet.request("account_lines", {account: account_id})["lines"]
     webs = lines.detect {|l| l["currency"] == currency}
