@@ -63,6 +63,29 @@ var ProjectsPage = BaseView.extend({
   postRender: function(){
     var projects = new ProjectList()
     this.$el.append(new ProjectListView({collection: projects}).render().el)
+  },
+   events: {
+    "click a": function(event){
+      router.navigate(event.target.pathname, {trigger: true})
+      event.preventDefault()
+    }
+   }
+
+})
+
+var ProjectPage = BaseView.extend({
+  templateName: "project",
+  initialize: function(){
+    var self = this
+    this.model.bind("change", function(model){
+      self.render()
+    })
+  }
+})
+
+var Project = Backbone.Model.extend({
+  url: function(){
+    return "/projects/" + this.get("id") + ".json"
   }
 })
 
@@ -414,6 +437,7 @@ var MainRouter = Backbone.Router.extend({
     "home":             "home",
     "history":          "history",
     "projects":         "projects",
+    "projects/:project_id":         "project",
     "book":             "book",
     "users/:stellar_id":          "profile",
     "charge":          "charge",
@@ -436,6 +460,12 @@ var MainRouter = Backbone.Router.extend({
   projects: function(){
     var el = $("#main")[0]
     new ProjectsPage({el: el}).render()
+  },
+  project: function(project_id){
+    var el = $("#main")[0]
+    var project = new Project({id: project_id})
+    new ProjectPage({el: el, model: project}).render()
+    project.fetch()
   },
   profile: function(stellar_id){
     var el = $("#main")[0]
