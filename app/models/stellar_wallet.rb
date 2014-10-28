@@ -263,9 +263,12 @@ class StellarWallet < ActiveRecord::Base
     submit(params)
   end
 
+  def inflation_dest
+    info["account_data"]["InflationDest"]
+  end
+
   def supporting
-    dest = info["InflationDest"]
-    project = Project.try(:by_wallet, dest)
+    project = Project.try(:by_wallet, inflation_dest)
     return project.name if project
     return "unknown"
   end
