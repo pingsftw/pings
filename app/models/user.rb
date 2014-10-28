@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
       stellar_id: stellar_wallet.account_id,
       supporting: stellar_wallet.supporting,
       username: username,
-      webs: balances[:webs]
+      webs: stellar_wallet.balance("WEB")
     }
   end
 
@@ -102,7 +102,7 @@ class User < ActiveRecord::Base
   def transactions
     txs = stellar_wallet.buy_webs_transactions
     projects = Project.for_wallets(txs.map{|tx| tx[:account_id]})
-    txs.each{|tx| tx[:project_name] = projects[tx[:account_id]].name}
+    txs.each{|tx| tx[:project_name] = projects[tx[:account_id]] ? projects[tx[:account_id]].name : tx[:account_id]}
     txs
   end
 
