@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by_username(params[:id])
+    user = User.find_by_username(params[:id].downcase)
     user ||= User.by_wallet(params[:id])
     json = user.for_public
     json[:me] = user == current_user
@@ -13,8 +13,9 @@ class UsersController < ApplicationController
   end
 
   def username
-    claim = current_user.claim(params["username"])
-    render json: (claim.errors.empty? ? {username: params["username"]} : {errors: claim.errors})
+    name = params["username"].downcase
+    claim = current_user.claim(name)
+    render json: (claim.errors.empty? ? {username: name} : {errors: claim.errors})
   end
 
   def support
