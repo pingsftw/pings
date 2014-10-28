@@ -3,7 +3,7 @@ class BooksController < ApplicationController
     currency = params[:currency] == "USD" ? "USD" : "BTC"
     book = StellarWallet.book(currency)
     projects = Project.for_wallets(book.map{|h| h[:account]})
-    book.each{|h| h[:project] = projects[h]}
+    book.each{|h| h[:project] = projects[h.account_id]}
     render json: book
   end
 end

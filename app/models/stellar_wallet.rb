@@ -24,6 +24,7 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def self.request(method, params = nil)
+    start_time = Time.now
     body = {
       method: method
     }
@@ -34,6 +35,7 @@ class StellarWallet < ActiveRecord::Base
     if res["engine_result"] && res["engine_result"] != "tesSUCCESS"
       throw StellarBoom.new(res)
     end
+    puts "Stellar request for #{method} took #{Time.now - start_time}"
     res
   end
 
@@ -292,7 +294,6 @@ class StellarWallet < ActiveRecord::Base
 
   def self.net_from_tx(hash)
     nodes = affecteds_for_tx(hash)
-    puts hash, nodes
     offers = offers_from_affecteds([nodes])
     nets = offers.map{|o| nets_for_node(o)}
     result = {
@@ -316,9 +317,8 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def buy_webs_transactions
-    offers = offers_from_affecteds(get_affected_nodes)
+    offers = StellarWallet.offers_from_affecteds(get_affected_nodes)
     previous = offers.select{|t| t["PreviousFields"] && t["PreviousFields"]["TakerGets"]["currency"] == "WEB"}
-    puts previous
     events = previous.map{|t| {
       payment_qty: t["PreviousFields"]["TakerPays"]["value"].to_i - t["FinalFields"]["TakerPays"]["value"].to_i,
       payment_currency: t["PreviousFields"]["TakerPays"]["currency"],

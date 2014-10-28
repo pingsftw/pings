@@ -228,8 +228,8 @@
 </script>
 
 <script type="text/template" id="transaction-item-template">
-  Bought <%%= webs_qty %> <%=tokenName%> for <%%= payment_qty / Satoshis %> <%%= payment_currency %> from
-  <%%= project ? project.name : "Unknown source" %>
+  Bought <%%= webs_qty %> <%=tokenName%> for <%%= payment_qty / 100 %> <%%= payment_currency %> from
+  <%%= project_name %>
 </script>
 
 <script type="text/template" id="transactions-template">

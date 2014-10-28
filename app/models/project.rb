@@ -12,7 +12,7 @@ class Project < ActiveRecord::Base
   def self.for_wallets(account_ids)
     wallets = StellarWallet.where(account_id: account_ids).includes(:project)
     h = {}
-    wallets.each {|w| h[w] = w.project}
+    wallets.each {|w| h[w.account_id] = w.project}
     h
   end
 

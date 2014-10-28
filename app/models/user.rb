@@ -71,7 +71,9 @@ class User < ActiveRecord::Base
 
   def transactions
     txs = stellar_wallet.buy_webs_transactions
-    txs.each{|tx| tx[:project] = Project.by_wallet(tx[:account_id])}
+    projects = Project.for_wallets(txs.map{|tx| tx[:account_id]})
+    txs.each{|tx| tx[:project_name] = projects[tx[:account_id]].name}
+    txs
   end
 
   def bid(currency)
