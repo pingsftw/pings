@@ -171,6 +171,7 @@
 
 <script type="text/template" id="profile-template">
   <h2>PROFILE</h2>
+  <div class=username></div>
   <%% if (typeof(webs) !== "undefined" ) { %>
       <p><label>Total <%= tokenName %></label><span class="data"><%%=webs%></span></p>
       <p><label>Currently Supporting</label><span class="data"><%%=supporting%></span></p>
@@ -178,6 +179,20 @@
     LOADING
   <%% } %>
   <div class="email-send"></div>
+</script>
+
+<script type="text/template" id="username-create-template">
+  You have no username yet. Let's make one!
+  <form name="username" action="/users/username.json" method="POST">
+    <div class="form-group">
+    <label>Username</label>
+    <input name=username>
+    <div class="error">
+  </div>
+  <div class="form-group">
+    <button type=submit>Claim</button>
+  </div>
+  </form>
 </script>
 
 <script type="text/template" id="confirm-template">

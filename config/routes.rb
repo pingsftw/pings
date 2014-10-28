@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         put :support
+        post :username
         post :resend
       end
     end

@@ -81,7 +81,12 @@ var ProfilePage = BaseView.extend({
   },
   postRender: function(){
     new EmailSendView({el: this.$(".email-send")}).render()
+    new UsernameCreateView({el: this.$(".username")}).render()
   }
+})
+
+var UsernameCreateView = FormView.extend({
+  templateName: "username-create"
 })
 
 var ConfirmView = BaseView.extend({

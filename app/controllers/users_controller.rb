@@ -8,6 +8,10 @@ class UsersController < ApplicationController
     render json: User.by_wallet(params[:id]).for_public
   end
 
+  def username
+    render json: []
+  end
+
   def support
     if current_user
       p = Project.find(params[:project_id])
