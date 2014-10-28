@@ -8,11 +8,20 @@ class User < ActiveRecord::Base
   has_many :cards
   has_many :payments, through: :payment_addresses
   has_many :received_gifts, foreign_key: :receiver_id, class_name: "Gift"
+  has_many :sent_gifts, foreign_key: :giver_id, class_name: "Gift"
 
   validates :username, uniqueness: true
 
   after_create :check_for_gifts
   UsernameMinimum = 100
+
+  def available_tokens
+    stellar_wallet.balance("WEB") - outstanding_gift_value
+  end
+
+  def outstanding_gift_value
+    sent_gifts.where(transaction_hash: nil).sum(:value)
+  end
 
   def check_for_gifts
     gifts = Gift.where(receiver_email: email)
