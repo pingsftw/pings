@@ -177,6 +177,19 @@
   <label>Bitcoin received</label><span class="data"><%%=btc_received%></span>
 </script>
 
+<script type="text/template" id="my-profile-template">
+  <h3>This is your profile</h3>
+</script>
+
+<script type="text/template" id="other-profile-template">
+  <p>Give some <%=tokenName%>?</p>
+  <form action="/gifts.json" method="POST">
+    <input type="hidden" name="stellar_id" value="<%%=stellar_id%>"/>
+    <label>How many?</label><input name="value"/>
+    <button class="submit">Give!</button>
+  </form>
+</script>
+
 <script type="text/template" id="profile-page-template">
   <div class="profile"><h2>Loading profile</h2></div>
 </script>
@@ -195,6 +208,7 @@
 
 <script type="text/template" id="profile-template">
   <h2>PROFILE</h2>
+  <div class="me"></div>
   <div class=username></div>
   <%% if (typeof(webs) !== "undefined" ) { %>
       <p><label>Total <%= tokenName %></label><span class="data"><%%=webs%></span></p>

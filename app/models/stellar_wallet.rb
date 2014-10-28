@@ -32,7 +32,7 @@ class StellarWallet < ActiveRecord::Base
       body[:params] = [params]
     end
     res = HTTParty.post(Url, body: body.to_json).parsed_response["result"]
-    if res["engine_result"] && res["engine_result"] != "tesSUCCESS"
+    if (res["engine_result"] && res["engine_result"] != "tesSUCCESS") || res["status"] == "error"
       throw StellarBoom.new(res)
     end
     puts "Stellar request for #{method} took #{Time.now - start_time}"

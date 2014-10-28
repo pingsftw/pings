@@ -26,7 +26,6 @@ class UserMailer < ActionMailer::Base
 
   def gift_email(gift)
     @value = gift.value
-    @sender = gift.giver.email
-    mail(to: gift.receiver_email, subject: "@sender sent you more #{TOKEN_NAME}!")
+    mail(to: gift.receiver_email, subject: "Someone sent you more #{TOKEN_NAME}!")
   end
 end

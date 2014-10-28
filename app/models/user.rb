@@ -21,8 +21,14 @@ class User < ActiveRecord::Base
     gifts.each{|g|g.receiver = self; g.deliver; g.save}
   end
 
-  def give(receiver_email, value)
-    gift = Gift.create(giver: self, receiver_email: receiver_email, value: value)
+  def give(opts)
+    value = opts[:value]
+    if opts[:email]
+      gift = Gift.create(giver: self, receiver_email: receiver_email, value: value)
+    else
+      receiver = User.by_wallet(opts[:stellar_id])
+      gift = Gift.create(giver: self, receiver: receiver, value: value)
+    end
     gift.process
   end
 

@@ -3,7 +3,9 @@ class Gift < ActiveRecord::Base
   belongs_to :receiver, class_name: "User"
 
   def process
-    receiver = User.find_by_email(receiver_email)
+    return if transaction_hash
+    puts self
+    receiver = self.receiver || User.find_by_email(receiver_email)
     if receiver
       deliver
       UserMailer.gift_email(self).deliver
@@ -14,7 +16,8 @@ class Gift < ActiveRecord::Base
   end
 
   def deliver
-    giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
+    res = giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
+    update_attributes(transaction_hash: res["tx_json"]["hash"])
   end
 
   def as_json(*args)

@@ -1,6 +1,6 @@
 class GiftsController < ApplicationController
   def create
-    result = current_user.give(params[:email], params[:value])
+    result = current_user.give(params)
     render json: result
   end
   def index

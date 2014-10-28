@@ -117,6 +117,15 @@ var User = Backbone.Model.extend({
   }
 })
 
+var MyProfileView = BaseView.extend({
+  templateName: "my-profile"
+})
+
+var OtherProfileView = FormView.extend({
+  templateName: "other-profile"
+})
+
+
 var ProfilePage =  BaseView.extend({
   templateName: "profile-page",
   initialize: function(){
@@ -125,7 +134,7 @@ var ProfilePage =  BaseView.extend({
       new ProfileView({el: self.$(".profile"), model: self.model}).render()
     })
     this.model.fetch()
-  },
+  }
 })
 
 var UsernameSorryView = BaseView.extend({
@@ -141,12 +150,17 @@ var ProfileView = BaseView.extend({
     if (this.model.get("username")){
       new UsernameDisplayView({el: this.$(".username"), model: this.model}).render()
     } else {
-      if (current_user.get("balances").webs < usernameMinimum) {
-        new UsernameSorryView({el: this.$(".username"), model: this.model}).render()
-      } else {
-        new UsernameCreateView({el: this.$(".username"), model: this.model}).render()
+      if (this.model.get("me")) {
+        if (current_user.get("balances").webs < usernameMinimum) {
+          new UsernameSorryView({el: this.$(".username"), model: this.model}).render()
+        } else {
+          new UsernameCreateView({el: this.$(".username"), model: this.model}).render()
+        }
       }
     }
+    var el = this.$(".me")
+    var SubView = this.model.get("me") ? MyProfileView : OtherProfileView
+    new SubView({el: el, model: this.model}).render()
   }
 })
 

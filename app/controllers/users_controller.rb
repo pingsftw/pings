@@ -7,7 +7,9 @@ class UsersController < ApplicationController
   def show
     user = User.find_by_username(params[:id])
     user ||= User.by_wallet(params[:id])
-    render json: user.for_public
+    json = user.for_public
+    json[:me] = user == current_user
+    render json: json
   end
 
   def username
