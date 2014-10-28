@@ -22,7 +22,7 @@
 </body>
 
 <script type="text/template" id="header-template">
-<div class="home"><a><%=tokenName%></a></div>
+  <div class="home"><a><%=tokenName%></a></div>
   <div class="projects"><a>Projects</a></div>
   <div class="book"><a>Book</a></div>
   <div class="history"><a>History</a></div>
@@ -96,6 +96,11 @@
   <button class="btc">Show BTC donation address</button>
 </script>
 
+<script type="text/template" id="stats-template">
+  <label>USD donated</label><span class="data"><%%= total_usd / ScalingFactors["USD"]%></span>
+  <label>BTC donated</label><span class="data"><%%= total_btc / ScalingFactors["BTC"]%></span>
+</script>
+
 <script type="text/template" id="home-template">
   <div class="welcome" style="display:none">
     <h1>Join the <%=tokenName%> community!</h1>
@@ -105,8 +110,9 @@
       Sign up and donate to get some!
       <a class="action causes">What causes, you ask?</a>
     </p>
-  <div class="projects"></div>
+    <div class="projects"></div>
   </div>
+  <div class="stats"><span class="grumpy">Loading donation stats</span></div>
   <div class="user-box"></div>
   <div class='pricing' style="display:none">
     <h3>Reward Levels</h3>

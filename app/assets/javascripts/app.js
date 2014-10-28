@@ -236,6 +236,19 @@ var MiniBookView = BaseView.extend({
   }
 })
 
+var Stats = Backbone.Model.extend({
+  url: "/stats/overview.json"
+})
+
+var StatsView = BaseView.extend({
+  templateName: "stats",
+  initialize: function(){
+    var self = this
+    this.model.bind("change", function(){self.render()})
+    this.model.fetch()
+  }
+})
+
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
@@ -254,6 +267,7 @@ var HomePage = BaseView.extend({
   },
   postRender: function(){
     var self = this
+    new StatsView({el: this.$(".stats"), model: new Stats()})
     if (!this.model.get("id")) {
       new SignUpView({el: this.$(".user-box")}).render()
       this.$(".welcome").show()

@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :payments, :only => [:index]
   scope :format => true, :constraints => { :format => 'json' } do
+    resource :stats do
+      get :overview
+    end
     resources :projects do
       get :totals
     end
