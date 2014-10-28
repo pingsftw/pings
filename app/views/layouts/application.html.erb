@@ -328,20 +328,20 @@
 </script>
 
 <script type="text/template" id="project-item-template">
+  <td class="logo"><a href="/projects/<%%=id%>"><img class="logo" src="<%%=logo_url%>"/></a></td>
   <td><a href="/projects/<%%=id%>"><%%=name%></a></td>
-  <td><a href="/projects/<%%=id%>"><%%=logo%></a></td>
-  <td><%%=slogan%></td>
+  <td><%%=short_description%></td>
 </script>
 
 <script type="text/template" id="project-list-template">
   <h2>Projects</h2>
-  <table>
+  <table class="project-list">
     <thead>
+      <td class="logo"></td>
       <td class="name">Name</td>
-      <td class="logo">Logo</td>
-      <td class="slogan">Slogan</td>
+      <td class="short-description">Short Description</td>
     </thead>
-    <tbody class="project-list"></tbody>
+    <tbody></tbody>
   </table>
 </script>
 

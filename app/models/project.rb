@@ -140,11 +140,4 @@ class Project < ActiveRecord::Base
   def best_offer(currency)
     offers(currency).sort_by{|o| o[:price]}.first
   end
-
-  def as_json(*args)
-    h = super(*args)
-    h[:logo] = "HLELO"
-    h[:slogan] = "We the best"
-    h
-  end
 end

@@ -127,8 +127,10 @@ li div {
   width: 400px;
 }
 
-.project-list td{
-  width: 150px;
+.project-list {
+  td.logo, img.logo {
+    width: 40px;
+  }
 }
 
 .project-logo {
