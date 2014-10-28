@@ -5,7 +5,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    render json: User.by_wallet(params[:id]).for_public
+    user = User.find_by_username(params[:id])
+    user ||= User.by_wallet(params[:id])
+    render json: user.for_public
   end
 
   def username

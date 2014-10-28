@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: true
 
   after_create :check_for_gifts
+  UsernameMinimum = 100
 
   def check_for_gifts
     gifts = Gift.where(receiver_email: email)
@@ -26,6 +27,11 @@ class User < ActiveRecord::Base
   end
 
   def claim(username)
+    if stellar_wallet.balance("WEB") < UsernameMinimum
+      return {errors:
+          {username: "You must have at least #{UsernameMinimum} #{TOKEN_NAME} to choose a username"}
+      }
+    end
     update_attributes(username: username)
     self
   end

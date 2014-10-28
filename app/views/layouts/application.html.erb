@@ -7,6 +7,7 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
+  <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
 </head>
 <body>
   <header></header>
@@ -29,7 +30,7 @@
   <%% if (typeof(email) != "undefined") { %>
     <%% if (typeof(stellar_id) != "undefined") { %>
       <div class="user">
-        <p><label>email</label><a class="data user" href="/users/<%%=stellar_id%>"><%%=email%></a></p>
+        <p><label>email</label><a class="data user" href="/users/<%%= username ? username: stellar_id%>"><%%=email%></a></p>
         <p><label><%=tokenName%> total</label><span class="data"><%%= balances.webs %></span></p>
       </div>
     <%%} %>
@@ -184,6 +185,14 @@
   <%% } %>
   <div class="email-send"></div>
 </script>
+
+<script type="text/template" id="username-sorry-template">
+  <p>
+  Ooh, did you know that once you have <span class=data><%%=usernameMinimum%></span>
+  <%=tokenName%> you can pick a username?
+  <p>
+</script>
+
 
 <script type="text/template" id="username-display-template">
   <label>username</label><span class=data><%%= username %></span>

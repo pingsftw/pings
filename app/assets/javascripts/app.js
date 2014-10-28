@@ -83,6 +83,13 @@ var ProfilePage =  BaseView.extend({
   },
 })
 
+var UsernameSorryView = BaseView.extend({
+  templateName: "username-sorry",
+  params: function(){
+    return {usernameMinumum: window.usernameMinimum}
+  }
+})
+
 var ProfileView = BaseView.extend({
   templateName: "profile",
   postRender: function(){
@@ -90,7 +97,11 @@ var ProfileView = BaseView.extend({
     if (this.model.get("username")){
       new UsernameDisplayView({el: this.$(".username"), model: this.model}).render()
     } else {
-      new UsernameCreateView({el: this.$(".username"), model: this.model}).render()
+      if (current_user.get("balances").webs < usernameMinimum) {
+        new UsernameSorryView({el: this.$(".username"), model: this.model}).render()
+      } else {
+        new UsernameCreateView({el: this.$(".username"), model: this.model}).render()
+      }
     }
   }
 })
