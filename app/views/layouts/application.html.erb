@@ -7,7 +7,6 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
-  <script>window.Satoshis = 10000000</script>
 </head>
 <body>
   <header></header>
@@ -144,10 +143,10 @@
 </script>
 
 <script type="text/template" id="book-item-template">
-  <div class='btc'>  <%%= pay / Satoshis %></div>
-  <div class='price'>  <%%= price / Satoshis%></div>
+  <div class='btc'>  <%%= pay / scalingFactor %></div>
+  <div class='price'>  <%%= price / scalingFactor%></div>
   <div class='qty'>    <%%= web %></div>
-  <div class='project'><%%= project ? project.name : "Unknown" %></div>
+  <div class='project'><%%= project_name %></div>
 </script>
 
 <script type="text/template" id="sign-up-template">
@@ -258,7 +257,7 @@
 
 <script type="text/template" id="payment-item-template">
   <time title=<%%=created_at%>><%%=created_at%></time>
-  <div class="value"><%%=value / Satoshis %> BTC</div>
+  <div class="value"><%%=value %> Satoshis</div>
   <div class="from"><%%=input_address %></div>
   <div class="hash"><%%=input_transaction_hash %></div>
 </script>

@@ -1,5 +1,13 @@
+var Satoshis = 10000000
+
 var BookItemView = BaseView.extend({
   templateName: "book-item",
+  additionalParams: function(){
+    return {
+      currency: this.attributes.currency,
+      scalingFactor: ScalingFactors[this.attributes.currency]
+    }
+  }
 })
 
 var Book = Backbone.Collection.extend({
@@ -21,6 +29,12 @@ var BooksPage = BaseView.extend({
 var BookView = ListView.extend({
   templateName: "book",
   itemName: "Book",
+  additionalParams: function(){
+    return {
+      currency: this.attributes.currency,
+    }
+  }
+
 })
 
 var FAQPage = BaseView.extend({
@@ -116,15 +130,17 @@ var SupportView = BaseView.extend({
   }
 })
 
+var ScalingFactors = {
+        USD: 100,
+        BTC: Satoshis
+      }
+
 var MiniBookView = BaseView.extend({
   templateName: "mini-book",
   additionalParams: function(){
     return {
       currency: this.attributes.currency,
-      scalingFactor: {
-        USD: 100,
-        BTC: Satoshis
-      }[this.attributes.currency]
+      scalingFactor: ScalingFactors[this.attributes.currency]
     }
   }
 })

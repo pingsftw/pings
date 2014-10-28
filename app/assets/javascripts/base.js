@@ -113,7 +113,7 @@ var ListView = BaseView.extend({
     var tagName = table ? "tr" : "li"
     var target = table ? this.$("table") : this.$("ul")
     this.collection.each(function(dataItem){
-      var item = new view({model: dataItem, tagName: tagName}).render()
+      var item = new view({model: dataItem, tagName: tagName, attributes: self.attributes}).render()
         target.append(item.el)
     })
     if (!this.collection.length) {
