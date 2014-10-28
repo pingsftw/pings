@@ -225,8 +225,13 @@ class StellarWallet < ActiveRecord::Base
 
   def self.to_inflate
     h = inflation_target
+    projects = Project.for_wallets(h.keys)
     h.each do |k,v|
-      h[k] = v/5
+      if projects[k]
+        h[k] = v/5
+      else
+        h[k] = 0
+      end
     end
     h
   end
