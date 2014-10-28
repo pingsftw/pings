@@ -116,7 +116,6 @@ var UsernameSorryView = BaseView.extend({
 var ProfileView = BaseView.extend({
   templateName: "profile",
   postRender: function(){
-    new EmailSendView({el: this.$(".email-send")}).render()
     if (this.model.get("username")){
       new UsernameDisplayView({el: this.$(".username"), model: this.model}).render()
     } else {
@@ -224,6 +223,7 @@ var HomePage = BaseView.extend({
       this.$(".welcome").show()
     } else {
       this.$('.pricing').show()
+      new EmailSendView({el: this.$(".email-send")}).render()
       new BuyView({el: this.$(".user-box"), model: this.model.get("card")}).render()
       var btcBook = new Book([], {currency: "BTC"})
       btcBook.bind("reset", function(){
