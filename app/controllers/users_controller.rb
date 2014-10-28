@@ -9,7 +9,8 @@ class UsersController < ApplicationController
   end
 
   def username
-    render json: []
+    claim = current_user.claim(params["username"])
+    render json: (claim.errors.empty? ? {username: params["username"]} : {errors: claim.errors})
   end
 
   def support

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :payments, through: :payment_addresses
   has_many :received_gifts, foreign_key: :receiver_id, class_name: "Gift"
 
+  validates :username, uniqueness: true
+
   after_create :check_for_gifts
 
   def check_for_gifts
@@ -23,6 +25,11 @@ class User < ActiveRecord::Base
     gift.process
   end
 
+  def claim(username)
+    update_attributes(username: username)
+    self
+  end
+
   def self.by_wallet(account_id)
     StellarWallet.find_by_account_id(account_id).user
   end
@@ -31,6 +38,7 @@ class User < ActiveRecord::Base
     {
       stellar_id: stellar_wallet.id,
       supporting: stellar_wallet.supporting,
+      username: username,
       webs: balances[:webs]
     }
   end

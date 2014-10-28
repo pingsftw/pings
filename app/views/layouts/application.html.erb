@@ -169,6 +169,10 @@
   <a class="subtle login">I already have an account!</a>
 </script>
 
+<script type="text/template" id="profile-page-template">
+  <div class="profile"><h2>Loading profile</h2></div>
+</script>
+
 <script type="text/template" id="profile-template">
   <h2>PROFILE</h2>
   <div class=username></div>
@@ -179,6 +183,10 @@
     LOADING
   <%% } %>
   <div class="email-send"></div>
+</script>
+
+<script type="text/template" id="username-display-template">
+  <label>username</label><span class=data><%%= username %></span>
 </script>
 
 <script type="text/template" id="username-create-template">

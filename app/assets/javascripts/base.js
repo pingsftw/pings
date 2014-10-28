@@ -66,6 +66,7 @@ var FormView = BaseView.extend({
         type: self.$("form").attr("method"),
         data: vals,
         success: function(data){
+          self.$("[type=submit]").removeAttr("disabled")
           if (data.errors){
             _.each(data.errors, function(value, key){
               var div = this.$("[name="+key+"]").parent().find(".error")
@@ -73,12 +74,12 @@ var FormView = BaseView.extend({
             })
 
             self.error()
+          } else {
+            self.callback(data)
           }
-          self.$("[type=submit]").removeAttr("disabled")
           if (data.csrfToken) {
             $('meta[name="csrf-token"]').attr('content', data.csrfToken);
           }
-          self.callback(data)
         },
         error: function(e){
           self.$("[type=submit]").removeAttr("disabled")

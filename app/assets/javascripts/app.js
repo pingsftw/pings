@@ -72,21 +72,38 @@ var User = Backbone.Model.extend({
   }
 })
 
-var ProfilePage = BaseView.extend({
-  templateName: "profile",
+var ProfilePage =  BaseView.extend({
+  templateName: "profile-page",
   initialize: function(){
     var self=this
-    this.model.bind("change", function(){console.log("boom"); self.render()})
+    this.model.bind("change", function(){
+      new ProfileView({el: self.$(".profile"), model: self.model}).render()
+    })
     this.model.fetch()
   },
+})
+
+var ProfileView = BaseView.extend({
+  templateName: "profile",
   postRender: function(){
     new EmailSendView({el: this.$(".email-send")}).render()
-    new UsernameCreateView({el: this.$(".username")}).render()
+    if (this.model.get("username")){
+      new UsernameDisplayView({el: this.$(".username"), model: this.model}).render()
+    } else {
+      new UsernameCreateView({el: this.$(".username"), model: this.model}).render()
+    }
   }
 })
 
+var UsernameDisplayView = BaseView.extend({
+  templateName: "username-display"
+})
+
 var UsernameCreateView = FormView.extend({
-  templateName: "username-create"
+  templateName: "username-create",
+  callback: function(user){
+    this.model.trigger("change")
+  }
 })
 
 var ConfirmView = BaseView.extend({
