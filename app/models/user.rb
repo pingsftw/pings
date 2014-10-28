@@ -29,7 +29,8 @@ class User < ActiveRecord::Base
       receiver = User.by_wallet(opts[:stellar_id])
       gift = Gift.create(giver: self, receiver: receiver, value: value)
     end
-    gift.process
+    gift.process if gift.persisted?
+    gift
   end
 
   def claim(username)

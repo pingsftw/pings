@@ -1,6 +1,7 @@
 class Gift < ActiveRecord::Base
   belongs_to :giver, class_name: "User"
   belongs_to :receiver, class_name: "User"
+  validates :value, numericality: { only_integer: true, greater_than: 0}
 
   def process
     return if transaction_hash
@@ -23,6 +24,7 @@ class Gift < ActiveRecord::Base
   def as_json(*args)
     h = super(*args)
     h["sender_email"] = giver.email
+    h["errors"] = self.errors
     h
   end
 end

@@ -185,6 +185,7 @@
   <p>Give some <%=tokenName%>?</p>
   <form action="/gifts.json" method="POST">
     <input type="hidden" name="stellar_id" value="<%%=stellar_id%>"/>
+    <div class="error"> </div>
     <label>How many?</label><input name="value"/>
     <button type="submit">Give!</button>
   </form>
