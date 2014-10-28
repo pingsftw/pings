@@ -160,6 +160,7 @@ var HomePage = BaseView.extend({
       usdBook.fetch({reset: true})
       if (this.model.get("balances") && this.model.get("balances").webs) {
         new SupportView({el: this.$(".support"), model: self.model}).render()
+        this.$(".support").show()
       }
     }
   }
