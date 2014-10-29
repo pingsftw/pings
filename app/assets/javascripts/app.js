@@ -50,7 +50,6 @@ var FAQPage = BaseView.extend({
 var ChargeMessageView = BaseView.extend({
   templateName: "charge-message",
   postRender: function(){
-    var projects = new ProjectList()
     var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
     projects.bind("reset", function(){ changeView.render() })
     projects.fetch({reset: true})
@@ -67,7 +66,6 @@ var ChargePage = FormView.extend({
 var ProjectsPage = BaseView.extend({
   templateName: "projects",
   postRender: function(){
-    var projects = new ProjectList()
     this.$el.append(new ProjectListView({collection: projects}).render().el)
   },
    events: {
@@ -120,6 +118,15 @@ var User = Backbone.Model.extend({
   url: function(){
     return "/users/" + this.get("stellar_id") + ".json"
   },
+  getSupporting: function(){
+    var self = this
+    remote.requestAccountInfo(self.get("stellar_id"), function(error, data){
+      var dest = data.account_data.InflationDest
+      var project = projects.detect(function(project){return project.get("account_id")==dest})
+      console.log(dest, project)
+      self.set("supporting", project.get("name"))
+    })
+  },
   getWebsBalance: function(){
     var self=this
     remote.requestAccountLines(self.get("stellar_id"), function(error, data){
@@ -147,6 +154,7 @@ var ProfilePage =  BaseView.extend({
     })
     this.model.fetch({success: function(){
       self.model.getWebsBalance()
+      self.model.getSupporting()
     }})
   }
 })
@@ -228,7 +236,6 @@ var SupportView = BaseView.extend({
   },
   postRender: function(){
     var self = this
-    var projects = new ProjectList()
     var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
     projects.bind("reset", function(){ changeView.render() })
     projects.fetch({reset: true})
@@ -283,7 +290,6 @@ var HomePage = BaseView.extend({
       $(".user-box").empty().append(el)
     },
     "click .causes": function(){
-      var projects = new ProjectList()
       new ProjectListView({collection: projects, el: this.$('.projects')}).render()
     }
   },

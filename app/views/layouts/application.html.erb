@@ -8,7 +8,9 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
+  <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
+  <script> var projects = new ProjectList(<%=Project.all.to_json.html_safe%>)</script>
 </head>
 <body>
   <header></header>

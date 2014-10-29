@@ -59,8 +59,8 @@ class User < ActiveRecord::Base
   def for_public
     {
       stellar_id: stellar_wallet.account_id,
-      supporting: stellar_wallet.supporting,
-      username: username
+      username: username,
+      supporting: nil
     }
   end
 

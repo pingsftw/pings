@@ -149,4 +149,10 @@ class Project < ActiveRecord::Base
   def best_offer(currency)
     offers(currency).sort_by{|o| o[:price]}.first
   end
+
+  def as_json(*args)
+    h = super *args
+    h[:account_id] = stellar_wallet.account_id
+    h
+  end
 end
