@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :received_gifts, foreign_key: :receiver_id, class_name: "Gift"
   has_many :sent_gifts, foreign_key: :giver_id, class_name: "Gift"
 
-  validates :username, uniqueness: true
+  validates :username, uniqueness: true, allow_nil: true
 
   after_create :check_for_gifts
   UsernameMinimum = 100

@@ -67,7 +67,7 @@ var FormView = BaseView.extend({
         data: vals,
         success: function(data){
           self.$("[type=submit]").removeAttr("disabled")
-          if (data.errors){
+          if (data.errors && !_(data.errors).isEmpty()){
             _.each(data.errors, function(value, key){
               var div = self.$("[name="+key+"]").parent().find(".error")
               if (!div) {

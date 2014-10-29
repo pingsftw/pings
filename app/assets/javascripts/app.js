@@ -120,8 +120,10 @@ var User = Backbone.Model.extend({
     })
   },
   getWebsBalance: function(){
+    if (!this.get("stellar_id")) return
     var self=this
     remote.requestAccountLines(self.get("stellar_id"), function(error, data){
+      if (error) console.error(error)
       var line = _.detect(data.lines, function(line){return line.currency=="WEB"})
       self.set("webs_balance", line.balance)
     })
