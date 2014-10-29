@@ -31,7 +31,7 @@
     <%% if (typeof(stellar_id) != "undefined") { %>
       <div class="user">
         <p><label>email</label><a class="data user" href="/users/<%%= username ? username: stellar_id%>"><%%=email%></a></p>
-        <p><label><%=tokenName%> total</label><span class="data"><%%= balances.webs %></span></p>
+        <p><label><%=tokenName%> total</label><span class="data"><%%= webs_balance %></span></p>
       </div>
     <%%} %>
     <div class="logout-button"><span>Log out</span></div>
@@ -132,7 +132,11 @@
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <p><label>current <%%=currency%> reward rate</label><span class="data"><%%= (web / pay) * scalingFactor %> <%=tokenName%> per <%%=currency%>.</span></p>
+  <%% if (this.length){ %>
+    <p><label>current <%%=currency%> reward rate</label><span class="data"><%%= (web / pay) * scalingFactor %> <%=tokenName%> per <%%=currency%>.</span></p>
+  <%%} else {%>
+    No offers
+  <%%} %>
 </script>
 
 <script type="text/template" id="books-template">

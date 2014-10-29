@@ -114,6 +114,14 @@ var Project = Backbone.Model.extend({
 var User = Backbone.Model.extend({
   url: function(){
     return "/users/" + this.get("stellar_id") + ".json"
+  },
+  getWebsBalance: function(){
+    var self=this
+    remote.requestAccountLines(self.get("stellar_id"), function(something, data){
+      console.log(arguments)
+      var line = _.detect(data.lines, function(line){return line.currency=="WEB"})
+      self.set("webs_balance", line.balance)
+    })
   }
 })
 
@@ -459,7 +467,7 @@ var LoginView = FormView.extend({
   templateName: "login" ,
   callback: function(user){
     if (!user.errors){
-      current_user = new Backbone.Model(user)
+      current_user = new User(user)
       setHeader()
       router.home({trigger: true})
     }
@@ -538,6 +546,10 @@ var HeaderView = BaseView.extend({
   postRender: function(){
     new LogoutButtonView({el: this.$(".logout-button")}).render()
   },
+  initialize: function(){
+    var self = this
+    this.model.bind("change", function(){self.render()})
+  },
   events: {
     "click .history": function(){router.navigate("history", {trigger: true})},
     "click .book": function(){router.navigate("book", {trigger: true})},
@@ -562,10 +574,21 @@ function setHeader(){
 
 var router = new MainRouter()
 $(function(){
-current_user = new Backbone.Model(user)
+current_user = new User(user)
 Stripe.setPublishableKey('pk_test_k1B3ERuI0ElXdq1U6KjgNBUh');
 setHeader()
 
 Backbone.history.start({pushState: true})
 $("time").timeago()
+window.remote = new stellar.Remote({
+  servers: [
+    {
+        host:    'test.stellar.org'
+      , port:    9001
+      , secure:  true
+    }
+  ]
+})
+remote.connect()
+current_user.getWebsBalance()
 })
