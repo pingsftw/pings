@@ -104,7 +104,10 @@ var LoadingView = Backbone.View.extend({
 var ListView = BaseView.extend({
   initialize: function(){
     var self = this
-    this.collection.bind("reset", function(){self.populate()})
+    this.collection.bind("sync", function(){console.log("AHH");self.populate()})
+    if (this.collection.url) {
+      this.collection.fetch()
+    }
   },
   populate: function(){
     var self = this
