@@ -93,16 +93,10 @@ var DonationTotals = Backbone.Model.extend({
 
 var ProjectPage = BaseView.extend({
   templateName: "project",
-  initialize: function(){
-    var self = this
-    this.model.bind("change", function(model){
-      self.render()
-      self.totals.fetch()
-    })
-    this.totals = new DonationTotals({id: this.model.get("id")})
-  },
   postRender: function(){
-    new TotalsView({model: this.totals, el: this.$(".totals")})
+    var totals = new DonationTotals({id: this.model.get("id")})
+    new TotalsView({model: totals, el: this.$(".totals")})
+    totals.fetch()
   }
 })
 
@@ -536,9 +530,7 @@ var MainRouter = Backbone.Router.extend({
   },
   project: function(project_id){
     var el = $("#main")[0]
-    var project = new Project({id: project_id})
-    new ProjectPage({el: el, model: project}).render()
-    project.fetch()
+    new ProjectPage({el: el, model: projects.get(project_id)}).render()
   },
   profile: function(stellar_id){
     var el = $("#main")[0]
