@@ -14,7 +14,6 @@ var Book = Backbone.Collection.extend({
   fetch: function(){
     var self = this
     remote.book(this.currency, function(offers){
-      console.log(offers)
       self.reset(offers)
     })
   },
@@ -123,7 +122,7 @@ var User = Backbone.Model.extend({
   },
   getWebsBalance: function(){
     var self=this
-    remote.requestAccountLines(self.get("stellar_id"), function(something, data){
+    remote.requestAccountLines(self.get("stellar_id"), function(error, data){
       var line = _.detect(data.lines, function(line){return line.currency=="WEB"})
       self.set("webs_balance", line.balance)
     })
@@ -146,7 +145,9 @@ var ProfilePage =  BaseView.extend({
     this.model.bind("change", function(){
       new ProfileView({el: self.$(".profile"), model: self.model}).render()
     })
-    this.model.fetch()
+    this.model.fetch({success: function(){
+      self.model.getWebsBalance()
+    }})
   }
 })
 

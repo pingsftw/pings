@@ -60,8 +60,7 @@ class User < ActiveRecord::Base
     {
       stellar_id: stellar_wallet.account_id,
       supporting: stellar_wallet.supporting,
-      username: username,
-      webs: stellar_wallet.balance("WEB")
+      username: username
     }
   end
 
