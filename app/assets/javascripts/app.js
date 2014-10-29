@@ -116,7 +116,6 @@ var User = Backbone.Model.extend({
     remote.requestAccountInfo(self.get("stellar_id"), function(error, data){
       var dest = data.account_data.InflationDest
       var project = projects.by_address(dest)
-      console.log(dest, project)
       self.set("supporting", project.get("name"))
     })
   },
