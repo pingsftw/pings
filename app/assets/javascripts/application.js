@@ -17,5 +17,7 @@
 //= require backbone
 //= require bootstrap.min
 //= require base
+//= require stellar-lib
+//= require remote
 //= require app
 //= require_tree .

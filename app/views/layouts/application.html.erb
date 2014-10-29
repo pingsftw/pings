@@ -3,12 +3,12 @@
 <html>
 <head>
   <title><%=tokenName%></title>
+  <script> window.masterWallet = "<%= StellarWallet::StellarAccount %>" </script>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
-  <script> window.masterWallet = "<%= StellarWallet::StellarAccount %>" </script>
 </head>
 <body>
   <header></header>
@@ -134,11 +134,7 @@
 </script>
 
 <script type="text/template" id="mini-book-template">
-  <%% if (this.length){ %>
-    <p><label>current <%%=currency%> reward rate</label><span class="data"><%%= (web / pay) * scalingFactor %> <%=tokenName%> per <%%=currency%>.</span></p>
-  <%%} else {%>
-    No offers
-  <%%} %>
+  <p><label>current <%%=currency%> reward rate</label><span class="data"><%%= (TakerGets.value / TakerPays.value) * scalingFactor %> <%=tokenName%> per <%%=currency%>.</span></p>
 </script>
 
 <script type="text/template" id="books-template">

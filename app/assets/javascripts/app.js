@@ -11,7 +11,13 @@ var BookItemView = BaseView.extend({
 })
 
 var Book = Backbone.Collection.extend({
-  url: function() {return "/book.json?currency=" + this.currency},
+  fetch: function(){
+    var self = this
+    remote.book(this.currency, function(offers){
+      console.log(offers)
+      self.reset(offers)
+    })
+  },
   initialize: function(models, options){this.currency = options.currency}
 })
 
@@ -23,6 +29,7 @@ var BooksPage = BaseView.extend({
     new BookView({el: this.$(".btc-book"), collection: btcBook, attributes: {currency: "BTC"}}).render()
     new BookView({el: this.$(".usd-book"), collection: usdBook, attributes: {currency: "USD"}}).render()
     btcBook.fetch()
+    usdBook.fetch()
   }
 })
 
@@ -76,7 +83,6 @@ var ProjectsPage = BaseView.extend({
 var TotalsView = BaseView.extend({
   templateName: "totals",
   initialize: function(){
-    console.log("hello", this.model)
     var self = this
     this.model.bind("change", function(){
       self.render()
@@ -118,7 +124,6 @@ var User = Backbone.Model.extend({
   getWebsBalance: function(){
     var self=this
     remote.requestAccountLines(self.get("stellar_id"), function(something, data){
-      console.log(arguments)
       var line = _.detect(data.lines, function(line){return line.currency=="WEB"})
       self.set("webs_balance", line.balance)
     })
@@ -248,7 +253,7 @@ var Stats = Backbone.Model.extend({
   url: "/stats/overview.json",
   getOutstanding: function(){
     var self = this
-    mainline(function(lines){
+    remote.mainline(function(lines){
       sum = _.inject(lines, function(memo, line){return memo - +line.balance},0)
       self.set("issued_tokens", sum)
     })
@@ -581,30 +586,10 @@ function setHeader(){
 }
 
 var router = new MainRouter()
-
-var mainline = function(callback){
-  remote.requestAccountLines(masterWallet, function(e, d){
-    var lines = _.select(d.lines, function(l){return l.currency=="WEB" && l.balance < 0})
-    callback(lines)
-  }).request()
-}
-
 $(function(){
 current_user = new User(user)
 Stripe.setPublishableKey('pk_test_k1B3ERuI0ElXdq1U6KjgNBUh');
 setHeader()
-
-window.remote = new stellar.Remote({
-  servers: [
-    {
-        host:    'test.stellar.org'
-      , port:    9001
-      , secure:  true
-    }
-  ]
-})
-remote.connect()
-
 Backbone.history.start({pushState: true})
 $("time").timeago()
 current_user.getWebsBalance()
