@@ -2,6 +2,16 @@ class StripeRecipient < ActiveRecord::Base
   belongs_to :project
   Stripe.api_key = "sk_test_mH78kESY1UJUALYxszlDOAKz"
 
+  def pay(value, hash)
+    tx = Stripe::Transfer.create(
+      :amount => value,
+      :currency => "usd",
+      :recipient => stripe_id,
+      :description => "Transfer for #{hash}"
+    )
+    tx["id"]
+  end
+
   def self.from_stripe(recipient)
     hash = recipient.to_hash
     hash[:stripe_id] = hash.delete(:id)

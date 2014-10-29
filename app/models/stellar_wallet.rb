@@ -168,13 +168,17 @@ class StellarWallet < ActiveRecord::Base
     self.submit(params)
   end
 
-  def pay(address, value)
+  def redeem(currency, value)
+    pay(StellarAccount, value, currency)
+  end
+
+  def pay(address, value, currency="WEB")
     params = {
     tx_json: {
         TransactionType: "Payment",
         Destination: address,
         Amount: {
-          currency: "WEB",
+          currency: currency,
           issuer: StellarAccount,
           value: value
         }

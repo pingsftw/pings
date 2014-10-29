@@ -11,7 +11,12 @@ class Charge < ActiveRecord::Base
     res =  user.bid(:usd)
     self.bid_hash = res["tx_json"]["hash"]
     save!
+    pay_out
     email
+  end
+
+  def pay_out
+    puts "CAN'T PAY OUT"
   end
 
   def email

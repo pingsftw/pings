@@ -4,9 +4,16 @@ class Project < ActiveRecord::Base
   attr_accessor :unoffered_webs
   has_many :acceptances
 
-  def self.reset_btc
+  def self.reset
     all.each {|p| p.cancel_all("BTC")}
+    all.each {|p| p.cancel_all("USD")}
     PriceLevel.update_all filled: 0, complete: false
+  end
+
+  def cash_out_usd(value = nil)
+    value ||= balance("USD")
+    c = Cashout.create(project: self, value: value)
+    c.process!
   end
 
   def self.for_wallets(account_ids)
@@ -124,15 +131,15 @@ class Project < ActiveRecord::Base
   def offers(currency)
     @offers ||={}
     @offers[currency] ||=
-    stellar_wallet.offers(currency).map do |o|
-      webs = o["taker_gets"]["value"].to_i
-      currency = o["taker_pays"]["value"].to_i
-      {
-        webs: webs,
-        currency: currency,
-        price: currency.to_f / webs
-      }
-    end
+      stellar_wallet.offers(currency).map do |o|
+        webs = o["taker_gets"]["value"].to_i
+        currency = o["taker_pays"]["value"].to_i
+        {
+          webs: webs,
+          currency: currency,
+          price: currency.to_f / webs
+        }
+      end
   end
 
   def webs_on_offer(currency)
