@@ -25,8 +25,9 @@ class Project < ActiveRecord::Base
   end
 
   def self.bidders(currency)
-    projects = Project.where(autobid: true).includes(:acceptances)
+    projects = Project.where(autobid: true).includes([:acceptances, :stripe_recipient])
     projects = projects.select{|p| p.acceptances.detect{|a| a.currency == currency}}
+    projects = projects.select{|p| p.stripe_recipient} if currency == "USD"
     projects.each do |p|
       p.unoffered_webs = p.balance("WEB") - p.webs_on_offer(currency)
     end
