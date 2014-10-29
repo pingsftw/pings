@@ -148,7 +148,7 @@
 <script type="text/template" id="book-template">
   <ul class="book-items">
     <li>
-    <div class='btc'>  <%%=currency%> available </div>
+    <div class='currency'>  <%%=currency%> available </div>
       <div class='price'> Price </div>
       <div class='qty'>   <%=tokenName%> </div>
       <div class='project'>Project</div>
@@ -157,10 +157,10 @@
 </script>
 
 <script type="text/template" id="book-item-template">
-  <div class='btc'>  <%%= pay / scalingFactor %></div>
-  <div class='price'>  <%%= price / scalingFactor%></div>
-  <div class='qty'>    <%%= web %></div>
-  <div class='project'><%%= project_name %></div>
+  <div class='currency'>  <%%= +TakerPays.value / scalingFactor %></div>
+  <div class='price'>  <%%= +TakerPays.value / +TakerGets.value / scalingFactor%></div>
+  <div class='qty'>    <%%= TakerGets.value %></div>
+  <div class='project'><%%= projects.by_address(Account).get("name") %></div>
 </script>
 
 <script type="text/template" id="sign-up-template">

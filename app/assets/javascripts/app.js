@@ -15,6 +15,7 @@ var Book = Backbone.Collection.extend({
     var self = this
     remote.book(this.currency, function(offers){
       self.reset(offers)
+      self.trigger("sync")
     })
   },
   initialize: function(models, options){this.currency = options.currency}
@@ -114,7 +115,7 @@ var User = Backbone.Model.extend({
     var self = this
     remote.requestAccountInfo(self.get("stellar_id"), function(error, data){
       var dest = data.account_data.InflationDest
-      var project = projects.detect(function(project){return project.get("account_id")==dest})
+      var project = projects.by_address(dest)
       console.log(dest, project)
       self.set("supporting", project.get("name"))
     })
@@ -364,6 +365,9 @@ var HistoryPage = BaseView.extend({
 })
 
 var ProjectList = Backbone.Collection.extend({
+  by_address: function(address){
+    return this.detect(function(p){return p.get("account_id") == address})
+  }
 })
 
 var ProjectItemView = BaseView.extend({
