@@ -245,7 +245,14 @@ var MiniBookView = BaseView.extend({
 })
 
 var Stats = Backbone.Model.extend({
-  url: "/stats/overview.json"
+  url: "/stats/overview.json",
+  getOutstanding: function(){
+    var self = this
+    mainline(function(lines){
+      sum = _.inject(lines, function(memo, line){return memo - +line.balance},0)
+      self.set("issued_tokens", sum)
+    })
+  }
 })
 
 var StatsView = BaseView.extend({
@@ -254,6 +261,7 @@ var StatsView = BaseView.extend({
     var self = this
     this.model.bind("change", function(){self.render()})
     this.model.fetch()
+    this.model.getOutstanding()
   }
 })
 
@@ -573,13 +581,19 @@ function setHeader(){
 }
 
 var router = new MainRouter()
+
+var mainline = function(callback){
+  remote.requestAccountLines(masterWallet, function(e, d){
+    var lines = _.select(d.lines, function(l){return l.currency=="WEB" && l.balance < 0})
+    callback(lines)
+  }).request()
+}
+
 $(function(){
 current_user = new User(user)
 Stripe.setPublishableKey('pk_test_k1B3ERuI0ElXdq1U6KjgNBUh');
 setHeader()
 
-Backbone.history.start({pushState: true})
-$("time").timeago()
 window.remote = new stellar.Remote({
   servers: [
     {
@@ -590,5 +604,8 @@ window.remote = new stellar.Remote({
   ]
 })
 remote.connect()
+
+Backbone.history.start({pushState: true})
+$("time").timeago()
 current_user.getWebsBalance()
 })
