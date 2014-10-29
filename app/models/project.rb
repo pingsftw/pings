@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   has_one :stellar_wallet
+  has_one :stripe_recipient
   attr_accessor :unoffered_webs
   has_many :acceptances
 

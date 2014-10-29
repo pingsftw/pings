@@ -21,6 +21,7 @@ gem 'spring',        group: :development
 
 gem "rspec-rails"
 gem "devise"
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem "httparty"
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
