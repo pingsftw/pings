@@ -50,9 +50,7 @@ var FAQPage = BaseView.extend({
 var ChargeMessageView = BaseView.extend({
   templateName: "charge-message",
   postRender: function(){
-    var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
-    projects.bind("reset", function(){ changeView.render() })
-    projects.fetch({reset: true})
+    new ChangeSupportView({collection: projects, el: self.$(".change-support")}).render()
   }
 })
 
@@ -66,7 +64,7 @@ var ChargePage = FormView.extend({
 var ProjectsPage = BaseView.extend({
   templateName: "projects",
   postRender: function(){
-    this.$el.append(new ProjectListView({collection: projects}).render().el)
+    new ProjectListView({collection: projects, el: this.$(".project-list")}).render()
   },
    events: {
     "click a": function(event){
@@ -236,9 +234,7 @@ var SupportView = BaseView.extend({
   },
   postRender: function(){
     var self = this
-    var changeView =new ChangeSupportView({collection: projects, el: self.$(".change-support")})
-    projects.bind("reset", function(){ changeView.render() })
-    projects.fetch({reset: true})
+    ChangeSupportView({collection: projects, el: self.$(".change-support")}).render()
   }
 })
 
@@ -374,7 +370,6 @@ var HistoryPage = BaseView.extend({
 })
 
 var ProjectList = Backbone.Collection.extend({
-  url: "/projects.json"
 })
 
 var ProjectItemView = BaseView.extend({

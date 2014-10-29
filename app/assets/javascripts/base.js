@@ -105,7 +105,6 @@ var ListView = BaseView.extend({
   initialize: function(){
     var self = this
     this.collection.bind("reset", function(){self.populate()})
-    this.collection.fetch({reset: true})
   },
   populate: function(){
     var self = this
@@ -129,6 +128,9 @@ var ListView = BaseView.extend({
     this.$(".empty").hide()
     this.loading = new LoadingView().render()
     this.$el.append(this.loading.el)
+    if (this.collection.length) {
+      this.populate()
+    }
   }
 })
 
