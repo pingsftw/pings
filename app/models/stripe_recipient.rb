@@ -1,6 +1,5 @@
 class StripeRecipient < ActiveRecord::Base
   belongs_to :project
-  Stripe.api_key = "sk_test_mH78kESY1UJUALYxszlDOAKz"
 
   def pay(value, hash)
     tx = Stripe::Transfer.create(

@@ -592,7 +592,6 @@ function setHeader(){
 var router = new MainRouter()
 $(function(){
 current_user = new User(user)
-Stripe.setPublishableKey('pk_test_k1B3ERuI0ElXdq1U6KjgNBUh');
 setHeader()
 Backbone.history.start({pushState: true})
 $("time").timeago()

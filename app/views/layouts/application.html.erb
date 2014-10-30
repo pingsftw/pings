@@ -7,6 +7,7 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <script> Stripe.setPublishableKey('<%=STRIPE_PUBLISHABLE_KEY%>'); </script>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
@@ -228,8 +229,6 @@
   <%% if (typeof(webs_balance) !== "undefined" ) { %>
       <p><label>Total <%= tokenName %></label><span class="data"><%%=webs_balance%></span></p>
       <p><label>Currently Supporting</label><span class="data"><%%=supporting%></span></p>
-  <%% } else {%>
-    LOADING
   <%% } %>
 </script>
 

@@ -1,8 +1,7 @@
 class StellarWallet < ActiveRecord::Base
   Url = 'https://test.stellar.org:9002'
-  StellarSecret = "sfvmSPdfVM6FFhSjSxvKVcg6vR95FAWBuczLoecNVH7xVJhBF8f"
-  StellarAccount = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
-  WEBS_PROJECT_ACCOUNT_ID = "gG7WkiVMubimEfL2q4VhPmcniLxDCqQqTK"
+  StellarSecret = StellarConfig[:hot_wallet_secret]
+  StellarAccount = StellarConfig[:hot_wallet]
   before_create :get_keys
   belongs_to :user
   belongs_to :project
@@ -18,7 +17,7 @@ class StellarWallet < ActiveRecord::Base
 
   def set_lines
     trust_server("WEB", 1000000)
-    inf_target = project_id ? account_id : WEBS_PROJECT_ACCOUNT_ID
+    inf_target = project_id ? account_id : StellarConfig[:default_inflation_account]
     set_inflation inf_target
     trust_server("BTC", 100_000_000) #1 BTC
     trust_server("USD", 100_000) #$1,000
