@@ -473,8 +473,9 @@ var LogoutButtonView = FormView.extend({
   templateName: "logout-button",
   callback: function(data){
     current_user = new Backbone.Model(null)
-    setHeader()
+    router.navigate("/", {trigger: true})
     router.home({trigger: true})
+    setHeader()
   }
 })
 
@@ -562,6 +563,7 @@ var HeaderView = BaseView.extend({
   initialize: function(){
     var self = this
     this.model.bind("change", function(){self.render()})
+    this.model.getWebsBalance()
   },
   events: {
     "click .history": function(){router.navigate("history", {trigger: true})},
