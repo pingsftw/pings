@@ -64,7 +64,7 @@
 </script>
 
 <script type="text/template" id="charge-message-template">
-  <p>You have donated <%%=currency%> USD and received <%%=token%> <%=tokenName%>.</p>
+  <p>You have donated <%%= currency / 100 %> USD and received <%%=token%> <%=tokenName%>.</p>
   <p>Now you can vote for projects!</p>
   <div class="change-support"><span class="grumpy">Loading your ballot</span></div>
 </script>
@@ -304,8 +304,8 @@
 </script>
 
 <script type="text/template" id="transaction-item-template">
-  Received <%%= webs_qty %> <%=tokenName%> from <%%= payment_qty / 100 %> <%%= payment_currency %> donation to
-  <%%= project_name %>
+  Received <%%= webs_qty %> <%=tokenName%> from <%%= payment_qty / 100 %> <%%= payment_currency %>
+  donation to <%%= project_name %>
 </script>
 
 <script type="text/template" id="transactions-template">

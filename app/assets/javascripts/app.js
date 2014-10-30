@@ -52,6 +52,7 @@ var ChargeMessageView = BaseView.extend({
   templateName: "charge-message",
   postRender: function(){
     new ChangeSupportView({collection: projects, el: self.$(".change-support")}).render()
+    current_user.getWebsBalance()
   }
 })
 
