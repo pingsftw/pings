@@ -1,5 +1,4 @@
 class StellarWallet < ActiveRecord::Base
-  Url = 'https://test.stellar.org:9002'
   StellarSecret = StellarConfig[:hot_wallet_secret]
   StellarAccount = StellarConfig[:hot_wallet]
   before_create :get_keys
@@ -31,7 +30,7 @@ class StellarWallet < ActiveRecord::Base
     if params
       body[:params] = [params]
     end
-    res = HTTParty.post(Url, body: body.to_json).parsed_response["result"]
+    res = HTTParty.post("https://" + StellarConfig[:host] + ":9002", body: body.to_json).parsed_response["result"]
     if (res["engine_result"] && res["engine_result"] != "tesSUCCESS") || res["status"] == "error"
       throw StellarBoom.new(res)
     end

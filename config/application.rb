@@ -11,7 +11,7 @@ TOKEN_NAME = "Sunbeams"
 Stripe.api_key = "sk_test_mH78kESY1UJUALYxszlDOAKz"
 
 StellarConfig = {
-  url: 'https://test.stellar.org:9002',
+  host: 'test.stellar.org',
   hot_wallet_secret: "sfvmSPdfVM6FFhSjSxvKVcg6vR95FAWBuczLoecNVH7xVJhBF8f",
   hot_wallet: "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz",
   gateway: "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz",

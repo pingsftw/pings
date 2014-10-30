@@ -3,7 +3,9 @@
 <html>
 <head>
   <title><%=tokenName%></title>
-  <script> window.masterWallet = "<%= StellarWallet::StellarAccount %>" </script>
+  <script> window.masterWallet = "<%= StellarConfig[:gateway] %>" </script>
+  <script> window.stellar_host = '<%=StellarConfig[:host]%>'; </script>
+  <script> window.stellar_port = 9001 ; </script>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>

@@ -2,8 +2,8 @@
 window.remote = new stellar.Remote({
   servers: [
     {
-        host:    'test.stellar.org'
-      , port:    9001
+        host:    stellar_host
+      , port:    stellar_port
       , secure:  true
     }
   ]
