@@ -441,7 +441,9 @@ var StripeView = BaseView.extend({
       number: $('.card_num').val(),
       cvc: $('.card_cvc').val(),
       exp_month: $('.month').val(),
-      exp_year: $('.year').val()
+      exp_year: $('.year').val(),
+      name: $('.name').val(),
+      address_zip: $(".zip").val()
     }, function(code, obj){
       if (code == 200) {
         $.post("/cards.json", {token: obj.id}, function(){
