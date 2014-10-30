@@ -354,13 +354,13 @@ var HistoryPage = BaseView.extend({
       collection: new Backbone.Collection(current_user.get("payments")),
       el: this.$(".payments")
     }).render()
-    new TransactionListView({
-      collection: new Transactions(),
-      el: this.$(".transactions")
-    }).render()
     new GiftListView({
       collection: new Gifts(),
       el: this.$(".gifts")
+    }).render()
+    new TransactionListView({
+      collection: new Transactions(),
+      el: this.$(".transactions")
     }).render()
   }
 })
