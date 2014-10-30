@@ -168,7 +168,7 @@ var ProfileView = BaseView.extend({
       new UsernameDisplayView({el: this.$(".username"), model: this.model}).render()
     } else {
       if (this.model.get("me")) {
-        if (current_user.get("balances").webs < usernameMinimum) {
+        if (current_user.get("webs_balance") < usernameMinimum) {
           new UsernameSorryView({el: this.$(".username"), model: this.model}).render()
         } else {
           new UsernameCreateView({el: this.$(".username"), model: this.model}).render()

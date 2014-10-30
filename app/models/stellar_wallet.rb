@@ -3,16 +3,17 @@ class StellarWallet < ActiveRecord::Base
   StellarSecret = "sfvmSPdfVM6FFhSjSxvKVcg6vR95FAWBuczLoecNVH7xVJhBF8f"
   StellarAccount = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
   WEBS_PROJECT_ACCOUNT_ID = "gG7WkiVMubimEfL2q4VhPmcniLxDCqQqTK"
-  before_save :setup
+  before_create :get_keys
   belongs_to :user
   belongs_to :project
 
   class StellarBoom < StandardError; end;
 
   def setup
-    get_keys
+    return if prepped?
     prefund
     set_lines
+    update_attributes prepped: true
   end
 
   def set_lines
@@ -150,6 +151,7 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def issue(currency, amount)
+    setup
     StellarWallet.issue(currency, amount, account_id)
   end
 

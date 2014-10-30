@@ -25,6 +25,7 @@ class Gift < ActiveRecord::Base
   end
 
   def deliver
+    receiver.stellar_wallet.setup
     res = giver.stellar_wallet.pay(receiver.stellar_wallet.account_id, value)
     update_attributes(transaction_hash: res["tx_json"]["hash"])
   end

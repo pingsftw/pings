@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   validates :username, uniqueness: true, allow_nil: true
 
-  after_create :check_for_gifts
+  after_create :ensure_stellar_wallet, :check_for_gifts
   UsernameMinimum = 100
 
   def available_tokens
@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   def check_for_gifts
     gifts = Gift.where(receiver_email: email)
     # gifts.update(receiver: self) #This apparently is not a thing
-    ensure_stellar_wallet unless gifts.empty?
+    stellar_wallet.setup unless gifts.empty?
     gifts.each{|g|g.receiver = self; g.deliver; g.save}
   end
 
@@ -60,7 +60,8 @@ class User < ActiveRecord::Base
     {
       stellar_id: stellar_wallet.account_id,
       username: username,
-      supporting: nil
+      supporting: nil,
+      email_hash: Digest::MD5.hexdigest(email)
     }
   end
 
@@ -74,7 +75,6 @@ class User < ActiveRecord::Base
     so_far[:webs_balance] = nil
     if stellar_wallet
       so_far[:stellar_id] = stellar_wallet.account_id
-      so_far[:supporting] = stellar_wallet.supporting
     end
 
     so_far
