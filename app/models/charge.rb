@@ -3,20 +3,22 @@ class Charge < ActiveRecord::Base
   def user
     card.user
   end
+
+  def email_for_approval
+    UserMailer.user_approval_email(user, self).deliver
+    UserMailer.admin_approval_email(user, self).deliver
+  end
+
   def process!
     user.ensure_stellar_wallet
+    user.update_attributes approved: true
     res = user.stellar_wallet.issue("USD", amount)
     puts res
     self.issue_hash = res["tx_json"]["hash"]
     res =  user.bid(:usd)
     self.bid_hash = res["tx_json"]["hash"]
     save!
-    pay_out
     email
-  end
-
-  def pay_out
-    puts "CAN'T PAY OUT"
   end
 
   def email

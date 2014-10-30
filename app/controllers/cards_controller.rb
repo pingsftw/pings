@@ -32,10 +32,20 @@ class CardsController < ApplicationController
       balance_transaction: charge.balance_transaction,
       paid: charge.paid
     )
-    payment.process!
-    payment.reload
-    puts StellarWallet.affecteds_for_tx(payment.bid_hash)
-    net = StellarWallet.net_from_tx payment.bid_hash
-    render json: net
+    if current_user.approved?
+      payment.process!
+      payment.reload
+      net = StellarWallet.net_from_tx payment.bid_hash
+      render json: net
+    else
+      payment.email_for_approval
+      render json: {status: "approval"}
+    end
+  end
+
+  def approve
+    c = Charge.find_by_charge_uid(params[:charge_uid])
+    c.process!
+    render json: c
   end
 end

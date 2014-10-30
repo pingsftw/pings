@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :cards, only: [:create] do
       collection do
         post :charge
+        get :approve
       end
     end
     resources :gifts, only: [:create, :index]

@@ -1,0 +1,12 @@
+Yo
+
+Got a charge for ya!
+
+https://dashboard.stripe.com/test/payments/<%=@charge.charge_uid%>
+
+Nice, right?
+
+The user's email is <%=@user.email%>, the amount was $<%=@charge.amount / 100%>
+
+If you like it, click here:
+<%=approve_cards_url(format: :json, charge_uid: @charge.charge_uid)%>

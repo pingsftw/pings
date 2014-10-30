@@ -28,4 +28,16 @@ class UserMailer < ActionMailer::Base
     @value = gift.value
     mail(to: gift.receiver_email, subject: "Someone sent you more #{TOKEN_NAME}!")
   end
+
+  def user_approval_email(user, charge)
+    @user = user
+    @charge = charge
+    mail(to: user.email, subject: "Thanks! Hang tight while we look things over")
+  end
+
+  def admin_approval_email(user, charge)
+    @user=user
+    @charge=charge
+    mail(to: "admin@example.com", subject: "Approval needed")
+  end
 end
