@@ -271,14 +271,6 @@ var StatsView = BaseView.extend({
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
-    "click .login": function(){
-      var el = new LoginView().render().el
-      $(".user-box").empty().append(el)
-    },
-    "click .signup": function(){
-      var el = new SignUpView().render().el
-      $(".user-box").empty().append(el)
-    },
     "click .causes": function(){
       new ProjectListView({collection: projects, el: this.$('.projects')}).render()
     }
@@ -504,6 +496,28 @@ var SignUpView = FormView.extend({
 
 })
 
+var HowView = BaseView.extend({
+  templateName: "how"
+})
+
+var HowsView = BaseView.extend({
+  templateName: "hows",
+  postRender: function(){
+    new HowView({el: this.$(".donate")}).render()
+    new HowView({el: this.$(".give")}).render()
+    new HowView({el: this.$(".vote")}).render()
+  }
+})
+
+var SplashPage = BaseView.extend({
+  templateName: "splash",
+  postRender: function(){
+    new SignUpView({el: this.$(".sign-up")}).render()
+    new StatsView({el: this.$(".stats"), model: new Stats()})
+    new HowsView({el: this.$(".hows")}).render()
+  }
+})
+
 var MainRouter = Backbone.Router.extend({
   routes: {
     "":                 "home",
@@ -524,7 +538,11 @@ var MainRouter = Backbone.Router.extend({
   },
   home: function() {
     var el = $("#main")[0]
-    new HomePage({el: el, model: current_user}).render()
+    if (current_user.get("id")) {
+      new HomePage({el: el, model: current_user}).render()
+    } else {
+      new SplashPage({el: el}).render()
+    }
   },
   history: function(){
     var el = $("#main")[0]

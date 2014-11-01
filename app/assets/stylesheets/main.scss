@@ -1,15 +1,20 @@
 $main-color: #090;
 $highlight-color: #0E0;
 $action-color: #09C;
+$subtle-color: #040;
 $font-size: 16px;
 
 body {
   background: black;
   color: $main-color;
   font-family: monospace;
-  margin-left: 50px;
   font-size: $font-size;
 }
+
+.subtle {
+  color: $subtle-color;
+}
+
 
 a {
   cursor: pointer
@@ -18,7 +23,8 @@ a {
 footer {
   margin-top: 50px;
   margin-botton: 5px;
-  color: #040;
+  color: $subtle-color;
+  text-align: center
 }
 
 span.data{
@@ -73,13 +79,11 @@ button {
   }
 }
 h2 {
-  margin-left: -30px;
   font-size: $font-size;
   font-weight: bold;
   text-transform: uppercase;
 }
 h3 {
-  margin-left: -30px;
   // &:before {
     // content: "\2192\2192";
   // }
@@ -136,4 +140,42 @@ li div {
 .project-logo {
   width: 200px;
   height: 200px;
+}
+
+div.login{
+  float: right;
+  position: fixed;
+  right: 28px;
+  top: 35px;
+}
+
+div.splash {
+  text-align: center
+}
+
+img.splash {
+  display: block;
+  width: 500px;
+  height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-item {
+  display: inline-block;
+}
+
+.how {
+  width: 200px;
+  display: inline-block;
+  img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  p {
+    text-align: left;
+  }
 }
