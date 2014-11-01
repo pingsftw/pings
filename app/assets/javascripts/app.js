@@ -114,19 +114,16 @@ var User = Backbone.Model.extend({
   },
   getSupporting: function(){
     var self = this
-    remote.requestAccountInfo(self.get("stellar_id"), function(error, data){
-      var dest = data.account_data.InflationDest
-      var project = projects.by_address(dest)
+    remote.info(self.get("stellar_id"), function(account_data){
+      var project = projects.by_address(account_data.InflationDest)
       self.set("supporting", project.get("name"))
     })
   },
   getWebsBalance: function(){
     if (!this.get("stellar_id")) return
     var self=this
-    remote.requestAccountLines(self.get("stellar_id"), function(error, data){
-      if (error) console.error(error)
-      var line = _.detect(data.lines, function(line){return line.currency=="WEB"})
-      self.set("webs_balance", line.balance)
+    remote.balance(self.get("stellar_id"), function(balance){
+      self.set("webs_balance", balance)
     })
   }
 })

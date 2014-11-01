@@ -1,3 +1,11 @@
+ENV["stellar_host"] = "test.stellar.org"
+ENV["hot_wallet"] = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
+ENV["hot_wallet_secret"] = "sfvmSPdfVM6FFhSjSxvKVcg6vR95FAWBuczLoecNVH7xVJhBF8f"
+ENV["gateway_wallet"] = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
+ENV["default_inflation_wallet"] = "gG7WkiVMubimEfL2q4VhPmcniLxDCqQqTK"
+ENV["stripe_publishable_key"] = 'pk_test_k1B3ERuI0ElXdq1U6KjgNBUh'
+ENV["stripe_secret_key"] = "sk_test_mH78kESY1UJUALYxszlDOAKz"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
