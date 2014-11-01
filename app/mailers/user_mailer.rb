@@ -38,6 +38,6 @@ class UserMailer < ActionMailer::Base
   def admin_approval_email(user, charge)
     @user=user
     @charge=charge
-    mail(to: "admin@example.com", subject: "Approval needed")
+    mail(to: ADMIN_EMAIL, subject: "Approval needed")
   end
 end

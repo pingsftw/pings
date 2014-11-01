@@ -5,6 +5,7 @@ ENV["gateway_wallet"] = "gCmk3eZhFdBGyVf2epUEYhkD91s2JatGz"
 ENV["default_inflation_wallet"] = "gG7WkiVMubimEfL2q4VhPmcniLxDCqQqTK"
 ENV["stripe_publishable_key"] = 'pk_test_k1B3ERuI0ElXdq1U6KjgNBUh'
 ENV["stripe_secret_key"] = "sk_test_mH78kESY1UJUALYxszlDOAKz"
+ENV["admin_email"] = "admin@example.com"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.

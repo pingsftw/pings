@@ -9,3 +9,4 @@ StellarConfig = {
   default_inflation_account: ENV["default_inflation_wallet"]
 }
 STRIPE_PUBLISHABLE_KEY = ENV["stripe_publishable_key"]
+ADMIN_EMAIL=ENV["admin_email"]
