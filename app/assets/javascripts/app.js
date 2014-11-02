@@ -505,20 +505,13 @@ var HowsView = BaseView.extend({
   }
 })
 
-var ProjectMiniView = BaseView.extend({
+var ProjectMiniItemView = BaseView.extend({
   templateName: "project-mini"
 })
 
-var ProjectsSplashView = BaseView.extend({
+var ProjectsSplashView = ListView.extend({
   templateName: "projects-splash",
-  postRender: function(){
-    this.$('.projects').append(
-      new ProjectMiniView().render().el
-    )
-    this.$('.projects').append(
-      new ProjectMiniView().render().el
-    )
-  }
+  itemName: "ProjectMini"
 })
 
 var SplashPage = BaseView.extend({
@@ -532,7 +525,7 @@ var SplashPage = BaseView.extend({
     new SignUpView({el: this.$(".sign-up")}).render()
     new StatsView({el: this.$(".stats"), model: new Stats()})
     new HowsView({el: this.$(".hows")}).render()
-    new ProjectsSplashView({el: this.$(".projects-splash")}).render()
+    new ProjectsSplashView({el: this.$(".projects-splash"), collection: projects}).render()
   }
 })
 
