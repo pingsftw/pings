@@ -142,7 +142,10 @@
 </script>
 
 <script type="text/template" id="splash-template">
-  <div class=login><a>Log In</a></div>
+  <div class=login>
+    <a>Log In</a>
+    <div class="login-form"></div>
+  </div>
   <div class="splash">
     <h1>Get <%=tokenName%>. Be a Patron of the Web.</h1>
     <img class="splash"/>
@@ -324,23 +327,19 @@
   <div class="message"></div>
 </script>
 
-<script type="text/template" id="login-template">
-  <h2>Log in now</h2>
+<script type="text/template" id="login-form-template">
   <form name="login" action="/sessions.json" method="POST">
     <div class="form-group">
-    <label>Email</label>
-    <input name=email>
+    <input name=email placeholder=email>
     <div class="error">
   </div>
     <div class="form-group">
-    <label>password</label>
-    <input name=password type=password>
+    <input name=password type=password placeholder=password>
     <div class="error">
   </div>
     <div class="form-group">
     <button type=submit>Log in</button>
   </div>
-  <a class="subtle signup" style="display: none;">Hmm, I guess I'll sign up after all</a>
   </form>
 </script>
 

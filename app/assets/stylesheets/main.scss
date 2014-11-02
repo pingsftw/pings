@@ -147,6 +147,10 @@ div.login{
   position: fixed;
   right: 28px;
   top: 35px;
+  text-align:right;
+  input {
+    margin-top: 3px;
+  }
 }
 
 div.splash {

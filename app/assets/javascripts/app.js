@@ -471,17 +471,13 @@ var LogoutButtonView = FormView.extend({
 })
 
 var LoginView = FormView.extend({
-  templateName: "login" ,
+  templateName: "login-form" ,
   callback: function(user){
     if (!user.errors){
       current_user = new User(user)
       setHeader()
       router.home({trigger: true})
     }
-  },
-  error: function(){
-
-    this.$(".signup").show()
   }
 })
 
@@ -527,6 +523,11 @@ var ProjectsSplashView = BaseView.extend({
 
 var SplashPage = BaseView.extend({
   templateName: "splash",
+  events: {
+    "click .login a": function(){
+      new LoginView({el: this.$(".login-form")}).render()
+    }
+  },
   postRender: function(){
     new SignUpView({el: this.$(".sign-up")}).render()
     new StatsView({el: this.$(".stats"), model: new Stats()})
