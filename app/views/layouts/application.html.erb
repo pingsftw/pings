@@ -3,6 +3,7 @@
 <html>
 <head>
   <title><%=tokenName%></title>
+  <script>var tokenName = "<%=tokenName%>"</script>
   <script> window.masterWallet = "<%= StellarConfig[:gateway] %>" </script>
   <script> window.stellar_host = '<%=StellarConfig[:host]%>'; </script>
   <script> window.stellar_port = 9001 ; </script>
@@ -176,10 +177,9 @@
 </script>
 
 <script type="text/template" id="how-template">
-  <h3 class="title">Title</h3>
+  <h3 class="title"><%%=title%></h3>
   <img/>
-  <p class="desc">This part of the system is awesome, like other things that are awesome
-  for example buckets, and soap, and dancing fast</p>
+  <p class="desc"><%%=text%></p>
 </script>
 
 <script type="text/template" id="mini-book-template">

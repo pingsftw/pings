@@ -496,12 +496,25 @@ var HowView = BaseView.extend({
   templateName: "how"
 })
 
+var donationHow = {
+  title: "Donate",
+  text: tokenName+ "s are created when people donate"
+}
+var giveHow = {
+  title: "Give",
+  text: "Give them to your friends and to content creators you like"
+}
+var voteHow = {
+  title: "Vote",
+  text: "Vote on which projects should receive future donations"
+}
+
 var HowsView = BaseView.extend({
   templateName: "hows",
   postRender: function(){
-    new HowView({el: this.$(".donate")}).render()
-    new HowView({el: this.$(".give")}).render()
-    new HowView({el: this.$(".vote")}).render()
+    new HowView({el: this.$(".donate"), model: donationHow}).render()
+    new HowView({el: this.$(".give"), model: giveHow}).render()
+    new HowView({el: this.$(".vote"), model: voteHow}).render()
   }
 })
 
