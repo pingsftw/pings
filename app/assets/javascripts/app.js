@@ -268,6 +268,23 @@ var StatsView = BaseView.extend({
   }
 })
 
+var ProjectsExploreView = ListView.extend({
+  templateName: "projects-explore",
+  itemName: "ProjectMini"
+})
+
+var CommunityExploreView = ListView.extend({
+  templateName: "community-explore"
+})
+
+var ExploreView = BaseView.extend({
+  templateName: "explore",
+  postRender: function(){
+    new ProjectsExploreView({el: this.$(".projects-explore"), collection: projects}).render()
+    new CommunityExploreView({el: this.$(".community-explore")}).render()
+  }
+})
+
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
@@ -278,35 +295,30 @@ var HomePage = BaseView.extend({
   postRender: function(){
     var self = this
     new StatsView({el: this.$(".stats"), model: new Stats()})
-    if (!this.model.get("id")) {
-      new SignUpView({el: this.$(".user-box")}).render()
-      this.$(".welcome").show()
-    } else {
-      this.$('.pricing').show()
-      new EmailSendView({el: this.$(".email-send")}).render()
-      new BuyView({el: this.$(".user-box"), model: this.model.get("card")}).render()
-      var btcBook = new Book([], {currency: "BTC"})
-      btcBook.bind("reset", function(){
-        new MiniBookView({
-          el: self.$(".mini-book-btc"),
-          model: btcBook.first(),
-          attributes: {currency: "BTC"}
-        }).render()
-      })
-      btcBook.fetch({reset: true})
-      var usdBook = new Book([], {currency: "USD"})
-      usdBook.bind("reset", function(){
-        new MiniBookView({
-          el: self.$(".mini-book-usd"),
-          model: usdBook.first(),
-          attributes: {currency: "USD"}
-        }).render()
-      })
-      usdBook.fetch({reset: true})
-      if (this.model.get("balances") && this.model.get("balances").webs) {
-        new SupportView({el: this.$(".support"), model: self.model}).render()
-        this.$(".support").show()
-      }
+    new EmailSendView({el: this.$(".email-send")}).render()
+    new BuyView({el: this.$(".buy"), model: this.model.get("card")}).render()
+    new ExploreView({el: this.$(".explore")}).render()
+    var btcBook = new Book([], {currency: "BTC"})
+    btcBook.bind("reset", function(){
+      new MiniBookView({
+        el: self.$(".mini-book-btc"),
+        model: btcBook.first(),
+        attributes: {currency: "BTC"}
+      }).render()
+    })
+    btcBook.fetch({reset: true})
+    var usdBook = new Book([], {currency: "USD"})
+    usdBook.bind("reset", function(){
+      new MiniBookView({
+        el: self.$(".mini-book-usd"),
+        model: usdBook.first(),
+        attributes: {currency: "USD"}
+      }).render()
+    })
+    usdBook.fetch({reset: true})
+    if (this.model.get("balances") && this.model.get("balances").webs) {
+      new SupportView({el: this.$(".support"), model: self.model}).render()
+      this.$(".support").show()
     }
   }
 })
@@ -478,6 +490,9 @@ var LoginView = FormView.extend({
       setHeader()
       router.home({trigger: true})
     }
+  },
+  postRender: function(){
+    this.$("[name='email']").focus()
   }
 })
 

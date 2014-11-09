@@ -113,20 +113,22 @@
   <label><%=tokenName%> issued</label><span class="data"><%%= issued_tokens %></span>
 </script>
 
+<script type="text/template" id="projects-explore-template">
+  <h3>Projects</h3>
+  <ul></ul>
+</script>
+
+<script type="text/template" id="explore-template">
+  <h2>Explore</h2>
+  <div class="projects-explore"></div>
+  <div class="community-explore"></div>
+</script>
+
 <script type="text/template" id="home-template">
-  <div class="welcome" style="display:none">
-    <h1>Join the <%=tokenName%> community!</h1>
-    <p class="blahblah">
-      <%=tokenName%> are a token of commitment to an open internet.
-      People receive them by donating to projects and groups supporting an open web.
-      Sign up and donate to get some!
-      <a class="action causes">What causes, you ask?</a>
-    </p>
-    <div class="projects"></div>
-  </div>
   <div class="stats"><span class="grumpy">Loading donation stats</span></div>
-  <div class="user-box"></div>
-  <div class='pricing' style="display:none">
+  <div class="buy"></div>
+  <div class="explore"></div>
+  <div class='pricing'>
     <h3>Reward Levels</h3>
     <div class="mini-book-btc"><span class="grumpy">Loading Bitcoin reward info</span></div>
     <div class="mini-book-usd"><span class="grumpy">Loading US Dollar reward info</span></div>

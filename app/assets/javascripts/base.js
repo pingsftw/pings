@@ -107,6 +107,9 @@ var LoadingView = Backbone.View.extend({
 var ListView = BaseView.extend({
   initialize: function(){
     var self = this
+    if (!this.collection){
+      console.error("You need to pass a collection to " + this.templateName)
+    }
     this.collection.bind("sync", function(){self.populate()})
     if (this.collection.url) {
       this.collection.fetch()
@@ -114,6 +117,9 @@ var ListView = BaseView.extend({
   },
   populate: function(){
     var self = this
+    if (!this.itemName) {
+      console.error("You need an item name for " + this.templateName)
+    }
     var view = eval(this.itemName + "ItemView")
     var table = this.$("table").length
     var tagName = table ? "tr" : "li"

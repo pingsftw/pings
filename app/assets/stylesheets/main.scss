@@ -15,6 +15,10 @@ body {
   color: $subtle-color;
 }
 
+li {
+  list-style: none
+}
+
 
 a {
   cursor: pointer
@@ -153,7 +157,7 @@ div.login{
   }
 }
 
-div.splash {
+#main {
   text-align: center
 }
 
@@ -191,6 +195,15 @@ img.project{
     margin-right: auto;
   }
   p {
+    text-align: left;
+  }
+}
+
+.projects-explore {
+  width: 400px;
+  p {
+    display: inline-block;
+    width: 250px;
     text-align: left;
   }
 }
