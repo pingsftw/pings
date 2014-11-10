@@ -1,11 +1,21 @@
 class Charge < ActiveRecord::Base
   belongs_to :card
+  has_one :user, :through => :card
+  has_one :stellar_wallet, :through => :user
+
   def user
     card.user
   end
 
   def self.recent
-    []
+    charges = where("bid_hash IS NOT null").includes([:user, :stellar_wallet]).order("created_at DESC").limit(5)
+    .map do |c|
+      {
+        amount: c.amount,
+        bid_hash: c.bid_hash,
+        account_id: c.stellar_wallet.account_id
+      }
+    end
   end
 
   def email_for_approval

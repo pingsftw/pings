@@ -283,7 +283,7 @@ var CommunityExploreView = ListView.extend({
 })
 
 var CommunityItemView = BaseView.extend({
-  template: "community-item"
+  templateName: "community-item"
 })
 
 var ExploreView = BaseView.extend({
