@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get :totals
     end
     resources :transactions, only: [:index]
+    resources :charges, only: [:index]
     resource :book, only: [:show]
     resources :cards, only: [:create] do
       collection do

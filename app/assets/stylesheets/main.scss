@@ -173,7 +173,7 @@ img.splash {
   display: inline-block;
 }
 
-.projects li{
+.projects-splash li{
   display: inline-block;
   width: 200px;
 }
@@ -199,8 +199,10 @@ img.project{
   }
 }
 
-.projects-explore {
+.explore {
   width: 400px;
+  display: inline-block;
+  vertical-align: top;
   p {
     display: inline-block;
     width: 250px;

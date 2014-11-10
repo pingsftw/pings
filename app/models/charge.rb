@@ -4,6 +4,10 @@ class Charge < ActiveRecord::Base
     card.user
   end
 
+  def self.recent
+    []
+  end
+
   def email_for_approval
     UserMailer.user_approval_email(user, self).deliver
     UserMailer.admin_approval_email(user, self).deliver

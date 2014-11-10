@@ -258,6 +258,10 @@ var Stats = Backbone.Model.extend({
   }
 })
 
+var CommunityFeed = Backbone.Collection.extend({
+  url: "/charges.json"
+})
+
 var StatsView = BaseView.extend({
   templateName: "stats",
   initialize: function(){
@@ -274,14 +278,19 @@ var ProjectsExploreView = ListView.extend({
 })
 
 var CommunityExploreView = ListView.extend({
-  templateName: "community-explore"
+  templateName: "community-explore",
+  itemName: "Community"
+})
+
+var CommunityItemView = BaseView.extend({
+  template: "community-item"
 })
 
 var ExploreView = BaseView.extend({
   templateName: "explore",
   postRender: function(){
-    new ProjectsExploreView({el: this.$(".projects-explore"), collection: projects}).render()
-    new CommunityExploreView({el: this.$(".community-explore")}).render()
+    new ProjectsExploreView({el: this.$(".projects"), collection: projects}).render()
+    new CommunityExploreView({el: this.$(".community"), collection: new CommunityFeed()}).render()
   }
 })
 
@@ -297,7 +306,7 @@ var HomePage = BaseView.extend({
     new StatsView({el: this.$(".stats"), model: new Stats()})
     new EmailSendView({el: this.$(".email-send")}).render()
     new BuyView({el: this.$(".buy"), model: this.model.get("card")}).render()
-    new ExploreView({el: this.$(".explore")}).render()
+    new ExploreView({el: this.$(".explores")}).render()
     var btcBook = new Book([], {currency: "BTC"})
     btcBook.bind("reset", function(){
       new MiniBookView({
