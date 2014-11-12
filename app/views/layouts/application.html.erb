@@ -60,17 +60,8 @@
   <div class="stripe-error grumpy"></div>
 </script>
 
-<script type="text/template" id="charge-template">
-  <h2>Charge</h2>
-  <form name="charge" action="/cards/charge.json" method="POST">
-    <label>US Dollars</label><input name=quantity>
-    <button type="submit">Donate!</button>
-  </form>
-  <div class=charge-message></div>
-</script>
-
 <script type="text/template" id="charge-message-template">
-  <p>You have donated <%%= currency / 100 %> USD and received <%%=token%> <%=tokenName%>.</p>
+  <p>You have donated <%%= amount / 100 %> USD and received <%=tokenName%>.</p>
   <p>Now you can vote for projects!</p>
   <div class="change-support"><span class="grumpy">Loading your ballot</span></div>
 </script>
@@ -96,14 +87,27 @@
   Every time we create new <%=tokenName%>, these votes decide
   which groups or projects receive them.
   Voting is proportional to the number of <%=tokenName%> you parent.</p>
-
 </script>
 
+<script type="text/template" id="currency-template">
+  <div class="choice"><span>BTC</span><input type="radio" name="currency" value="btc"/></div>
+  <div class="choice"><span>USD</span><input type="radio" name="currency" value="usd"/></div>
+</script>
 
 <script type="text/template" id="buy-template">
-  <h2>Donate to the Pool</h2>
-  <div class="stripe"><button class="stripe">Use a credit card</button></div>
-  <button class="btc">Show BTC donation address</button>
+  <h2>Donate to the Pool and get <%=tokenName%></h2>
+  <div class="currency"></div>
+  <div class="quantity"></div>
+  <div class="process"></div>
+</script>
+
+<script type="text/template" id="existing-card-template">
+  <form name="charge" action="/cards/charge.json" method="POST">
+    <input type=hidden name=quantity value="<%%=quantity%>"/>
+    Your existing <%%=brand%> x<%%=last4%>
+    <button type="submit">Donate!</button>
+  </form>
+  <div class=charge-message></div>
 </script>
 
 <script type="text/template" id="stats-template">
@@ -113,14 +117,24 @@
   <label><%=tokenName%> issued</label><span class="data"><%%= issued_tokens %></span>
 </script>
 
+<script type="text/template" id="btc-buy-template">
+  BTC
+</script>
+
+<script type="text/template" id="usd-buy-template">
+  <div class="choice"><span>$10</span><input type="radio" name="quantity" value="1000"/></div>
+  <div class="choice"><span>$40</span><input type="radio" name="quantity" value="4000"/></div>
+  <div class="choice"><span>$100</span><input type="radio" name="quantity" value="10000"/></div>
+</script>
+
 <script type="text/template" id="community-explore-template">
   <h3>Community</h3>
   <ul></ul>
 </script>
 
 <script type="text/template" id="community-item-template">
-  <img class="community-item" src=""/>
-  <p>Stuff</p>
+  <img class="community-item" src="<%%=icon_url%>"/>
+  <p>$<%%=amount%> from <%%=user%></p>
 </script>
 
 
@@ -281,7 +295,7 @@
 </script>
 
 <script type="text/template" id="profile-template">
-  <img src="http://www.gravatar.com/avatar/<%%=email_hash%>"/>
+  <img src="<%%=icon_url"/>
   <div class="me"></div>
   <div class=username></div>
   <%% if (typeof(webs_balance) !== "undefined" ) { %>

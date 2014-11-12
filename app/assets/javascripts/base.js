@@ -104,6 +104,19 @@ var LoadingView = Backbone.View.extend({
   }
 })
 
+var ChooserView = BaseView.extend({
+ events: {
+    "click .choice": function(e){
+      var input =$(e.currentTarget).find("input")
+      input.prop("checked", true)
+      this.trigger("change")
+    }
+  },
+  val: function(){
+    return this.$("input:checked").val()
+  }
+})
+
 var ListView = BaseView.extend({
   initialize: function(){
     var self = this

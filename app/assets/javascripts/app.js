@@ -56,13 +56,6 @@ var ChargeMessageView = BaseView.extend({
   }
 })
 
-var ChargePage = FormView.extend({
-  templateName: "charge",
-  callback: function(net){
-    new ChargeMessageView({el: this.$(".charge-message"), model: new Backbone.Model(net)}).render()
-  }
-})
-
 var ProjectsPage = BaseView.extend({
   templateName: "projects",
   postRender: function(){
@@ -467,17 +460,63 @@ var StripeView = BaseView.extend({
   }
 })
 
+var BtcBuyView = BaseView.extend({
+  templateName: "btc-buy"
+})
+
+var ExistingCardView = FormView.extend({
+  templateName: "existing-card",
+  callback: function(net){
+    this.trigger("success", net)
+  },
+  params: function(){return $.extend(this.model, this.attributes)}
+})
+
+var UsdBuyView = ChooserView.extend({
+  templateName: "usd-buy",
+  processView: function(){
+    if (this.model) {
+      return ExistingCardView
+    }
+    return StripeView
+  },
+  quantity: function(){
+    return this.$("input:checked").val()
+  }
+})
+
+var CurrencyView = ChooserView.extend({
+  templateName: "currency"
+})
+
 var BuyView = BaseView.extend({
   templateName: "buy",
   events: {
     "click button.stripe": "proceed"
   },
+  postRender: function(){
+    var self = this
+    this.c = new CurrencyView({el: this.$(".currency")}).render()
+    this.c.bind("change", function(){ self.quantity() })
+    this.c.$("[value='usd']").click()
+    this.quantityView.bind("change", function(){self.proceed()})
+  },
   proceed: function(){
-    if (this.model) {
-      router.navigate("charge", {trigger: true})
-    } else {
-      new StripeView({el: this.$('.stripe')}).render()
-    }
+    var self = this
+    var viewClass = this.quantityView.processView()
+    var quantity = this.quantityView.quantity()
+    this.$(".process").unbind()
+    var processView = new viewClass({model: this.model, el: this.$(".process"), attributes: {quantity: quantity}}).render()
+    processView.bind("success", function(net){
+      new ChargeMessageView({el: self.el, model: new Backbone.Model(net)}).render()
+    })
+  },
+  quantity: function(){
+    this.quantityView = new this.currencies[this.c.val()]({model: this.model, el: this.$(".quantity")}).render()
+  },
+  currencies: {
+    usd: UsdBuyView,
+    btc: BtcBuyView
   }
 })
 
@@ -611,10 +650,6 @@ var MainRouter = Backbone.Router.extend({
   faq: function(){
     var el = $("#main")[0]
     new FAQPage({el: el}).render()
-  },
-  charge: function(){
-    var el = $("#main")[0]
-    new ChargePage({el: el, model: current_user}).render()
   }
 
 })

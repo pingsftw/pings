@@ -209,3 +209,15 @@ img.project{
     text-align: left;
   }
 }
+
+.buy {
+  .currency, .quantity {
+    border: 1px solid white;
+  }
+  div {
+    &.process {
+      display: block
+    }
+    display: inline-block
+  }
+}

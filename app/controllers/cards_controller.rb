@@ -19,7 +19,7 @@ class CardsController < ApplicationController
     card = current_user.cards.last
     quantity = params[:quantity]
     charge = Stripe::Charge.create(
-      :amount   => (quantity.to_f * 100).to_i, # $15.00 this time
+      :amount   => quantity,
       :currency => "usd",
       :customer => card.card_uid
     )
@@ -35,8 +35,7 @@ class CardsController < ApplicationController
     if current_user.approved?
       payment.process!
       payment.reload
-      net = StellarWallet.net_from_tx payment.bid_hash
-      render json: net
+      render json: payment
     else
       payment.email_for_approval
       render json: {status: "approval"}

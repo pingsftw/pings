@@ -13,7 +13,8 @@ class Charge < ActiveRecord::Base
       {
         amount: c.amount,
         bid_hash: c.bid_hash,
-        account_id: c.stellar_wallet.account_id
+        user: c.user.username || c.stellar_wallet.account_id,
+        icon_url: c.user.icon_url
       }
     end
   end

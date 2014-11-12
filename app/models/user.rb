@@ -56,12 +56,16 @@ class User < ActiveRecord::Base
     StellarWallet.find_by_account_id(account_id).user
   end
 
+  def icon_url
+    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+  end
+
   def for_public
     {
       stellar_id: stellar_wallet.account_id,
       username: username,
       supporting: nil,
-      email_hash: Digest::MD5.hexdigest(email)
+      icon_url: icon_url
     }
   end
 
