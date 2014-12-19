@@ -1,4 +1,4 @@
-TOKEN_NAME = "Sunbeams"
+TOKEN_NAME = "Pings"
 Stripe.api_key = ENV["stripe_secret_key"]
 
 StellarConfig = {
