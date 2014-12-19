@@ -29,11 +29,11 @@
 </body>
 
 <script type="text/template" id="header-template">
-  <div class="home"><a><%=tokenName%></a></div>
-  <div class="projects"><a>Projects</a></div>
+  <div class="home"><a>PingsFTW</a></div>
+  <div class="about"><a>About</a></div>
+  <div class="how"><a>How it Works</a></div>
+  <div class="community"><a>Community</a></div>
   <div class="book"><a>Book</a></div>
-  <div class="history"><a>History</a></div>
-  <div class="faq"><a>FAQ</a></div>
   <%% if (typeof(email) != "undefined") { %>
     <%% if (typeof(stellar_id) != "undefined") { %>
       <div class="user">
@@ -43,6 +43,18 @@
     <%%} %>
     <div class="logout-button"><span>Log out</span></div>
   <%%} %>
+</script>
+
+<script type="text/template" id="how-page-template">
+  <h2>Technical</h2>
+  <h2>White Paper</h2>
+  <h2>Get Involved</h2>
+</script>
+
+<script type="text/template" id="about-template">
+  <h2>Mission</h2>
+  <h2>Team</h2>
+  <h2>Partners</h2>
 </script>
 
 <script type="text/template" id="projects-template">

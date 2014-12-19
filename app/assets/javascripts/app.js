@@ -287,6 +287,14 @@ var ExploreView = BaseView.extend({
   }
 })
 
+var AboutPage = BaseView.extend({
+  templateName: "about"
+})
+
+var HowPage = BaseView.extend({
+  templateName: "how-page"
+})
+
 var HomePage = BaseView.extend({
   templateName: "home",
   events: {
@@ -609,6 +617,9 @@ var MainRouter = Backbone.Router.extend({
   routes: {
     "":                 "home",
     "home":             "home",
+    "about":             "about",
+    "how":             "how",
+    "community":             "community",
     "history":          "history",
     "projects":         "projects",
     "projects/:project_id":         "project",
@@ -619,6 +630,18 @@ var MainRouter = Backbone.Router.extend({
 
   },
 
+  about: function() {
+    var el = $("#main")[0]
+    new AboutPage({el: el}).render()
+  },
+  how: function() {
+    var el = $("#main")[0]
+    new HowPage({el: el}).render()
+  },
+  community: function() {
+    var el = $("#main")[0]
+    new ExploreView({el: el}).render()
+  },
   book: function() {
     var el = $("#main")[0]
     new BooksPage({el: el}).render()
@@ -668,6 +691,9 @@ var HeaderView = BaseView.extend({
   events: {
     "click .history": function(){router.navigate("history", {trigger: true})},
     "click .book": function(){router.navigate("book", {trigger: true})},
+    "click .about": function(){router.navigate("about", {trigger: true})},
+    "click .community": function(){router.navigate("community", {trigger: true})},
+    "click .how": function(){router.navigate("how", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
     "click .home": function(){router.navigate("home", {trigger: true})},
     "click .faq": function(){router.navigate("faq", {trigger: true})},
@@ -680,11 +706,7 @@ var HeaderView = BaseView.extend({
 })
 
 function setHeader(){
-  if (current_user.get("id")) {
-    new HeaderView({model: current_user, el: $("header")}).render()
-  } else {
-    $('header').empty()
-  }
+  new HeaderView({model: current_user, el: $("header")}).render()
 }
 
 var router = new MainRouter()
