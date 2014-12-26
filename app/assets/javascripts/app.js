@@ -185,7 +185,7 @@ var UsernameCreateView = FormView.extend({
 var ConfirmationPage = BaseView.extend({
   templateName: "confirm",
   postRender: function(){
-    new BuyView({el: this.$(".buy")}).render()
+    new BuyView({el: this.$(".buy"), model: current_user.get("card")}).render()
   }
 })
 
@@ -296,6 +296,10 @@ var AboutPage = BaseView.extend({
 
 var HowPage = BaseView.extend({
   templateName: "how-page"
+})
+
+var VotePage = BaseView.extend({
+  templateName: "vote"
 })
 
 var HomePage = BaseView.extend({
@@ -461,7 +465,7 @@ var StripeView = BaseView.extend({
     }, function(code, obj){
       if (code == 200) {
         $.post("/cards.json", {token: obj.id}, function(){
-          router.navigate("charge", {trigger: true})
+          router.navigate("vote", {trigger: true})
         })
       } else {
         self.$('.stripe-error').text(obj.error.message)
@@ -519,7 +523,7 @@ var BuyView = BaseView.extend({
     this.$(".process").unbind()
     var processView = new viewClass({model: this.model, el: this.$(".process"), attributes: {quantity: quantity}}).render()
     processView.bind("success", function(net){
-      new ChargeMessageView({el: self.el, model: new Backbone.Model(net)}).render()
+      router.navigate("vote", {trigger: true})
     })
   },
   quantity: function(){
@@ -630,6 +634,7 @@ var MainRouter = Backbone.Router.extend({
     "charge":          "charge",
     "confirmation":          "confirmation",
     "faq":          "faq",
+    "vote":          "vote",
 
   },
 
@@ -680,6 +685,10 @@ var MainRouter = Backbone.Router.extend({
   confirmation: function(){
     var el = $("#main")[0]
     new ConfirmationPage({el: el, model: current_user}).render()
+  },
+  vote: function(){
+    var el = $("#main")[0]
+    new VotePage({el: el, model: current_user}).render()
   }
 })
 

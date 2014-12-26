@@ -38,7 +38,7 @@ class CardsController < ApplicationController
       render json: payment
     else
       payment.email_for_approval
-      render json: {status: "approval"}
+      render json: {status: "approval", amount: charge.amount}
     end
   end
 
