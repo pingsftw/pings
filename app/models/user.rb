@@ -116,4 +116,9 @@ class User < ActiveRecord::Base
       sellMode: true
     )
   end
+
+  protected
+  def confirmation_required?
+    false
+  end
 end

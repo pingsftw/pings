@@ -536,7 +536,6 @@ var LogoutButtonView = FormView.extend({
   callback: function(data){
     current_user = new Backbone.Model(null)
     router.navigate("/", {trigger: true})
-    router.home({trigger: true})
     setHeader()
   }
 })
@@ -559,6 +558,7 @@ var SignUpView = FormView.extend({
   templateName: "sign-up" ,
   callback: function(user){
     if (_(user.errors).isEmpty()){
+      current_user = new User(user)
       router.navigate("confirmation", {trigger: true})
     }
   }
@@ -679,7 +679,7 @@ var MainRouter = Backbone.Router.extend({
   } ,
   confirmation: function(){
     var el = $("#main")[0]
-    new ConfirmationPage({el: el}).render()
+    new ConfirmationPage({el: el, model: current_user}).render()
   }
 })
 

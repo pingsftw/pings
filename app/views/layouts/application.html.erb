@@ -12,7 +12,6 @@
   <%= csrf_meta_tags %>
   <script> Stripe.setPublishableKey('<%=STRIPE_PUBLISHABLE_KEY%>'); </script>
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
-  <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
   <script> var projects = new ProjectList(<%=Project.all.to_json.html_safe%>)</script>
 </head>
@@ -344,6 +343,7 @@
 
 <script type="text/template" id="confirm-template">
   <h2>Step 2 of 3</h2>
+  <p>Welcome <%%=email %>
   <h2>Make Your Inaugural Donation<h2>
   <div class="buy"></div>
 </script>

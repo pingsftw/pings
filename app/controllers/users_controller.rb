@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
   def create
     user = User.create(email: params[:email], password: params[:password])
-    render json: {errors: user.errors}
+    if user.errors.empty?
+      warden.set_user user, run_callbacks: false
+    end
+    render json: user
   end
 
   def show
