@@ -17,7 +17,7 @@ class StellarWallet < ActiveRecord::Base
   def set_lines
     trust_server("WEB", 1000000)
     inf_target = project_id ? account_id : StellarConfig[:default_inflation_account]
-    set_inflation inf_target
+    # set_inflation inf_target
     trust_server("BTC", 100_000_000) #1 BTC
     trust_server("USD", 100_000) #$1,000
   end
@@ -32,7 +32,7 @@ class StellarWallet < ActiveRecord::Base
     end
     res = HTTParty.post("https://" + StellarConfig[:host] + ":9002", body: body.to_json).parsed_response["result"]
     if (res["engine_result"] && res["engine_result"] != "tesSUCCESS") || res["status"] == "error"
-      throw StellarBoom.new(res)
+      throw StellarBoom.new({res: res, body: body})
     end
     puts "Stellar request for #{method} took #{Time.now - start_time}"
     res

@@ -14,6 +14,9 @@ remote.mainAccount = window.masterWallet
 
 remote.mainline = function(callback){
   this.requestAccountLines(this.mainAccount, function(e, d){
+    if (typeof(d) === "undefined") {
+      console.error(e)
+    }
     var lines = _.select(d.lines, function(l){return l.currency=="WEB" && l.balance < 0})
     callback(lines)
   }).request()

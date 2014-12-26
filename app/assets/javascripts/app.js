@@ -182,8 +182,11 @@ var UsernameCreateView = FormView.extend({
   }
 })
 
-var ConfirmView = BaseView.extend({
-  templateName: "confirm"
+var ConfirmationPage = BaseView.extend({
+  templateName: "confirm",
+  postRender: function(){
+    new BuyView({el: this.$(".buy")}).render()
+  }
 })
 
 var EmailSendView = FormView.extend({
@@ -556,8 +559,7 @@ var SignUpView = FormView.extend({
   templateName: "sign-up" ,
   callback: function(user){
     if (_(user.errors).isEmpty()){
-      var message = new ConfirmView().render()
-      $("#main").empty().append(message.el)
+      router.navigate("confirmation", {trigger: true})
     }
   }
 
@@ -626,6 +628,7 @@ var MainRouter = Backbone.Router.extend({
     "book":             "book",
     "users/:stellar_id":          "profile",
     "charge":          "charge",
+    "confirmation":          "confirmation",
     "faq":          "faq",
 
   },
@@ -673,8 +676,11 @@ var MainRouter = Backbone.Router.extend({
   faq: function(){
     var el = $("#main")[0]
     new FAQPage({el: el}).render()
+  } ,
+  confirmation: function(){
+    var el = $("#main")[0]
+    new ConfirmationPage({el: el}).render()
   }
-
 })
 
 var HeaderView = BaseView.extend({
