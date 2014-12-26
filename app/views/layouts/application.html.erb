@@ -42,6 +42,9 @@
     <%%} %>
     <div class="logout-button"><span>Log out</span></div>
   <%%} %>
+  <%% if (!confirmed) { %>
+      <h2 class="confirmation-reminder">You have not confirmed your email</h2>
+  <%% } %>
 </script>
 
 <script type="text/template" id="how-page-template">

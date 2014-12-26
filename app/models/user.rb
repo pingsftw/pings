@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
     so_far[:payments] = payments.where("value > 0")
     so_far[:card] = cards.last
     so_far[:webs_balance] = nil
+    so_far[:confirmed] = confirmed?
     if stellar_wallet
       so_far[:stellar_id] = stellar_wallet.account_id
     end
