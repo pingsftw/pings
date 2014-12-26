@@ -215,7 +215,7 @@ img.project{
     border: 1px solid white;
   }
   div {
-    &.process {
+    &.input, &.process {
       display: block
     }
     display: inline-block
