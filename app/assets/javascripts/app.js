@@ -596,7 +596,12 @@ var HowsView = BaseView.extend({
 })
 
 var ProjectMiniItemView = BaseView.extend({
-  templateName: "project-mini"
+  templateName: "project-mini",
+  events: {
+    "click": function(){
+      router.navigate("projects/" + this.model.get("id"), {trigger: true})
+    }
+  }
 })
 
 var ProjectsSplashView = ListView.extend({
