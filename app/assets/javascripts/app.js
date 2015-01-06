@@ -606,11 +606,6 @@ var ProjectsSplashView = ListView.extend({
 
 var SplashPage = BaseView.extend({
   templateName: "splash",
-  events: {
-    "click .login a": function(){
-      new LoginView({el: this.$(".login-form")}).render()
-    }
-  },
   postRender: function(){
     new SignUpView({el: this.$(".sign-up")}).render()
     new StatsView({el: this.$(".stats"), model: new Stats()})
@@ -692,11 +687,31 @@ var MainRouter = Backbone.Router.extend({
   }
 })
 
+var UserLinkView = BaseView.extend({
+  templateName: "user-link",
+  postRender: function(){
+    new LogoutButtonView({el: this.$(".logout-button")}).render()
+  }
+})
+
+var LoginButtonView = BaseView.extend({
+  templateName: "login-button",
+  events: {
+    "click": function(){
+      new LoginView({el: this.$(".login-form")}).render()
+    }
+  }
+})
+
 var HeaderView = BaseView.extend({
   templateName: "header",
   tagName: "header",
   postRender: function(){
-    new LogoutButtonView({el: this.$(".logout-button")}).render()
+    if (this.model.get("email")) {
+      new UserLinkView({el: this.$(".user"), model: this.model}).render()
+    } else {
+      new LoginButtonView({el: this.$(".user")}).render()
+    }
   },
   initialize: function(){
     var self = this
@@ -708,7 +723,7 @@ var HeaderView = BaseView.extend({
     "click .book": function(){router.navigate("book", {trigger: true})},
     "click .about": function(){router.navigate("about", {trigger: true})},
     "click .community": function(){router.navigate("community", {trigger: true})},
-    "click .how": function(){router.navigate("how", {trigger: true})},
+    "click .how-works": function(){router.navigate("how", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
     "click .home": function(){router.navigate("home", {trigger: true})},
     "click .faq": function(){router.navigate("faq", {trigger: true})},

@@ -28,23 +28,25 @@
 </body>
 
 <script type="text/template" id="header-template">
-  <div class="home"><a>PingsFTW</a></div>
+  <div class="home"><a><img class="logo" src="/images/pings-logo.png"/></a></div>
   <div class="about"><a>About</a></div>
-  <div class="how"><a>How it Works</a></div>
+  <div class="how-works"><a>How it Works</a></div>
   <div class="community"><a>Community</a></div>
   <div class="book"><a>Book</a></div>
-  <%% if (typeof(email) != "undefined") { %>
-    <%% if (typeof(stellar_id) != "undefined") { %>
-      <div class="user">
-        <p><label>email</label><a class="data user" href="/users/<%%= username ? username: stellar_id%>"><%%=email%></a></p>
-        <p><label><%=tokenName%> total</label><span class="data"><%%= webs_balance %></span></p>
-      </div>
-    <%%} %>
-    <div class="logout-button"><span>Log out</span></div>
-  <%%} %>
-  <%% if (!confirmed) { %>
+  <div class="user"></div>
+  <%% if (typeof(confirmed) != "undefined" && !confirmed) { %>
       <h2 class="confirmation-reminder">You have not confirmed your email</h2>
   <%% } %>
+</script>
+
+<script type="text/template" id="user-link-template">
+  <p><a class="data user" href="/users/<%%= username ? username: stellar_id%>"><%%=email%></a></p>
+  <div class="logout-button"><span>Log out</span></div>
+</script>
+
+<script type="text/template" id="login-button-template">
+  <a class="login-button"><button class="login auth">Log in</span></button></a>
+  <div class="login-form"></div>
 </script>
 
 <script type="text/template" id="how-page-template">
@@ -192,19 +194,14 @@
 </script>
 
 <script type="text/template" id="splash-template">
-  <div class=login>
-    <a>Log In</a>
-    <div class="login-form"></div>
-  </div>
   <div class="splash">
     <h1><%=tokenName%> Power the Web.</h1>
-    <img class="splash"/>
     <div class="subtle">Join the Open Internet Community and get your <%=tokenName%>!</div>
+  </div>
+    <div class="stats"></div>
     <div class="sign-up"></div>
     <div class="hows"></div>
     <div class="projects-splash"></div>
-    <div class="stats"></div>
-  </div>
 </script>
 
 <script type="text/template" id="projects-splash-template">
@@ -273,7 +270,9 @@
     </div>
     </div>
     <div class="form-group">
-      <button type=submit>Join!</button>
+      <div class="form-item">
+        <button type=submit>Sign up</button>
+      </div>
     </div>
   </form>
 </script>
