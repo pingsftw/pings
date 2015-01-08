@@ -40,6 +40,14 @@ body {
   background-color: $blue;
 }
 
+form.login{
+  position: fixed;
+  input {
+    padding: 4px 0px 4px 8px;
+    width: 200px;
+  }
+}
+
 header {
   text-align: center;
   div {

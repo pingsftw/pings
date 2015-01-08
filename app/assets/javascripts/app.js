@@ -703,7 +703,7 @@ var LoginButtonView = BaseView.extend({
   templateName: "login-button",
   events: {
     "click": function(){
-      new LoginView({el: this.$(".login-form")}).render()
+      new LoginView({el: this.el}).render()
     }
   }
 })
