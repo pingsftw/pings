@@ -40,7 +40,7 @@
 </script>
 
 <script type="text/template" id="user-link-template">
-  <p><a class="data user" href="/users/<%%= username ? username: stellar_id%>"><%%=email%></a></p>
+  <p><a class="data user" href="/users/<%%= username ? username: stellar_id%>">Welcome, <%%=email%></a></p>
   <div class="logout-button"><span>Log out</span></div>
 </script>
 
@@ -468,7 +468,7 @@
 <script type="text/template" id="logout-button-template">
   <form name="log_out" action="/sessions.json" method="DELETE">
     <div class="form-group">
-      <button type=submit>Log out</button>
+      <button type=submit class="logout auth">Log out</button>
     </div>
   </form>
 </script>
