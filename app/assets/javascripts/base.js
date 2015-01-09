@@ -48,52 +48,57 @@ var BaseView = Backbone.View.extend({
 var FormView = BaseView.extend({
   callback: function(){},
   error: function(){},
+  initialize: function(){
+    console.log("init form", this)
+  },
   events: {
-    "submit": function(){
-      console.log("sumbit", this)
-      var self=this
-      var vals = {}
-      this.$("input").each(function(i, el){
-        var $e = $(el)
-        vals[$e.attr("name")] = $e.val()
-      })
-      this.$("select").each(function(i, el){
-        var $e = $(el)
-        vals[$e.attr("name")] = $e.val()
-      })
-      this.$(".error").empty()
-      $.ajax(self.$("form").attr("action"), {
-        type: self.$("form").attr("method"),
-        data: vals,
-        success: function(data){
-          self.$("[type=submit]").removeAttr("disabled")
-          if (data.errors && !_(data.errors).isEmpty()){
-            _.each(data.errors, function(value, key){
-              var div = self.$("[name="+key+"]").parent().find(".error")
-              if (!div) {
-                console.error("No error div for", key, value)
-              }
-              div.text(value)
-            })
+    "submit form": "sumbit",
+    "click button": "submit"
+  },
+  submit: function(){
+    console.log("sumbit", this)
+    var self=this
+    var vals = {}
+    this.$("input").each(function(i, el){
+      var $e = $(el)
+      vals[$e.attr("name")] = $e.val()
+    })
+    this.$("select").each(function(i, el){
+      var $e = $(el)
+      vals[$e.attr("name")] = $e.val()
+    })
+    this.$(".error").empty()
+    $.ajax(self.$("form").attr("action"), {
+      type: self.$("form").attr("method"),
+      data: vals,
+      success: function(data){
+        self.$("[type=submit]").removeAttr("disabled")
+        if (data.errors && !_(data.errors).isEmpty()){
+          _.each(data.errors, function(value, key){
+            var div = self.$("[name="+key+"]").parent().find(".error")
+            if (!div) {
+              console.error("No error div for", key, value)
+            }
+            div.text(value)
+          })
 
-            self.error()
-          } else {
-            self.callback(data)
-          }
-          if (data.csrfToken) {
-            $('meta[name="csrf-token"]').attr('content', data.csrfToken);
-          }
-        },
-        error: function(e){
-          self.$("[type=submit]").removeAttr("disabled")
-          console.log(e)
-          self.$(".error").text(e)
-        },
-        dataType: "json"
-      })
-      this.$("[type=submit]").attr("disabled", true)
-      return false
-    }
+          self.error()
+        } else {
+          self.callback(data)
+        }
+        if (data.csrfToken) {
+          $('meta[name="csrf-token"]').attr('content', data.csrfToken);
+        }
+      },
+      error: function(e){
+        self.$("[type=submit]").removeAttr("disabled")
+        console.log(e)
+        self.$(".error").text(e)
+      },
+      dataType: "json"
+    })
+    this.$("[type=submit]").attr("disabled", true)
+    return false
   }
 })
 

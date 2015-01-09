@@ -566,7 +566,6 @@ var SignUpView = FormView.extend({
       router.navigate("confirmation", {trigger: true})
     }
   }
-
 })
 
 var HowView = BaseView.extend({
@@ -702,8 +701,9 @@ var UserLinkView = BaseView.extend({
 var LoginButtonView = BaseView.extend({
   templateName: "login-button",
   events: {
-    "click": function(){
-      new LoginView({el: this.el}).render()
+    "click button.login": function(){
+      this.$("button").hide()
+      new LoginView({el: this.$(".login-form")}).render()
     }
   }
 })
