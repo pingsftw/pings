@@ -14,6 +14,7 @@
   <script> var user = <%= current_user ? current_user.to_json.html_safe : "null"%> </script>
   <script> window.usernameMinimum = <%= User::UsernameMinimum %> </script>
   <script> var projects = new ProjectList(<%=Project.all.to_json.html_safe%>)</script>
+  <link href='http://fonts.googleapis.com/css?family=Asap' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <header></header>
