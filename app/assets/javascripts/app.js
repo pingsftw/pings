@@ -573,16 +573,16 @@ var HowView = BaseView.extend({
 })
 
 var joinHow = {
-  title: "Join",
-  text: "Join the community"
+  title: "Power-up to Pings",
+  text: "Donate USD or Bitcoin to load your wallet. Once you have pings in your wallet, you can participate in community voting."
 }
 var loadHow = {
-  title: "Load",
-  text: "Support the Internet to load up on " + tokenName + "s"
+  title: "Cast Your Ballot:",
+  text: "Vote for your favorite group/organization. Together, the community determines which projects receive funding."
 }
 var voteHow = {
-  title: "Vote",
-  text: "Vote to help choose which projects receive support"
+  title: "Sharing is Caring",
+  text: "Send pings to friends, organizations, or anyone who is making the internet awesome."
 }
 
 var HowsView = BaseView.extend({
