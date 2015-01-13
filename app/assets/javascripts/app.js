@@ -577,7 +577,7 @@ var joinHow = {
   text: "Donate USD or Bitcoin to load your wallet. Once you have pings in your wallet, you can participate in community voting."
 }
 var loadHow = {
-  title: "Cast Your Ballot:",
+  title: "Cast Your Ballot",
   text: "Vote for your favorite group/organization. Together, the community determines which projects receive funding."
 }
 var voteHow = {
