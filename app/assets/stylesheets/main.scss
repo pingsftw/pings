@@ -16,14 +16,13 @@ body {
   box-shadow: 24px;
 }
 
-.splash, .hows {
+.hows {
   padding-top: 10px;
   padding-bottom: 30px;
-  background-color: $alternating-bg-color;
 }
 
 .stats, .sign-up {
-  width: 48%;
+  width: 49.8%;
   display: inline-block;
 }
 
@@ -37,7 +36,7 @@ body {
       width: 300px;
     }
   }
-  background-color: $blue;
+  background-color: $alternating-bg-color;
 }
 
 form.login{
@@ -178,6 +177,7 @@ h1 {
   background-color: $blue;
   padding: 46px 0;
   margin-top: 33px;
+  margin-bottom: 0;
 }
 
 h2 {
@@ -232,9 +232,12 @@ div.login{
   display: inline-block;
 }
 
-.projects-splash li{
-  display: inline-block;
-  width: 200px;
+.projects-splash {
+  background-color: $alternating-bg-color;
+  li{
+    display: inline-block;
+    width: 200px;
+  }
 }
 
 img.project{
