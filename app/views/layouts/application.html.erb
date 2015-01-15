@@ -29,13 +29,16 @@
 </body>
 
 <script type="text/template" id="header-template">
-  <div class="home"><a><img class="logo" src="/images/pings-logo.png"/></a></div>
-  <div class="about"><a>About</a></div>
-  <div class="how-works"><a>How it Works</a></div>
-  <div class="community"><a>Community</a></div>
-  <div class="book"><a>Book</a></div>
-  <div class="user"></div>
-  <%% if (typeof(confirmed) != "undefined" && !confirmed) { %>
+  <div class="nav">
+    <div class="about"><a>About</a></div>
+    <div class="how-works"><a>How it Works</a></div>
+    <div class="community"><a>Community</a></div>
+    <div class="book"><a>B/ook</a></div>
+    <div class="title"><a>Pings</a></div>
+    <div class="user"></div>
+  </div>
+  <div class="logo"><a><img class="logo" src="/images/pings-logo.png"/></a></div>
+  <%% if (false && typeof(confirmed) != "undefined" && !confirmed) { %>
       <h2 class="confirmation-reminder">You have not confirmed your email</h2>
   <%% } %>
 </script>
@@ -175,6 +178,7 @@
 </script>
 
 <script type="text/template" id="home-template">
+  <h1>Donate to the pool and get <%=tokenName%></h1>
   <div class="stats"><span class="grumpy">Loading donation stats</span></div>
   <div class="buy"></div>
   <div class="explores"></div>

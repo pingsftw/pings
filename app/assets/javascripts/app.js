@@ -730,7 +730,8 @@ var HeaderView = BaseView.extend({
     "click .community": function(){router.navigate("community", {trigger: true})},
     "click .how-works": function(){router.navigate("how", {trigger: true})},
     "click .projects": function(){router.navigate("projects", {trigger: true})},
-    "click .home": function(){router.navigate("home", {trigger: true})},
+    "click .logo": function(){router.navigate("home", {trigger: true})},
+    "click .title": function(){router.navigate("home", {trigger: true})},
     "click .faq": function(){router.navigate("faq", {trigger: true})},
     "click .user": function(event){
       var pathname = event.currentTarget.pathname

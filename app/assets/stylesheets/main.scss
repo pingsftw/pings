@@ -50,7 +50,7 @@ form.login{
 
 header {
   text-align: center;
-  div {
+  .nav div {
     text-align: center;
     display: inline-block;
     width: 100px;
@@ -75,9 +75,23 @@ header {
   .home {
     margin-right: 200px;
   }
-  .logo {
-    width: 100%;
-    height: 100%;
+  .title {
+    font-size: 44px;
+    vertical-align: -10px;
+    margin-right: 160px;
+    a {
+      color: $action-color;
+    }
+}
+  img.logo {
+    width: 70px;
+    height: 70px;
+    display: inline;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
   }
   a {
     color: $main-color;
@@ -160,7 +174,10 @@ button {
 h1 {
   font-size: 32px;
   line-height: 40px;
-  color: #444;
+  color: #FFF;
+  background-color: $blue;
+  padding: 46px 0;
+  margin-top: 33px;
 }
 
 h2 {
