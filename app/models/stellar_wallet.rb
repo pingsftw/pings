@@ -28,9 +28,10 @@ class StellarWallet < ActiveRecord::Base
       method: method
     }
     if params
+      params[:fee_mult_max] = 1000
       body[:params] = [params]
     end
-    res = HTTParty.post("https://" + StellarConfig[:host] + ":9002", body: body.to_json).parsed_response["result"]
+    res = HTTParty.post("https://" + StellarConfig[:host], body: body.to_json).parsed_response["result"]
     if (res["engine_result"] && res["engine_result"] != "tesSUCCESS") || res["status"] == "error"
       throw StellarBoom.new({res: res, body: body})
     end
@@ -55,12 +56,9 @@ class StellarWallet < ActiveRecord::Base
   end
 
   def get_keys
-    result = StellarWallet.request("create_keys")
-    self.account_id = result["account_id"]
-    self.master_seed = result["master_seed"]
-    self.master_seed_hex = result["master_seed_hex"]
-    self.public_key = result["public_key"]
-    self.public_key_hex = result["public_key_hex"]
+    wallet = HTTParty.get("https://api.ripple.com/v1/wallet/new").parsed_response["wallet"]
+    self.account_id = wallet["address"]
+    self.master_seed = wallet["secret"]
   end
 
   def self.mainline
@@ -187,13 +185,12 @@ class StellarWallet < ActiveRecord::Base
     submit(params)
   end
 
-  def prefund
-    StellarWallet.friendbot
+  def prefund(qty = 2_000_000)
     params = {
       tx_json: {
         TransactionType: "Payment",
         Destination: account_id,
-        Amount: 400_000_000
+        Amount: qty
       }
     }
     StellarWallet.submit(params)

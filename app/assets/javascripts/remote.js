@@ -2,8 +2,8 @@
 window.remote = new stellar.Remote({
   servers: [
     {
-        host:    stellar_host
-      , port:    stellar_port
+        host:    "s1.ripple.com"
+      , port:    443
       , secure:  true
     }
   ]
