@@ -29,11 +29,11 @@ body {
 .sign-up {
   .form-item {
     display: block;
-    margin-left: 50px;
+    margin-left: 20%;
     margin-bottom: 20px;
-    width: 300px;
+    width: 60%;
     button {
-      width: 300px;
+      width: 60%;
     }
   }
   background-color: $alternating-bg-color;
@@ -175,6 +175,7 @@ button {
     color: #444;
     background: none;
     box-shadow: none;
+    height: 50px;
     &:hover {
       background: #c6c6c6;
     }
@@ -332,4 +333,8 @@ div.choice {
     color: #FFF;
     background: #46d98c;
   }
+}
+
+a.login-button {
+  line-height: 0;
 }
