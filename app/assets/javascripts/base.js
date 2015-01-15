@@ -114,8 +114,13 @@ var ChooserView = BaseView.extend({
     "click .choice": function(e){
       var input =$(e.currentTarget).find("input")
       input.prop("checked", true)
+      this.active()
       this.trigger("change")
     }
+  },
+  active: function(){
+    this.$(".choice").removeClass("active")
+    this.$("input:checked").parent().addClass("active")
   },
   val: function(){
     return this.$("input:checked").val()
