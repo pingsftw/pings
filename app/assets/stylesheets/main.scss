@@ -39,14 +39,6 @@ body {
   background-color: $alternating-bg-color;
 }
 
-form.login{
-  position: fixed;
-  input {
-    padding: 4px 0px 4px 8px;
-    width: 200px;
-  }
-}
-
 header {
   text-align: center;
   .nav {
@@ -62,6 +54,25 @@ header {
         position: absolute;
         right: 35px;
       }
+      &.login-form{
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        text-align:right;
+        width: 200px;
+        input {
+          height: 40px;
+          width: 85%;
+          margin-top: 3px;
+          line-height: 16px;
+          vertical-align: top;
+        }
+        div {
+          display:block;
+          height: 43px;
+          width: 100%;
+        }
+      }
     }
   }
   p {
@@ -74,7 +85,9 @@ header {
       margin-bottom: 5px
     }
     button {
-      text-align: left;
+      height: 45px;
+      line-height: 20px;
+      width: 105px;
     }
   }
   .home {
@@ -225,16 +238,7 @@ li div {
   height: 200px;
 }
 
-div.login{
-  float: right;
-  position: fixed;
-  right: 28px;
-  top: 35px;
-  text-align:right;
-  input {
-    margin-top: 3px;
-  }
-}
+
 
 #main {
   text-align: center
