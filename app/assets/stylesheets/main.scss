@@ -49,13 +49,19 @@ form.login{
 
 header {
   text-align: center;
-  .nav div {
-    text-align: center;
-    display: inline-block;
-    width: 100px;
-    &.user, &.logout-button {
-      width: 250px;
-      text-align: left;
+  .nav {
+    text-align: left;
+    line-height: 67px;
+    div {
+      text-align: center;
+      display: inline-block;
+      width: 100px;
+      &.user {
+        width: 400px;
+        text-align: right;
+        position: absolute;
+        right: 35px;
+      }
     }
   }
   p {
@@ -81,6 +87,11 @@ header {
     a {
       color: $action-color;
     }
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
 }
   img.logo {
     width: 70px;
@@ -275,10 +286,20 @@ img.project{
 .buy {
   .currency, .quantity {
     border: 1px solid white;
+    width: 180px;
   }
   div {
     &.input, &.process {
-      display: block
+      display: block;
+      label {
+        width: 210px;
+      }
+      span.grumpy {
+        position: absolute;
+      }
+      input {
+        width: 300px;
+      }
     }
     display: inline-flex
   }
