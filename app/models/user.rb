@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
     {
       stellar_id: stellar_wallet.account_id,
       username: username,
-      supporting: nil,
+      supporting: stellar_wallet.supported_project_id,
       icon_url: icon_url
     }
   end
@@ -79,6 +79,7 @@ class User < ActiveRecord::Base
     so_far[:webs_balance] = nil
     so_far[:confirmed] = confirmed?
     if stellar_wallet
+      so_far[:supporting] = stellar_wallet.supported_project_id
       so_far[:stellar_id] = stellar_wallet.account_id
     end
 
@@ -86,7 +87,8 @@ class User < ActiveRecord::Base
   end
 
   def support(project)
-    stellar_wallet.set_inflation(project.stellar_wallet.account_id)
+    stellar_wallet.update_attributes(supported_project: project)
+    # stellar_wallet.set_inflation(project.stellar_wallet.account_id)
   end
 
   def ensure_stellar_wallet

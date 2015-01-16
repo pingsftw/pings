@@ -4,6 +4,7 @@ class StellarWallet < ActiveRecord::Base
   before_create :get_keys
   belongs_to :user
   belongs_to :project
+  belongs_to :supported_project, class_name: "Project"
 
   class StellarBoom < StandardError; end;
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141030030543) do
+ActiveRecord::Schema.define(version: 20150115231452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20141030030543) do
     t.string  "public_key_hex"
     t.integer "project_id"
     t.boolean "prepped"
+    t.integer "supported_project_id"
   end
 
   add_index "stellar_wallets", ["user_id"], name: "index_stellar_wallets_on_user_id", unique: true, using: :btree

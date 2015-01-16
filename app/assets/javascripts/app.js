@@ -208,6 +208,7 @@ var ChangeSupportView = FormView.extend({
       var option = $("<option>", {value: project.id}).text(project.get("name"))
       select.append(option)
     })
+    select.val(current_user.get("supporting"))
   },
   callback: function(data){
     current_user.set("supporting", data.project.name)
@@ -299,7 +300,10 @@ var HowPage = BaseView.extend({
 })
 
 var VotePage = BaseView.extend({
-  templateName: "vote"
+  templateName: "vote",
+  postRender: function(){
+    new ChangeSupportView({collection: projects, el: this.$(".voting-list")}).render()
+  }
 })
 
 var HomePage = BaseView.extend({
