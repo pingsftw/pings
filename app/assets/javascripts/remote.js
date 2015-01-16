@@ -36,6 +36,17 @@ remote.book = function(currency, callback){
   this.requestBookOffers(params, function(e,d){callback(d.offers)})
 }
 
+remote.balance = function(stellar_id, callback){
+  $.get("https://api.ripple.com/v1/accounts/"+stellar_id+"/balances", function(data){
+    $.each(data.balances, function(i, balance){
+      if (balance.currency == "WEB") { 
+        console.log(balance)
+        callback(balance.value)
+      }
+    })
+  })
+}
+
 remote.info = function(stellar_id, callback){
   if (!stellar_id) return false
   this.requestAccountInfo(stellar_id, function(error, data){
@@ -47,9 +58,11 @@ remote.info = function(stellar_id, callback){
   })
 }
 
-remote.balance = function(stellar_id, callback){
+remote.balance2 = function(stellar_id, callback){
   this.requestAccountLines(stellar_id, function(error, data){
     if (error && error.remote.error == "actNotFound")
+      console.log(stellar_id)
+      console.log(error)
       return callback(0)
     if (error) console.error(error)
     callback(_.detect(data.lines, function(line){return line.currency=="WEB"}).balance)

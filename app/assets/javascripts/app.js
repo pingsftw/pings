@@ -139,7 +139,7 @@ var ProfilePage =  BaseView.extend({
     })
     this.model.fetch({success: function(){
       self.model.getWebsBalance()
-      self.model.getSupporting()
+      // self.model.getSupporting()
     }})
   }
 })
