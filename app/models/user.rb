@@ -23,6 +23,10 @@ class User < ActiveRecord::Base
     sent_gifts.where(transaction_hash: nil).sum(:value)
   end
 
+  def wallet_ready
+    stellar_wallet.setup
+  end
+
   def check_for_gifts
     gifts = Gift.where(receiver_email: email)
     # gifts.update(receiver: self) #This apparently is not a thing

@@ -186,7 +186,7 @@ class StellarWallet < ActiveRecord::Base
     submit(params)
   end
 
-  def prefund(qty = 2_000_000)
+  def prefund(qty = 40_000_000)
     params = {
       tx_json: {
         TransactionType: "Payment",

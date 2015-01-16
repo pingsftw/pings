@@ -4,7 +4,7 @@ class Payment < ActiveRecord::Base
     payment_address.user
   end
   def process!
-    user.ensure_stellar_wallet
+    user.wallet_ready
     res = user.stellar_wallet.issue("BTC", value)
     self.issue_hash = res["result"]["tx_json"]["hash"]
     res =  user.bid(:btc)
