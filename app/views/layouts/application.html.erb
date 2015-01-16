@@ -323,7 +323,7 @@
   <div class=username></div>
   <%% if (typeof(webs_balance) !== "undefined" ) { %>
       <p><label>Total <%= tokenName %></label><span class="data"><%%=webs_balance%></span></p>
-      <p><label>Currently Supporting</label><span class="data"><%%=supporting%></span></p>
+      <p><label>Currently Supporting</label><span class="data"><%%=projects.at(supporting).get("name")%></span></p>
   <%% } %>
 </script>
 
