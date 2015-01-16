@@ -12,33 +12,40 @@ class CardsController < ApplicationController
       last4: customer.cards.first.last4
     )
     current_user.cards << card
-    render json: card
+    payment = process_charge(card, params[:qty])
+    payment.process!
+    payment.reload
+    render json: payment
   end
 
-  def charge
-    card = current_user.cards.last
-    quantity = params[:quantity]
-    charge = Stripe::Charge.create(
+  def process_charge(card, quantity)
+    stripe_charge = Stripe::Charge.create(
       :amount   => quantity,
       :currency => "usd",
       :customer => card.card_uid
     )
     payment = Charge.create(
-      card_uid: charge.card.id,
+      card_uid: stripe_charge.card.id,
       card_id: card.id,
-      amount: charge.amount,
-      customer: charge.customer,
-      charge_uid: charge.id,
-      balance_transaction: charge.balance_transaction,
-      paid: charge.paid
+      amount: stripe_charge.amount,
+      customer: stripe_charge.customer,
+      charge_uid: stripe_charge.id,
+      balance_transaction: stripe_charge.balance_transaction,
+      paid: stripe_charge.paid
     )
+  end
+
+  def charge
+    card = current_user.cards.last
+    quantity = params[:quantity]
+    payment = process_charge(card, quantity)
     if current_user.approved?
       payment.process!
       payment.reload
       render json: payment
     else
       payment.email_for_approval
-      render json: {status: "approval", amount: charge.amount}
+      render json: {status: "approval", amount: payment.amount}
     end
   end
 

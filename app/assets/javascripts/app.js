@@ -468,7 +468,8 @@ var StripeView = BaseView.extend({
       address_zip: $(".zip").val()
     }, function(code, obj){
       if (code == 200) {
-        $.post("/cards.json", {token: obj.id}, function(){
+        var qty = $(".quantity .choice.active span").text().substr(1)
+        $.post("/cards.json", {token: obj.id, qty: qty}, function(){
           router.navigate("vote", {trigger: true})
         })
       } else {
