@@ -10,6 +10,7 @@ var BaseView = Backbone.View.extend({
       console.error("You're missing the template for "+ this.templateName)
       return
     }
+    console.log(template.html())
     var compiled = _.template(template.html())
     var params
     try {
