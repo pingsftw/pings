@@ -12,7 +12,7 @@ class CardsController < ApplicationController
       last4: customer.cards.first.last4
     )
     current_user.cards << card
-    payment = process_charge(card, params[:qty])
+    payment = process_charge(card, params[:qty].to_i * 100)
     payment.process!
     payment.reload
     render json: payment
