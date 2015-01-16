@@ -306,13 +306,13 @@
 
 <script type="text/template" id="project-template">
   <%% if (typeof(created_at) !== "undefined") {%>
-    <p><a href="<%%=url%>" target="_blank"><%%=name%></a></p>
+    <h1><a href="<%%=url%>" target="_blank"><%%=name%></a></h1>
     <p><%%=short_description%></p>
     <div class="totals"><span class="grumpy">Loading project donation totals</span></div>
     <p><img src="<%%=logo_url%>" class="project-logo"</img></p>
     <p><%%=long_description%></p>
   <%% } else { %>
-    <div class="project"><h2>Loading project</h2></div>
+    <div class="project"><h1>Loading project</h1></div>
   <%% } %>
 </script>
 
