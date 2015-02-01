@@ -1,28 +1,9 @@
-== README
+== Pings FTW
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Pings are a currency that represents support of the open internet.
 
-Things you may want to cover:
+Donations to the pool are rewarded with currency, that can then be traded.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Donation icon: http://thenounproject.com/wilsonjoseph/
+Vote icon: http://thenounproject.com/rejeansoo
+Gift icon: http://thenounproject.com/nabrams
